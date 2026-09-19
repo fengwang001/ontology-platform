@@ -12,12 +12,12 @@
 # 拉取依赖
 go mod tidy
 
-# 直接运行
-go run ./cmd/server
+# 直接运行演示（属性变更订阅与扇出分发）
+go run ./cmd/demo
 
 # 编译后运行
-go build -o bin/server ./cmd/server
-./bin/server
+go build -o bin/demo ./cmd/demo
+./bin/demo
 ```
 
 ## 测试
