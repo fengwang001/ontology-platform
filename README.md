@@ -1,46 +1,56 @@
-# ontology-platform
+# ontology - 可复现的加权水塘抽样器
 
-本体服务平台（对标 Palantir Foundry Ontology）。
+从长度未知的流中抽取固定容量 `k` 的样本，每个元素带正整数权重，权重越大越容易被留下。
+只用标准库，状态全部在进程内存中。
 
-## 环境要求
+## 算法：A-Res（Algorithm A with Reservoir）
 
-- Go 1.26+（`go version` 确认）
+采用 Efraimidis & Spirakis (2006) 的 **A-Res** 加权水塘抽样算法：
 
-## 运行
+1. 每个到达的元素（权重 `w`）抽取一个均匀随机数 `u ~ Uniform(0,1)`，
+   计算优先级键 `key = u^(1/w)`。
+2. 水塘始终保留当前已见元素中 `key` 最大的 `k` 个。
+3. 用一个容量为 `k` 的**最小堆**维护这些键：堆未满时直接插入；
+   堆满后仅当新键大于堆顶（当前最小键）时替换堆顶。
 
-```bash
-# 拉取依赖
-go mod tidy
+可以证明，该算法下每个元素最终入选的概率与其权重成正比（`k=1` 时恰为 `w_i / Σw`）。
 
-# 直接运行
-go run ./cmd/server
+**为什么只需要 O(k) 内存**：堆的容量固定为 `k`，每个元素到达时只需 O(log k)
+的堆操作和一个随机数，处理完即丢弃。整条流从不被缓存，任意时刻水塘内元素数
+不超过 `k`，与流长度无关——百万元素的流也只占 O(k) 内存。
 
-# 编译后运行
-go build -o bin/server ./cmd/server
-./bin/server
+## 可复现性
+
+- 抽样器由显式 `uint64` 种子构造（`New(k, seed)`），内部使用 `math/rand/v2`
+  的 PCG 生成器。不使用全局 rand、不读时钟、不依赖 map 迭代顺序。
+- 同一种子 + 同一输入序列，两次抽样的结果逐元素完全一致（包括顺序）。
+- **随机性只发生在 `Add` 时**：`Sample` 是对当前水塘的纯读取快照，不消耗任何
+  随机数；没有新增元素时，多次 `Sample` 返回完全一致的结果。
+- `RandConsumed()` 返回已消耗的随机数个数（每个被接受的元素恰好消耗 1 个），
+  供测试断言同种子两次运行消耗数相同。
+
+## API 摘要
+
+```go
+r, err := ontology.New(k, seed)   // k <= 0 返回 ErrInvalidCapacity
+err = r.Add("item", 3)            // 权重必须为正整数，否则返回 ErrInvalidWeight 且不入水塘
+sample := r.Sample()              // 返回独立快照切片，与内部状态互不影响
+r.Len()                           // 当前水塘元素数，永不超过 k
+r.Total()                         // 被接受的元素总数
+r.Rejected()                      // 因非法权重被拒绝的元素数
+r.RandConsumed()                  // 已消耗的随机数个数
 ```
 
-## 测试
+`Add` 与 `Sample` 均可并发调用（内部由互斥锁串行化），并发 `Add` 不丢不重。
 
-```bash
-# 全量测试
-go test ./...
+## 演示与测试
 
-# 带竞态检测与详细输出
-go test -race -v ./...
-
-# 单个包 / 单个用例
-go test ./ontology
-go test -run TestObjectType ./ontology
-
-# 覆盖率
-go test -coverprofile=coverage.out ./...
-go tool cover -html=coverage.out
+```sh
+go run ./cmd/demo        # 逐项演练并打印 OK/FAIL 判定
+go test -count=1 ./...   # 单元测试（含 2000 轮固定种子统计核对）
+go test -race ./...      # 并发安全
 ```
 
-## 代码检查
-
-```bash
-gofmt -l .
-go vet ./...
-```
+统计测试的容差推导：入选频率是二项比例，标准误 `se = sqrt(p(1-p)/n)`，
+`n=2000`、最坏 `p=0.5` 时 `se ≈ 0.0112`；取 5 倍标准误（约 0.056，取整为 0.06）
+作为容差，测试使用固定种子序列，因此是确定性的，不会偶发失败。
