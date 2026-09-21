@@ -9,14 +9,11 @@ package backpressure
 // or exceeds the high watermark the controller enters Paused.
 func (c *Controller) Add(n int64) bool {
 	if n <= 0 {
-		c.mu.Lock()
-		c.rejected += -n
-		c.mu.Unlock()
 		return false
 	}
 	c.mu.Lock()
 	if c.level+n > c.hard {
-		c.rejected++
+		c.rejected += n
 		c.mu.Unlock()
 		return false
 	}
@@ -51,7 +48,7 @@ func (c *Controller) Sub(n int64) {
 		c.level = 0
 	}
 	changed := false
-	if c.state == Paused && c.level < c.low {
+	if c.state == Paused && c.level <= c.low {
 		c.state = Flowing
 		c.resumes++
 		changed = true
