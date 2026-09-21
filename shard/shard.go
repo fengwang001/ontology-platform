@@ -9,7 +9,6 @@ import (
 
 // Set 是 n 个分片的余额集合。所有方法并发安全。
 type Set struct {
-	maxTxn   uint64
 	mu       sync.Mutex
 	balances []int64
 	lastTxn  []uint64 // 每片已应用的最大 Txn，用于幂等跳过
@@ -42,14 +41,13 @@ func (s *Set) Apply(r wal.Record) bool {
 	if r.Shard < 0 || r.Shard >= len(s.balances) {
 		return false
 	}
-	if r.Txn <= s.maxTxn {
+	// 根因：幂等水位必须按分片独立。此前误用全局 maxTxn，导致同一 Txn
+	// 的入账记录（另一分片）被扣款片的水位错误跳过，总额守恒被破坏。
+	if r.Txn <= s.lastTxn[r.Shard] {
 		return false
 	}
 	s.balances[r.Shard] += r.Delta
 	s.lastTxn[r.Shard] = r.Txn
-	if r.Txn > s.maxTxn {
-		s.maxTxn = r.Txn
-	}
 	return true
 }
 
