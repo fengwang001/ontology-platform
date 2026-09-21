@@ -31,6 +31,10 @@ func (g *Ledger) Recover() (replayed int, err error) {
 			replayed++
 		}
 	}
+	// 重放结束后 WAL 中所有记录都已应用，appliedSeq 必须推进到
+	// LastSeq，否则 CrashAfterApply 丢失的元数据永远补不回来，
+	// 后续 Checkpoint 也无法截断这些其实已应用的记录。
+	g.appliedSeq = g.log.LastSeq()
 	return replayed, nil
 }
 
@@ -40,7 +44,9 @@ func (g *Ledger) Recover() (replayed int, err error) {
 func (g *Ledger) Checkpoint() error {
 	g.mu.Lock()
 	defer g.mu.Unlock()
-	return g.log.Truncate(g.appliedSeq + 1)
+	// Truncate 丢弃 Seq <= upto 的记录；只能截到 appliedSeq，
+	// +1 会把第一条未应用的记录一并截掉，崩溃后 Recover 无法补回。
+	return g.log.Truncate(g.appliedSeq)
 }
 
 // AppliedSeq 返回当前已确认全部应用的最大 Seq，供测试与调试使用。
