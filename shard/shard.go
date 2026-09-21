@@ -9,7 +9,6 @@ import (
 
 // Set 是 n 个分片的余额集合。所有方法并发安全。
 type Set struct {
-	maxTxn   uint64
 	mu       sync.Mutex
 	balances []int64
 	lastTxn  []uint64 // 每片已应用的最大 Txn，用于幂等跳过
@@ -36,20 +35,21 @@ func (s *Set) Len() int {
 
 // Apply 应用一条记录。若该片的 LastTxn 已不小于 r.Txn（即应用过），
 // 则跳过并返回 false；否则累加余额、推进 LastTxn 并返回 true。
+//
+// 根因修复：幂等判定必须按每片 lastTxn 比较；此前误用全局 maxTxn，
+// 同一 Txn 的第二条记录（落在另一片）会被误判为“已应用”而跳过，
+// 直接打破总额守恒。
 func (s *Set) Apply(r wal.Record) bool {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 	if r.Shard < 0 || r.Shard >= len(s.balances) {
 		return false
 	}
-	if r.Txn <= s.maxTxn {
+	if r.Txn <= s.lastTxn[r.Shard] {
 		return false
 	}
 	s.balances[r.Shard] += r.Delta
 	s.lastTxn[r.Shard] = r.Txn
-	if r.Txn > s.maxTxn {
-		s.maxTxn = r.Txn
-	}
 	return true
 }
 
