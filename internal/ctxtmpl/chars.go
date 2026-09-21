@@ -15,15 +15,6 @@ func lowerASCII(ch byte) byte {
 	return ch
 }
 
-func allASCIISpace(s string) bool {
-	for i := 0; i < len(s); i++ {
-		if !isASCIISpace(s[i]) {
-			return false
-		}
-	}
-	return true
-}
-
 // isURLAttr reports whether name is one of the URL-bearing attributes.
 func isURLAttr(name []byte) bool {
 	switch string(name) {

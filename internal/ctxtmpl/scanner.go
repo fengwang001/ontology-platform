@@ -14,8 +14,16 @@ func (s *scanner) feedLiteral(seg string, hasNext bool) {
 		case stComment:
 			if strings.HasPrefix(seg[i:], "-->") {
 				s.st = stText
+				s.commentDashRun = 0
 				i += 3
 				continue
+			}
+			if ch == '-' {
+				if s.commentDashRun < 2 {
+					s.commentDashRun++
+				}
+			} else {
+				s.commentDashRun = 0
 			}
 			i++
 		case stTagName:
@@ -34,8 +42,7 @@ func (s *scanner) feedLiteral(seg string, hasNext bool) {
 			case ch == '=':
 				// Browsers allow whitespace between an attribute name and '='.
 				s.curURL = isURLAttr(s.nameBuf)
-				s.valueSeen = false
-				s.valueSpace = true
+				s.urlPrefix = s.urlPrefix[:0]
 				s.st = stAttrEq
 			case isASCIIAlpha(ch):
 				s.st = stAttrName
@@ -90,8 +97,7 @@ func (s *scanner) feedAttrName(seg string, i int) int {
 	switch {
 	case ch == '=':
 		s.curURL = isURLAttr(s.nameBuf)
-		s.valueSeen = false
-		s.valueSpace = true
+		s.urlPrefix = s.urlPrefix[:0]
 		s.st = stAttrEq
 	case ch == '>':
 		s.closeTag()
@@ -118,8 +124,7 @@ func (s *scanner) feedAttrEq(seg string, i int) int {
 		s.closeTag()
 	default:
 		s.st = stAttrUnquoted
-		s.valueSeen = true
-		s.valueSpace = false
+		s.appendURLPrefix(seg[i : i+1])
 	}
 	return i + 1
 }
@@ -131,8 +136,7 @@ func (s *scanner) feedQuoted(seg string, i int, quote byte, st topState) int {
 		s.st = stTagGap
 		return i + 1
 	}
-	s.valueSeen = true
-	s.valueSpace = s.valueSpace && isASCIISpace(ch)
+	s.appendURLPrefix(seg[i : i+1])
 	return i + 1
 }
 
@@ -145,32 +149,48 @@ func (s *scanner) feedUnquoted(seg string, i int) int {
 	case isASCIISpace(ch):
 		s.st = stTagGap
 	default:
-		s.valueSeen = true
-		s.valueSpace = false
+		s.appendURLPrefix(seg[i : i+1])
 	}
 	return i + 1
 }
 
 // beginQuotedValue resets value tracking when a quoted value opens.
 func (s *scanner) beginQuotedValue() {
-	s.valueSeen = false
-	s.valueSpace = true
+	s.urlPrefix = s.urlPrefix[:0]
 }
 
-// feedInterpolation marks that a value was emitted at the current position.
-// The "still at URL start" flag survives only as long as every emitted value
-// consists solely of whitespace; a later interpolation may therefore still be
-// scheme-validated after an empty or whitespace-only preceding value.
+// appendURLPrefix folds seg into the running URL-attribute prefix, stripping
+// ASCII whitespace and lowercasing so the scheme check cannot be evaded with
+// embedded tabs or newlines. The prefix is capped at maxSchemeProbe bytes:
+// once it is longer than every dangerous scheme, no suffix can make it match.
+func (s *scanner) appendURLPrefix(seg string) {
+	if !s.curURL {
+		return
+	}
+	for i := 0; i < len(seg) && len(s.urlPrefix) < maxSchemeProbe; i++ {
+		ch := seg[i]
+		if isASCIISpace(ch) {
+			continue
+		}
+		s.urlPrefix = append(s.urlPrefix, lowerASCII(ch))
+	}
+}
+
+// feedInterpolation marks that a value was emitted at the current position,
+// folding it into the URL prefix and comment dash-run tracking exactly as the
+// escaped output will appear, so later checks see the full concatenation.
 func (s *scanner) feedInterpolation(value string) {
 	switch s.st {
 	case stAttrEq:
 		s.st = stAttrUnquoted
-		s.valueSeen = value != ""
-		s.valueSpace = allASCIISpace(value)
+		s.appendURLPrefix(value)
 	case stAttrDouble, stAttrSingle, stAttrUnquoted:
+		s.appendURLPrefix(value)
+	case stComment:
+		// Escaped comment output never ends in '-' ('-' becomes "&#45;"),
+		// so any non-empty value resets the dash run.
 		if value != "" {
-			s.valueSeen = true
+			s.commentDashRun = 0
 		}
-		s.valueSpace = s.valueSpace && allASCIISpace(value)
 	}
 }

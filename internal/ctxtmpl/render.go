@@ -40,12 +40,24 @@ func Render(tmpl string, data map[string]string) (string, error) {
 		if !present {
 			return "", &UnknownKeyError{Key: name}
 		}
-		if ctx.urlAttr && ctx.urlStart {
-			if err := checkDangerousURL(value); err != nil {
+		if ctx.urlAttr {
+			// The scheme check must see the full prefix rendered into this
+			// attribute so far, not just the current value: validating value
+			// alone let "java"+"script:1" slip through when split across two
+			// interpolations or across literal template text and a value.
+			if err := checkDangerousURLPrefix(s.urlPrefix, value); err != nil {
 				return "", err
 			}
 		}
-		out.WriteString(escapeValue(value, ctx))
+		escaped := escapeValue(value, ctx)
+		// A value alone can never contain "-->" (its '-' is escaped), but
+		// literal template text may supply a trailing "--" right before the
+		// interpolation; a leading '>' in the value would then complete the
+		// terminator and break out of the comment. Neutralize that byte.
+		if ctx.kind == ctxComment && s.commentDashRun >= 2 && strings.HasPrefix(escaped, ">") {
+			escaped = "&gt;" + escaped[1:]
+		}
+		out.WriteString(escaped)
 		s.feedInterpolation(value)
 		tmpl = rest
 	}

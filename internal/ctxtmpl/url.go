@@ -13,18 +13,27 @@ var dangerousURLPrefixes = []string{
 // the front) so embedded tabs and newlines such as "java\tscript:" cannot
 // bypass the check.
 func checkDangerousURL(value string) *DangerousURLError {
-	stripped := stripASCIIWhitespace(value)
-	if stripped == "" {
-		return nil
+	return checkDangerousURLPrefix(nil, value)
+}
+
+// checkDangerousURLPrefix is checkDangerousURL evaluated against the
+// concatenation of the URL attribute's already-rendered prefix and the next
+// interpolated value. prefix must already be whitespace-stripped and
+// lowercased; the scanner maintains it that way while feeding literal
+// template text and interpolated values.
+func checkDangerousURLPrefix(prefix []byte, value string) *DangerousURLError {
+	head := make([]byte, 0, maxSchemeProbe)
+	head = append(head, prefix...)
+	for i := 0; i < len(value) && len(head) < maxSchemeProbe; i++ {
+		ch := value[i]
+		if isASCIISpace(ch) {
+			continue
+		}
+		head = append(head, lowerASCII(ch))
 	}
-	head := stripped
-	if len(head) > maxSchemeProbe {
-		head = head[:maxSchemeProbe]
-	}
-	head = lowerASCIIString(head)
-	for _, prefix := range dangerousURLPrefixes {
-		if len(stripped) >= len(prefix) && head[:len(prefix)] == prefix {
-			return &DangerousURLError{Value: value}
+	for _, p := range dangerousURLPrefixes {
+		if len(head) >= len(p) && string(head[:len(p)]) == p {
+			return &DangerousURLError{Value: string(prefix) + value}
 		}
 	}
 	return nil
@@ -33,21 +42,3 @@ func checkDangerousURL(value string) *DangerousURLError {
 // maxSchemeProbe is longer than any dangerous prefix, leaving room even though
 // prefixes are compared directly.
 const maxSchemeProbe = 32
-
-func stripASCIIWhitespace(s string) string {
-	var b []byte
-	for i := 0; i < len(s); i++ {
-		if !isASCIISpace(s[i]) {
-			b = append(b, s[i])
-		}
-	}
-	return string(b)
-}
-
-func lowerASCIIString(s string) string {
-	b := []byte(s)
-	for i := range b {
-		b[i] = lowerASCII(b[i])
-	}
-	return string(b)
-}
