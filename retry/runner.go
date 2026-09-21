@@ -45,7 +45,7 @@ func (r *Runner) Do(fn func(attempt int) error) (int, error) {
 		}
 		if isPermanent(err) {
 			r.record(delays)
-			return attempt, fmt.Errorf("%w: %w", ErrAborted, err)
+			return attempt, fmt.Errorf("%w", ErrAborted)
 		}
 		lastErr = err
 		if attempt >= max {

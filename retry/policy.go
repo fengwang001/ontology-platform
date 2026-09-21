@@ -43,9 +43,6 @@ func (p Policy) baseDelay(k int) time.Duration {
 		}
 		d *= factor
 	}
-	if p.Cap > 0 && d > p.Cap {
-		d = p.Cap
-	}
 	return d
 }
 
@@ -67,7 +64,7 @@ func (p Policy) delay(k int, rnd func() float64) time.Duration {
 	if r >= 1 {
 		r = math.Nextafter(1, 0)
 	}
-	factor := 1 + (2*r-1)*float64(jitter)/100
+	factor := 1 + r*float64(jitter)/100
 	out := time.Duration(float64(d) * factor)
 	if out < 0 {
 		return 0
