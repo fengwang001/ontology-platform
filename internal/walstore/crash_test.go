@@ -188,3 +188,60 @@ func truncateFile(t *testing.T, p string, size int64) {
 		t.Fatal(err)
 	}
 }
+
+// TestCheckpointThenCommitSameKey 丢数据缺陷的回归测试：
+// 提交 → 检查点 → 再提交同一个键 → 重启，必须读到检查点之后的新值。
+// 曾经的恢复顺序（先回放 WAL 再加载检查点）让快照里的旧值盖掉新值。
+func TestCheckpointThenCommitSameKey(t *testing.T) {
+	s, dir := openTempStore(t)
+	if err := s.Commit(map[string]string{"cfg": "v1"}); err != nil {
+		t.Fatal(err)
+	}
+	if err := s.Checkpoint(); err != nil {
+		t.Fatal(err)
+	}
+	if err := s.Commit(map[string]string{"cfg": "v2"}); err != nil {
+		t.Fatal(err)
+	}
+	if v, _ := s.Get("cfg"); v != "v2" {
+		t.Fatalf("before close: cfg = %q, want v2", v)
+	}
+	s.Close()
+
+	s = reopen(t, dir)
+	defer s.Close()
+	if v, ok := s.Get("cfg"); !ok || v != "v2" {
+		t.Fatalf("after reopen: cfg = %q,%v, want v2,true", v, ok)
+	}
+}
+
+// TestCheckpointGenerationsSameKey 多代检查点交替覆盖同一个键：
+// 每一代检查点之后的新提交都不能被任何一代旧快照盖掉。
+func TestCheckpointGenerationsSameKey(t *testing.T) {
+	s, dir := openTempStore(t)
+	commit := func(v string) {
+		t.Helper()
+		if err := s.Commit(map[string]string{"cfg": v}); err != nil {
+			t.Fatal(err)
+		}
+	}
+	commit("g1")
+	if err := s.Checkpoint(); err != nil {
+		t.Fatal(err)
+	}
+	commit("g2")
+	if err := s.Checkpoint(); err != nil {
+		t.Fatal(err)
+	}
+	commit("g3")
+	s.Close()
+
+	s = reopen(t, dir)
+	defer s.Close()
+	if v, ok := s.Get("cfg"); !ok || v != "g3" {
+		t.Fatalf("after reopen: cfg = %q,%v, want g3,true", v, ok)
+	}
+	if s.Len() != 1 {
+		t.Fatalf("Len = %d, want 1", s.Len())
+	}
+}

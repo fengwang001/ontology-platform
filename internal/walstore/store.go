@@ -30,10 +30,14 @@ func Open(dir string) (*Store, error) {
 		return nil, err
 	}
 	s := &Store{dir: dir, data: make(map[string]string)}
-	if err := s.replayWAL(); err != nil {
+	// 恢复顺序必须是"先检查点、后 WAL"：检查点是 Checkpoint 时刻的
+	// 旧快照，WAL 里保存的是那之后提交的更新批次。曾经顺序相反
+	// （先回放 WAL 再加载检查点），导致快照里的旧值把 WAL 里的
+	// 新值盖掉：提交 → 检查点 → 再提交同键 → 重启后读到旧值。
+	if err := s.loadCheckpoint(); err != nil {
 		return nil, err
 	}
-	if err := s.loadCheckpoint(); err != nil {
+	if err := s.replayWAL(); err != nil {
 		return nil, err
 	}
 	return s, nil

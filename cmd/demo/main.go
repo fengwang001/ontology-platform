@@ -1,5 +1,6 @@
 // 演示 walstore 的崩溃恢复语义：提交、任意截断、重新打开、原子可见、
-// 已确认即持久，以及检查点之后再次截断恢复。
+// 已确认即持久、检查点之后再次截断恢复，以及检查点后同键覆盖的恢复
+// （本次修复的缺陷路径）。
 package main
 
 import (
@@ -115,6 +116,32 @@ func main() {
 	}()
 	check("checkpoint data survives truncation", old)
 	check("batch 3 atomic after torn tail", batchAtomic(s, b3))
+	s.Close()
+
+	// 本次修复的缺陷路径：提交 → 检查点 → 再提交同键 → 重启必须读到新值。
+	s = mustOpen(dir)
+	check("fix: commit cfg=v1", s.Commit(map[string]string{"cfg": "v1"}) == nil)
+	check("fix: checkpoint", s.Checkpoint() == nil)
+	check("fix: overwrite same key cfg=v2", s.Commit(map[string]string{"cfg": "v2"}) == nil)
+	s.Close()
+	s = mustOpen(dir)
+	v, ok = s.Get("cfg")
+	check("fix: restart sees v2, not checkpoint's v1", ok && v == "v2")
+
+	// 同类自查：检查点已 rename 但 WAL 尚未截断时崩溃，
+	// 快照与 WAL 重叠，回放幂等，恢复后仍是新值。
+	walBytes, err := os.ReadFile(filepath.Join(dir, "wal.log"))
+	if err != nil {
+		panic(err)
+	}
+	check("fix: checkpoint again", s.Checkpoint() == nil)
+	if err := os.WriteFile(filepath.Join(dir, "wal.log"), walBytes, 0o644); err != nil {
+		panic(err)
+	}
+	s.Close()
+	s = mustOpen(dir)
+	v, ok = s.Get("cfg")
+	check("fix: ckpt+untruncated WAL overlap still v2", ok && v == "v2")
 	s.Close()
 
 	if failures > 0 {
