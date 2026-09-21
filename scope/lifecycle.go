@@ -10,10 +10,10 @@ func (s *Scope) Cancel(r Reason) {
 // 并递归判定整棵子树。
 func (s *Scope) Tick() {
 	s.mu.Lock()
-	if !s.closed && !s.deadline.IsZero() && s.now().After(s.deadline) {
+	if !s.closed && !s.deadline.IsZero() && !s.now().Before(s.deadline) {
 		children, hooks, _ := s.endLocked(ErrDeadlineExceeded, Reason("deadline exceeded"), s)
 		s.mu.Unlock()
-		s.afterEnd(children, hooks)
+		s.afterEnd(children, hooks, Reason("deadline exceeded"), s)
 		return
 	}
 	children := make([]*Scope, 0, len(s.children))
@@ -35,7 +35,7 @@ func (s *Scope) finish(err error, reason Reason, origin *Scope) {
 	if !ok {
 		return
 	}
-	s.afterEnd(children, hooks)
+	s.afterEnd(children, hooks, reason, origin)
 }
 
 // endLocked 在持锁状态下将作用域标记为结束，返回待传播的子节点与待运行的钩子。
@@ -58,11 +58,11 @@ func (s *Scope) endLocked(err error, reason Reason, origin *Scope) (children []*
 	return children, hooks, true
 }
 
-// afterEnd 在解锁后运行本作用域的钩子，并把结束传播给所有后代。
-func (s *Scope) afterEnd(children []*Scope, hooks []func()) {
+// afterEnd 在解锁后运行本作用域的钩子，并把结束传播给所有后代；
+// reason 与 origin 原样透传最早触发者的归因。
+func (s *Scope) afterEnd(children []*Scope, hooks []func(), reason Reason, origin *Scope) {
 	runHooks(hooks)
-	reason := s.Reason()
 	for _, c := range children {
-		c.finish(ErrAncestorEnded, reason, s)
+		c.finish(ErrAncestorEnded, reason, origin)
 	}
 }

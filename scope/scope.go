@@ -40,6 +40,8 @@ func (s *Scope) Child(deadline time.Time) *Scope {
 	effective := deadline
 	if effective.IsZero() {
 		effective = s.deadline
+	} else if !s.deadline.IsZero() && effective.After(s.deadline) {
+		effective = s.deadline
 	}
 	c := &Scope{
 		now:      s.now,
