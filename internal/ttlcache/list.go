@@ -1,4 +1,3 @@
-
 package ttlcache
 
 // pushFront 把 e 放到链表头部（标记为最近使用）。

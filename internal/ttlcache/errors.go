@@ -1,4 +1,3 @@
-
 package ttlcache
 
 import "errors"

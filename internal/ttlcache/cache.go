@@ -1,11 +1,13 @@
-
 package ttlcache
+
+import "sync"
 
 // Cache 是带 TTL 的 LRU 缓存。
 //
 // 时间完全由构造时注入的 now 函数提供（单位：毫秒），
 // 实现内部不调用 time.Now。
 type Cache struct {
+	mu       sync.Mutex
 	capacity int
 	now      func() int64
 
@@ -31,6 +33,8 @@ func New(capacity int, now func() int64) (*Cache, error) {
 
 // Len 返回当前条目数，包含尚未被清理的过期项。
 func (c *Cache) Len() int {
+	c.mu.Lock()
+	defer c.mu.Unlock()
 	return len(c.items)
 }
 

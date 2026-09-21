@@ -1,4 +1,3 @@
-
 package ttlcache
 
 // entry 是缓存底层双向链表的节点。
