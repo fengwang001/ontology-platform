@@ -132,3 +132,36 @@ func TestCheckpointSurvivesRestart(t *testing.T) {
 		t.Fatalf("Len = %d, want 3", s.Len())
 	}
 }
+
+// TestCommitAfterCheckpointSurvivesRestart 回归测试：检查点之后对同一个键
+// 再提交的新值，重启后必须可见（检查点快照比 WAL 尾部旧，不允许盖掉它）。
+func TestCommitAfterCheckpointSurvivesRestart(t *testing.T) {
+	s, dir := openTempStore(t)
+	if err := s.Commit(map[string]string{"cfg": "v1", "only-ckpt": "c"}); err != nil {
+		t.Fatal(err)
+	}
+	if err := s.Checkpoint(); err != nil {
+		t.Fatal(err)
+	}
+	if err := s.Commit(map[string]string{"cfg": "v2", "only-wal": "w"}); err != nil {
+		t.Fatal(err)
+	}
+	if v, ok := s.Get("cfg"); !ok || v != "v2" {
+		t.Fatalf("before close: cfg = %q,%v want v2,true", v, ok)
+	}
+	if err := s.Close(); err != nil {
+		t.Fatal(err)
+	}
+
+	s = reopen(t, dir)
+	defer s.Close()
+	if v, ok := s.Get("cfg"); !ok || v != "v2" {
+		t.Fatalf("after reopen: cfg = %q,%v want v2,true (post-checkpoint commit lost)", v, ok)
+	}
+	if v, ok := s.Get("only-ckpt"); !ok || v != "c" {
+		t.Fatalf("after reopen: only-ckpt = %q,%v want c,true", v, ok)
+	}
+	if v, ok := s.Get("only-wal"); !ok || v != "w" {
+		t.Fatalf("after reopen: only-wal = %q,%v want w,true", v, ok)
+	}
+}
