@@ -34,8 +34,7 @@ func (s *scanner) feedLiteral(seg string, hasNext bool) {
 			case ch == '=':
 				// Browsers allow whitespace between an attribute name and '='.
 				s.curURL = isURLAttr(s.nameBuf)
-				s.valueSeen = false
-				s.valueSpace = true
+				s.valuePrefix = s.valuePrefix[:0]
 				s.st = stAttrEq
 			case isASCIIAlpha(ch):
 				s.st = stAttrName
@@ -90,8 +89,7 @@ func (s *scanner) feedAttrName(seg string, i int) int {
 	switch {
 	case ch == '=':
 		s.curURL = isURLAttr(s.nameBuf)
-		s.valueSeen = false
-		s.valueSpace = true
+		s.valuePrefix = s.valuePrefix[:0]
 		s.st = stAttrEq
 	case ch == '>':
 		s.closeTag()
@@ -118,8 +116,7 @@ func (s *scanner) feedAttrEq(seg string, i int) int {
 		s.closeTag()
 	default:
 		s.st = stAttrUnquoted
-		s.valueSeen = true
-		s.valueSpace = false
+		s.appendValueByte(ch)
 	}
 	return i + 1
 }
@@ -131,8 +128,7 @@ func (s *scanner) feedQuoted(seg string, i int, quote byte, st topState) int {
 		s.st = stTagGap
 		return i + 1
 	}
-	s.valueSeen = true
-	s.valueSpace = s.valueSpace && isASCIISpace(ch)
+	s.appendValueByte(ch)
 	return i + 1
 }
 
@@ -145,32 +141,43 @@ func (s *scanner) feedUnquoted(seg string, i int) int {
 	case isASCIISpace(ch):
 		s.st = stTagGap
 	default:
-		s.valueSeen = true
-		s.valueSpace = false
+		s.appendValueByte(ch)
 	}
 	return i + 1
 }
 
 // beginQuotedValue resets value tracking when a quoted value opens.
 func (s *scanner) beginQuotedValue() {
-	s.valueSeen = false
-	s.valueSpace = true
+	s.valuePrefix = s.valuePrefix[:0]
 }
 
-// feedInterpolation marks that a value was emitted at the current position.
-// The "still at URL start" flag survives only as long as every emitted value
-// consists solely of whitespace; a later interpolation may therefore still be
-// scheme-validated after an empty or whitespace-only preceding value.
+// feedInterpolation records an interpolated value emitted at the current
+// position. The raw value is appended to the URL-attribute prefix so scheme
+// validation always sees the full value rendered so far; previously only a
+// whitespace flag was tracked, which let a scheme split across values slip
+// through.
 func (s *scanner) feedInterpolation(value string) {
 	switch s.st {
 	case stAttrEq:
 		s.st = stAttrUnquoted
-		s.valueSeen = value != ""
-		s.valueSpace = allASCIISpace(value)
+		s.appendValueString(value)
 	case stAttrDouble, stAttrSingle, stAttrUnquoted:
-		if value != "" {
-			s.valueSeen = true
-		}
-		s.valueSpace = s.valueSpace && allASCIISpace(value)
+		s.appendValueString(value)
+	}
+}
+
+// appendValueByte records one literal byte of the current attribute value.
+// Only URL attributes are tracked; other values are irrelevant to scheme
+// validation and are not worth buffering.
+func (s *scanner) appendValueByte(ch byte) {
+	if s.curURL {
+		s.valuePrefix = append(s.valuePrefix, ch)
+	}
+}
+
+// appendValueString records interpolated content of the current value.
+func (s *scanner) appendValueString(value string) {
+	if s.curURL {
+		s.valuePrefix = append(s.valuePrefix, value...)
 	}
 }

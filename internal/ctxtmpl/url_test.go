@@ -124,3 +124,60 @@ func TestRenderURLStartAcrossEmptyValues(t *testing.T) {
 		t.Fatalf("got %q", got)
 	}
 }
+
+func TestRenderURLSplitSchemeBlocked(t *testing.T) {
+	// Regression: the scheme check must see the full attribute value prefix,
+	// not just the current interpolation, so splitting a dangerous scheme
+	// across interpolations (or literal text + interpolation) must not
+	// bypass it.
+	cases := []struct {
+		name string
+		tmpl string
+		data map[string]string
+	}{
+		{"split across two interpolations", `<a href="{{x}}{{y}}">`, map[string]string{"x": "java", "y": "script:1"}},
+		{"literal head plus interpolation", `<a href="java{{y}}">`, map[string]string{"y": "script:1"}},
+		{"vbscript split", `<a href="{{x}}{{y}}">`, map[string]string{"x": "vb", "y": "script:msgbox"}},
+		{"data split", `<a href="{{x}}{{y}}">`, map[string]string{"x": "da", "y": "ta:text/html,x"}},
+		{"mixed case split", `<a href="{{x}}{{y}}">`, map[string]string{"x": "JaVa", "y": "ScRiPt:1"}},
+		{"tab inside scheme", `<a href="{{x}}{{y}}">`, map[string]string{"x": "java\t", "y": "script:1"}},
+		{"newline inside scheme", `<a href="{{x}}{{y}}">`, map[string]string{"x": "java", "y": "\nscript:1"}},
+		{"carriage return inside scheme", `<a href="{{x}}{{y}}">`, map[string]string{"x": "jav\ra", "y": "script:1"}},
+		{"three way split", `<a href="{{a}}{{b}}{{c}}">`, map[string]string{"a": "jav", "b": "asc", "c": "ript:1"}},
+		{"single quoted split", `<a href='{{x}}{{y}}'>`, map[string]string{"x": "java", "y": "script:1"}},
+		{"unquoted split", `<a href={{x}}{{y}}>`, map[string]string{"x": "java", "y": "script:1"}},
+		{"literal between interpolations", `<a href="{{x}}asc{{y}}">`, map[string]string{"x": "jav", "y": "ript:1"}},
+	}
+	for _, c := range cases {
+		if _, err := Render(c.tmpl, c.data); !errors.Is(err, ErrDangerousURL) {
+			t.Errorf("%s: Render(%q) err = %v, want ErrDangerousURL", c.name, c.tmpl, err)
+		}
+	}
+}
+
+func TestRenderURLFullPrefixNoFalsePositive(t *testing.T) {
+	// The full-prefix check must not reject safe inputs: safe schemes,
+	// dangerous-looking text away from the value start, and non-URL
+	// attributes all render normally.
+	cases := []struct {
+		name string
+		tmpl string
+		data map[string]string
+		want string
+	}{
+		{"https url", `<a href="{{u}}">`, map[string]string{"u": "https://example.com/a?b=1&c=2"}, `<a href="https://example.com/a?b=1&amp;c=2">`},
+		{"non-start position", `<a href="/p/{{u}}">`, map[string]string{"u": "javascript:1"}, `<a href="/p/javascript:1">`},
+		{"split safe path", `<a href="{{a}}{{b}}">`, map[string]string{"a": "/pa", "b": "th/x"}, `<a href="/path/x">`},
+		{"non-url attribute", `<a title="{{u}}">`, map[string]string{"u": "javascript:1"}, `<a title="javascript:1">`},
+	}
+	for _, c := range cases {
+		got, err := Render(c.tmpl, c.data)
+		if err != nil {
+			t.Errorf("%s: unexpected error: %v", c.name, err)
+			continue
+		}
+		if got != c.want {
+			t.Errorf("%s: got %q want %q", c.name, got, c.want)
+		}
+	}
+}

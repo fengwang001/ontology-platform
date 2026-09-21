@@ -30,6 +30,15 @@ func main() {
 		{"interp in tag", "<a {{x}}>", map[string]string{"x": "y"}, false, ctxtmpl.ErrInterpolationInTagName},
 		{"unclosed quote", `<a t="{{x}}`, map[string]string{"x": "y"}, false, ctxtmpl.ErrUnclosedQuote},
 		{"bad syntax", "{{1x}}", nil, false, ctxtmpl.ErrInvalidInterpolation},
+		// Fix demo: dangerous schemes split across interpolations (or across
+		// literal text and an interpolation) are now blocked, while safe
+		// inputs with the same shape still render.
+		{"split scheme blocked", `<a href="{{x}}{{y}}">`, map[string]string{"x": "java", "y": "script:1"}, false, ctxtmpl.ErrDangerousURL},
+		{"literal+interp blocked", `<a href="java{{y}}">`, map[string]string{"y": "script:1"}, false, ctxtmpl.ErrDangerousURL},
+		{"https url allowed", `<a href="{{u}}">`, map[string]string{"u": "https://example.com/a?b=1&c=2"}, true, nil},
+		{"non-start allowed", `<a href="/p/{{u}}">`, map[string]string{"u": "javascript:1"}, true, nil},
+		{"split path allowed", `<a href="{{a}}{{b}}">`, map[string]string{"a": "/pa", "b": "th/x"}, true, nil},
+		{"title attr allowed", `<a title="{{u}}">`, map[string]string{"u": "javascript:1"}, true, nil},
 	}
 	failures := 0
 	for _, c := range cases {

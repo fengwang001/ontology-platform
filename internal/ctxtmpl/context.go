@@ -21,9 +21,6 @@ type context struct {
 	kind contextKind
 	// urlAttr marks an attribute whose name is href/src/action/formaction.
 	urlAttr bool
-	// urlStart marks that, within the value, only whitespace has been seen so
-	// far, so URL scheme validation applies to the next value.
-	urlStart bool
 }
 
 // topState is the parser state outside per-attribute sub-states.
@@ -51,10 +48,11 @@ type scanner struct {
 	nameBuf []byte
 	// curURL is true while the attribute currently being parsed has a URL name.
 	curURL bool
-	// valueSeen tracks whether an attribute value has begun; valueSpace tracks
-	// whether only whitespace has been seen in that value so far.
-	valueSeen  bool
-	valueSpace bool
+	// valuePrefix accumulates the raw content of the current URL attribute
+	// value (literal template bytes and interpolated values) so dangerous
+	// scheme detection can inspect the full prefix rendered so far, not just
+	// a single interpolation. Only maintained while curURL is true.
+	valuePrefix []byte
 
 	// pendingInterp is set by emitInterpolation so the next literal scan knows
 	// how to treat value whitespace conservatively.
@@ -69,14 +67,14 @@ func (s *scanner) currentContext() (context, bool) {
 	case stComment:
 		return context{kind: ctxComment}, true
 	case stAttrDouble:
-		return context{kind: ctxAttrDouble, urlAttr: s.curURL, urlStart: !s.valueSeen || s.valueSpace}, true
+		return context{kind: ctxAttrDouble, urlAttr: s.curURL}, true
 	case stAttrSingle:
-		return context{kind: ctxAttrSingle, urlAttr: s.curURL, urlStart: !s.valueSeen || s.valueSpace}, true
+		return context{kind: ctxAttrSingle, urlAttr: s.curURL}, true
 	case stAttrUnquoted:
-		return context{kind: ctxAttrUnquoted, urlAttr: s.curURL, urlStart: !s.valueSeen || s.valueSpace}, true
+		return context{kind: ctxAttrUnquoted, urlAttr: s.curURL}, true
 	case stAttrEq:
 		// An interpolation directly after '=' begins an unquoted value.
-		return context{kind: ctxAttrUnquoted, urlAttr: s.curURL, urlStart: true}, true
+		return context{kind: ctxAttrUnquoted, urlAttr: s.curURL}, true
 	default:
 		// Tag name, attribute name, gap or '=': structural position.
 		return context{}, false
@@ -88,8 +86,7 @@ func (s *scanner) closeTag() {
 	s.st = stText
 	s.nameBuf = s.nameBuf[:0]
 	s.curURL = false
-	s.valueSeen = false
-	s.valueSpace = false
+	s.valuePrefix = s.valuePrefix[:0]
 }
 
 // finish validates that no tag, quote or comment is open at end of template.

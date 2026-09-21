@@ -40,8 +40,13 @@ func Render(tmpl string, data map[string]string) (string, error) {
 		if !present {
 			return "", &UnknownKeyError{Key: name}
 		}
-		if ctx.urlAttr && ctx.urlStart {
-			if err := checkDangerousURL(value); err != nil {
+		if ctx.urlAttr {
+			// 根因修复：原先只把当前这一次插值的 value 交给检查，攻击者
+			// 把 "javascript:" 拆进两次插值（或模板字面量 + 插值）即可绕过。
+			// 现在基于该属性值已渲染出的完整前缀（已累积的字面量/插值 +
+			// 当前值）判定；由于判定的是"前缀是否以危险协议开头"，位于非
+			// 起始位置的正常值（如 "/p/javascript:1"）天然放行，不会误伤。
+			if err := checkDangerousURL(string(s.valuePrefix) + value); err != nil {
 				return "", err
 			}
 		}
