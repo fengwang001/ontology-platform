@@ -9,7 +9,7 @@ func Majority(n int) int {
 	if n < 1 {
 		return 0
 	}
-	return (n + 1) / 2
+	return n/2 + 1
 }
 
 // CommitIndex returns the highest index that at least a majority of the
