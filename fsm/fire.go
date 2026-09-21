@@ -24,14 +24,13 @@ func (m *Machine) Fire(e Event) (State, error) {
 		return m.state, ErrNoTransition
 	}
 	from := m.state
-	if true {
+	if from != to {
 		for _, f := range m.exit[from] {
 			f()
 		}
 		for _, f := range m.entry[to] {
 			if err := f(); err != nil {
-				m.state = to
-				return to, fmt.Errorf("%w: %w", ErrEntryFailed, err)
+				return from, fmt.Errorf("%w: %w", ErrEntryFailed, err)
 			}
 		}
 	}
@@ -46,7 +45,9 @@ func (m *Machine) Fire(e Event) (State, error) {
 func (m *Machine) Log() []Transition {
 	m.mu.Lock()
 	defer m.mu.Unlock()
-	return m.log
+	out := make([]Transition, len(m.log))
+	copy(out, m.log)
+	return out
 }
 
 // Observe 订阅状态变更，可多次调用，每次返回一个独立的只读通道。
