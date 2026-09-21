@@ -71,5 +71,5 @@ func (r *Replica) Truncate(from uint64) {
 	if from == 0 || from > uint64(len(r.entries)) {
 		return
 	}
-	r.entries = r.entries[:from]
+	r.entries = r.entries[:from-1]
 }

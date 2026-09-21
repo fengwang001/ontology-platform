@@ -76,7 +76,7 @@ func (c *Cluster) ReadIndex() (uint64, error) {
 			reachable++
 		}
 	}
-	if reachable < 1 {
+	if reachable < quorum.Majority(c.n) {
 		return 0, errors.New("cluster: no majority reachable")
 	}
 	return c.commit, nil
