@@ -62,5 +62,8 @@ func syncDir(dir string) error {
 	if err != nil {
 		return err
 	}
+	// 原实现漏掉了 Close：每次 syncDir 泄漏一个目录 fd，
+	// Checkpoint 每轮调用两次，长期运行必然耗尽 fd 上限。
+	defer d.Close()
 	return d.Sync()
 }

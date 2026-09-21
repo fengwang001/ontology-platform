@@ -56,6 +56,17 @@ func mustRead(path string) []byte {
 	return b
 }
 
+// openFDs 返回当前进程打开的 fd 数（读 /proc/self/fd），
+// 用于观测检查点是否泄漏文件描述符。
+func openFDs() int {
+	entries, err := os.ReadDir("/proc/self/fd")
+	if err != nil {
+		fmt.Println("FAIL read /proc/self/fd:", err)
+		os.Exit(1)
+	}
+	return len(entries)
+}
+
 func main() {
 	dir, err := os.MkdirTemp("", "walstore-demo")
 	if err != nil {
@@ -105,6 +116,20 @@ func main() {
 	s = reopen(dir)
 	check("checkpoint survives torn wal", s.Len() == 6)
 	check("empty value distinct from missing", emptyValueOK(s))
+	s.Close()
+
+	// 演练 fd 泄漏修复：旧实现每次 Checkpoint 经 syncDir 泄漏
+	// 2 个目录 fd，200 轮后 fd 数会涨 400；修复后必须保持稳定。
+	s = reopen(dir)
+	fdBefore := openFDs()
+	for i := 0; i < 200; i++ {
+		if err := s.Checkpoint(); err != nil {
+			fmt.Println("FAIL checkpoint loop:", err)
+			os.Exit(1)
+		}
+	}
+	fdAfter := openFDs()
+	check(fmt.Sprintf("fd stable over 200 checkpoints (%d -> %d)", fdBefore, fdAfter), fdAfter <= fdBefore)
 	s.Close()
 
 	if failures > 0 {
