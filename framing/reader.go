@@ -43,7 +43,7 @@ func (r *Reader) Feed(p []byte) ([][]byte, error) {
 	consumed := 0
 	for len(r.buf)-consumed >= headerLen {
 		n := int(binary.BigEndian.Uint32(r.buf[consumed : consumed+headerLen]))
-		if n >= r.max {
+		if n > r.max {
 			r.buf = r.buf[consumed:]
 			r.st = stateFailed
 			return frames, ErrFrameTooLarge
@@ -51,7 +51,9 @@ func (r *Reader) Feed(p []byte) ([][]byte, error) {
 		if len(r.buf)-consumed < headerLen+n {
 			break
 		}
-		frames = append(frames, r.buf[consumed+headerLen:consumed+headerLen+n])
+		frame := make([]byte, n)
+		copy(frame, r.buf[consumed+headerLen:consumed+headerLen+n])
+		frames = append(frames, frame)
 		consumed += headerLen + n
 	}
 
@@ -73,7 +75,9 @@ func (r *Reader) Close() error {
 		return r.closeErr
 	}
 	r.st = stateClosed
-
+	if len(r.buf) > 0 {
+		r.closeErr = ErrIncomplete
+	}
 	return r.closeErr
 }
 
