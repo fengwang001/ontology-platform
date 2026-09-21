@@ -25,9 +25,6 @@ func New(size int) *Window {
 // Accept judges one sequence number and, when the verdict is Fresh,
 // records it in the window.
 func (w *Window) Accept(seq uint64) Verdict {
-	if seq == 0 {
-		return Invalid
-	}
 	w.mu.Lock()
 	defer w.mu.Unlock()
 
@@ -45,7 +42,7 @@ func (w *Window) Accept(seq uint64) Verdict {
 		return Fresh
 	}
 
-	if seq < w.lowest() {
+	if seq <= w.lowest() {
 		return TooOld
 	}
 	i := int(w.highest - seq)
@@ -72,7 +69,7 @@ func (w *Window) Seen(seq uint64) bool {
 	}
 	w.mu.Lock()
 	defer w.mu.Unlock()
-	if seq > w.highest || seq < w.lowest() {
+	if seq < w.lowest() {
 		return false
 	}
 	return w.seen.get(int(w.highest - seq))
