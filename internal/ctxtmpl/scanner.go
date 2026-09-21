@@ -31,6 +31,7 @@ func (s *scanner) feedLiteral(seg string, hasNext bool) {
 			case ch == '>':
 				s.closeTag()
 			case isASCIISpace(ch) || ch == '/':
+				s.urlEndValue()
 			case ch == '=':
 				// Browsers allow whitespace between an attribute name and '='.
 				s.curURL = isURLAttr(s.nameBuf)
@@ -120,6 +121,8 @@ func (s *scanner) feedAttrEq(seg string, i int) int {
 		s.st = stAttrUnquoted
 		s.valueSeen = true
 		s.valueSpace = false
+		s.urlStartValue()
+		s.urlEatByte(ch)
 	}
 	return i + 1
 }
@@ -129,10 +132,12 @@ func (s *scanner) feedQuoted(seg string, i int, quote byte, st topState) int {
 	ch := seg[i]
 	if ch == quote {
 		s.st = stTagGap
+		s.urlEndValue()
 		return i + 1
 	}
 	s.valueSeen = true
 	s.valueSpace = s.valueSpace && isASCIISpace(ch)
+	s.urlEatByte(ch)
 	return i + 1
 }
 
@@ -144,9 +149,11 @@ func (s *scanner) feedUnquoted(seg string, i int) int {
 		s.closeTag()
 	case isASCIISpace(ch):
 		s.st = stTagGap
+		s.urlEndValue()
 	default:
 		s.valueSeen = true
 		s.valueSpace = false
+		s.urlEatByte(ch)
 	}
 	return i + 1
 }
@@ -155,22 +162,79 @@ func (s *scanner) feedUnquoted(seg string, i int) int {
 func (s *scanner) beginQuotedValue() {
 	s.valueSeen = false
 	s.valueSpace = true
+	s.urlStartValue()
 }
 
-// feedInterpolation marks that a value was emitted at the current position.
-// The "still at URL start" flag survives only as long as every emitted value
-// consists solely of whitespace; a later interpolation may therefore still be
-// scheme-validated after an empty or whitespace-only preceding value.
-func (s *scanner) feedInterpolation(value string) {
+// urlStartValue begins tracking the value of a URL attribute. Tracking is what
+// lets scheme detection span the full rendered prefix instead of one value.
+func (s *scanner) urlStartValue() {
+	s.urlMatched = false
+	s.urlPrefix = s.urlPrefix[:0]
+	s.urlChecking = s.curURL
+}
+
+// urlEndValue stops tracking when the current attribute value is finished.
+func (s *scanner) urlEndValue() {
+	s.urlChecking = false
+	s.urlMatched = false
+	s.urlPrefix = s.urlPrefix[:0]
+}
+
+// urlEatByte folds one literal byte into the running URL prefix and advances
+// the verdict: a completed dangerous scheme latches urlMatched; once the prefix
+// can no longer be a dangerous scheme, tracking stops.
+func (s *scanner) urlEatByte(ch byte) {
+	if !s.urlChecking || isASCIISpace(ch) {
+		return
+	}
+	if len(s.urlPrefix) < maxDangerousPrefixLen {
+		s.urlPrefix = append(s.urlPrefix, lowerASCII(ch))
+	}
+	matched, possible := urlPrefixVerdict(s.urlPrefix)
+	switch {
+	case matched:
+		// The scheme is fully present in literal text; reject at the first
+		// interpolation that contributes to this value.
+		s.urlChecking = false
+		s.urlMatched = true
+	case !possible:
+		s.urlChecking = false
+	}
+}
+
+// feedInterpolation marks that a value was emitted at the current position and
+// validates the URL attribute value against its whole rendered prefix. The
+// previous implementation inspected only this one value, so a dangerous scheme
+// split across literals/interpolations ("java"+"script:") slipped through; the
+// check now folds the value into the prefix accumulated since value start.
+func (s *scanner) feedInterpolation(value string) *DangerousURLError {
 	switch s.st {
 	case stAttrEq:
 		s.st = stAttrUnquoted
 		s.valueSeen = value != ""
 		s.valueSpace = allASCIISpace(value)
+		s.urlStartValue()
 	case stAttrDouble, stAttrSingle, stAttrUnquoted:
 		if value != "" {
 			s.valueSeen = true
 		}
 		s.valueSpace = s.valueSpace && allASCIISpace(value)
 	}
+	if s.urlMatched {
+		return &DangerousURLError{Value: value}
+	}
+	if !s.urlChecking {
+		return nil
+	}
+	s.urlPrefix = urlFold(s.urlPrefix, value)
+	matched, possible := urlPrefixVerdict(s.urlPrefix)
+	if matched {
+		s.urlChecking = false
+		s.urlMatched = true
+		return &DangerousURLError{Value: value}
+	}
+	if !possible {
+		s.urlChecking = false
+	}
+	return nil
 }

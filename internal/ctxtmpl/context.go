@@ -59,6 +59,19 @@ type scanner struct {
 	// pendingInterp is set by emitInterpolation so the next literal scan knows
 	// how to treat value whitespace conservatively.
 	interpWasAtValueStart bool
+
+	// urlChecking is true while bytes could still open a dangerous scheme in
+	// the current URL attribute value (i.e. only a leading fragment of it has
+	// been seen). urlPrefix accumulates the folded (whitespace-stripped,
+	// ASCII-lowercased) content rendered into that value so far, from both
+	// literal template text and interpolation values. Scheme detection must run
+	// against this whole prefix: checking one interpolation value alone lets a
+	// scheme split across literals/interpolations (e.g. "java"+"script:") pass.
+	urlChecking bool
+	urlPrefix   []byte
+	// urlMatched records that literals already completed a dangerous scheme;
+	// the first interpolation contributing to the value is then rejected.
+	urlMatched bool
 }
 
 // currentContext builds the escape context for an interpolation at this point.
@@ -90,6 +103,9 @@ func (s *scanner) closeTag() {
 	s.curURL = false
 	s.valueSeen = false
 	s.valueSpace = false
+	s.urlChecking = false
+	s.urlPrefix = s.urlPrefix[:0]
+	s.urlMatched = false
 }
 
 // finish validates that no tag, quote or comment is open at end of template.
