@@ -56,6 +56,15 @@ func mustRead(path string) []byte {
 	return b
 }
 
+// openFDs 返回当前进程打开的 fd 数，用于观测资源泄漏。
+func openFDs() int {
+	ents, err := os.ReadDir("/proc/self/fd")
+	if err != nil {
+		return -1
+	}
+	return len(ents)
+}
+
 func main() {
 	dir, err := os.MkdirTemp("", "walstore-demo")
 	if err != nil {
@@ -105,6 +114,19 @@ func main() {
 	s = reopen(dir)
 	check("checkpoint survives torn wal", s.Len() == 6)
 	check("empty value distinct from missing", emptyValueOK(s))
+
+	// 演练 fd 泄漏修复：反复做检查点，进程 fd 数应保持稳定
+	//（修复前每次 Checkpoint 泄漏 2 个目录 fd）。
+	fdBefore := openFDs()
+	for i := 0; i < 200; i++ {
+		if err := s.Checkpoint(); err != nil {
+			fmt.Println("FAIL checkpoint loop:", err)
+			os.Exit(1)
+		}
+	}
+	fdAfter := openFDs()
+	check(fmt.Sprintf("200 checkpoints: fds stable (%d -> %d)", fdBefore, fdAfter),
+		fdBefore < 0 || fdAfter <= fdBefore+2)
 	s.Close()
 
 	if failures > 0 {
