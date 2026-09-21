@@ -31,8 +31,6 @@ func (g *Ledger) Recover() (replayed int, err error) {
 			replayed++
 		}
 	}
-	// 重放结束后 WAL 中现存记录全部已应用。
-	g.appliedSeq = g.log.LastSeq()
 	return replayed, nil
 }
 
@@ -42,7 +40,7 @@ func (g *Ledger) Recover() (replayed int, err error) {
 func (g *Ledger) Checkpoint() error {
 	g.mu.Lock()
 	defer g.mu.Unlock()
-	return g.log.Truncate(g.appliedSeq)
+	return g.log.Truncate(g.appliedSeq + 1)
 }
 
 // AppliedSeq 返回当前已确认全部应用的最大 Seq，供测试与调试使用。
