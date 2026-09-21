@@ -28,6 +28,10 @@ func (w *Window) Accept(seq uint64) Verdict {
 	w.mu.Lock()
 	defer w.mu.Unlock()
 
+	if seq == 0 {
+		return Invalid
+	}
+
 	if seq > w.highest {
 		// Advance the right edge; bits pushed past the left edge are
 		// dropped, so those sequence numbers become TooOld.
@@ -42,7 +46,7 @@ func (w *Window) Accept(seq uint64) Verdict {
 		return Fresh
 	}
 
-	if seq <= w.lowest() {
+	if seq < w.lowest() {
 		return TooOld
 	}
 	i := int(w.highest - seq)
@@ -69,6 +73,9 @@ func (w *Window) Seen(seq uint64) bool {
 	}
 	w.mu.Lock()
 	defer w.mu.Unlock()
+	if seq > w.highest {
+		return false
+	}
 	if seq < w.lowest() {
 		return false
 	}
