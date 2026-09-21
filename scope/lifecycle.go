@@ -10,7 +10,7 @@ func (s *Scope) Cancel(r Reason) {
 // 并递归判定整棵子树。
 func (s *Scope) Tick() {
 	s.mu.Lock()
-	if !s.closed && !s.deadline.IsZero() && s.now().After(s.deadline) {
+	if !s.closed && !s.deadline.IsZero() && !s.now().Before(s.deadline) {
 		children, hooks, _ := s.endLocked(ErrDeadlineExceeded, Reason("deadline exceeded"), s)
 		s.mu.Unlock()
 		s.afterEnd(children, hooks)
@@ -61,8 +61,10 @@ func (s *Scope) endLocked(err error, reason Reason, origin *Scope) (children []*
 // afterEnd 在解锁后运行本作用域的钩子，并把结束传播给所有后代。
 func (s *Scope) afterEnd(children []*Scope, hooks []func()) {
 	runHooks(hooks)
-	reason := s.Reason()
+	s.mu.Lock()
+	reason, origin := s.reason, s.origin
+	s.mu.Unlock()
 	for _, c := range children {
-		c.finish(ErrAncestorEnded, reason, s)
+		c.finish(ErrAncestorEnded, reason, origin)
 	}
 }
