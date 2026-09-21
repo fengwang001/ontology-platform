@@ -85,15 +85,15 @@ func (m *Mux) Deliver(id string, payload []byte) {
 	w, ok := m.pending[id]
 	if !ok {
 		if _, known := m.seen[id]; known {
-			m.orphans++
-		} else {
 			m.late++
+		} else {
+			m.orphans++
 		}
 		return
 	}
 	delete(m.pending, id)
 	m.delivered++
-	w.finish(payload, nil)
+	w.finish(append([]byte(nil), payload...), nil)
 }
 
 // Tick expires every waiter whose deadline has been reached according to
@@ -105,7 +105,6 @@ func (m *Mux) Tick() {
 	for id, w := range m.pending {
 		if w.timed && !now.Before(w.deadline) {
 			delete(m.pending, id)
-			delete(m.seen, id)
 			m.timedOut++
 			w.finish(nil, ErrTimedOut)
 		}
