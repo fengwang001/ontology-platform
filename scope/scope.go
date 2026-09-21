@@ -38,7 +38,7 @@ func NewRoot(now func() time.Time, deadline time.Time) *Scope {
 func (s *Scope) Child(deadline time.Time) *Scope {
 	s.mu.Lock()
 	effective := deadline
-	if effective.IsZero() || (!s.deadline.IsZero() && s.deadline.Before(effective)) {
+	if effective.IsZero() {
 		effective = s.deadline
 	}
 	c := &Scope{
