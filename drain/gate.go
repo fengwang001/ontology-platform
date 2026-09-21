@@ -47,7 +47,6 @@ func New(now func() time.Time) *Gate {
 func (g *Gate) Enter() (release func(), err error) {
 	g.mu.Lock()
 	if g.draining {
-		g.rejected++
 		g.mu.Unlock()
 		return nil, ErrShuttingDown
 	}
@@ -55,14 +54,11 @@ func (g *Gate) Enter() (release func(), err error) {
 	g.inFlight++
 	g.mu.Unlock()
 
-	var once sync.Once
 	return func() {
-		once.Do(func() {
-			g.mu.Lock()
-			g.inFlight--
-			g.broadcastLocked()
-			g.mu.Unlock()
-		})
+		g.mu.Lock()
+		g.inFlight--
+		g.broadcastLocked()
+		g.mu.Unlock()
 	}, nil
 }
 
@@ -90,6 +86,7 @@ func (g *Gate) Shutdown(deadline time.Time) error {
 	}
 	if g.inFlight > 0 {
 		g.result = ErrDrainTimeout
+		g.inFlight = 0
 	}
 	g.done = true
 	g.mu.Unlock()
