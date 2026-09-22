@@ -77,3 +77,27 @@ func main() {
 		os.Exit(1)
 	}
 }
+
+// 以下为追加部分：用独立的管理器演练三条最关键边界（不改动上面现有内容）。
+// 输出固定 4 行（1 行小节标题 + 3 条 OK/FAIL），在 main 之前执行。
+func init() {
+	var now int64
+	m := lease.New(func() int64 { return now })
+
+	fmt.Println("== 三条关键边界 ==")
+	tok, _ := m.Acquire("X", 10)
+	now = 10 // 边界 1：到期那一刻续约与写入都失效
+	check("边界1 到期那一刻 Renew/Write 均失效",
+		errors.Is(m.Renew("X", tok, 10), lease.ErrLeaseExpired) &&
+			errors.Is(m.Write(tok, "k", "z"), lease.ErrLeaseExpired))
+
+	tokY, _ := m.Acquire("Y", 100) // 边界 2：旧持有者被接管
+	check("边界2 被抢占后旧 token 写被拒且 Read 不变",
+		errors.Is(m.Write(tok, "k", "evil"), lease.ErrStaleToken) &&
+			func() bool { v, ok := m.Read("k"); return !ok && v == "" }())
+
+	now = 200
+	tokY2, _ := m.Acquire("Y", 100) // 边界 3：同 holder 有效重获
+	check("边界3 同 holder 重获发新 token 且旧号失效",
+		tokY2 == tokY+1 && errors.Is(m.Write(tokY, "k", "old"), lease.ErrStaleToken))
+}
