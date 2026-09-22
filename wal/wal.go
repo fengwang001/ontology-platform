@@ -67,6 +67,7 @@ func (l *Log) Sync() {
 // Recover 从头扫描到同步点为止，返回回放出的记录序列与停止结论。
 // 同步点之后的记录即使完整也不回放；遇到半条记录或校验不符
 // 立即停下，停止点之后的字节一律不解释。
+// Recover 是纯查询：不改变同步点、写入点或缓冲里的任何字节。
 func (l *Log) Recover() Recovery {
 	limit := l.SyncedPosition()
 	rec := Recovery{}
@@ -74,9 +75,5 @@ func (l *Log) Recover() Recovery {
 		rec.Entries = append(rec.Entries, Entry{Offset: off, Payload: payload})
 		return true
 	})
-	// 同步点跟进恢复进度，避免下次重复扫描已恢复区域。
-	l.mu.Lock()
-	l.synced = rec.Report.StopAt
-	l.mu.Unlock()
 	return rec
 }
