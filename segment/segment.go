@@ -58,7 +58,7 @@ func (s *Segment) Scan(from, limit int64, fn func(off int64, payload []byte) boo
 			}
 		}
 		if !fn(pos, res.Payload) {
-			return ScanReport{StopAt: pos, Reason: StopEOF}
+			return ScanReport{StopAt: pos + int64(res.Consumed), Reason: StopEOF}
 		}
 		pos += int64(res.Consumed)
 	}
