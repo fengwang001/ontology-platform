@@ -18,6 +18,7 @@ var (
 	ErrNotHolder  = lease.ErrNotHolder
 	ErrNotHeld    = lease.ErrNotHeld
 	ErrStaleToken = fence.ErrStaleToken
+	ErrZeroToken  = fence.ErrZeroToken
 )
 
 // Info 是某资源租约状态的只读快照。

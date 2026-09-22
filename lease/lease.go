@@ -78,7 +78,7 @@ func (l *Lease) Acquire(holder string, ttl time.Duration) (fence.Token, error) {
 	defer l.mu.Unlock()
 	l.expireLocked()
 	if l.held {
-		return 0, &ConflictError{Holder: l.holder, Remaining: ttl}
+		return 0, &ConflictError{Holder: l.holder, Remaining: l.expiry.Sub(l.now())}
 	}
 	l.held = true
 	l.holder = holder
@@ -121,17 +121,19 @@ func (l *Lease) Release(holder string) error {
 	return nil
 }
 
-// CheckWrite 校验一次携带令牌的写入：资源无人持有时返回 ErrNotHeld；
-// 否则交给围栏按水位判定，令牌过旧返回 fence.ErrStaleToken。
+// CheckWrite 校验一次携带令牌的写入：先判定租约是否仍然有效，
+// 资源无人持有（含过期未重占）时返回 ErrNotHeld；否则交给围栏按水位
+// 判定，令牌过旧返回 fence.ErrStaleToken。被拒绝的写入无任何副作用，
+// 尤其不会移动围栏水位。
 func (l *Lease) CheckWrite(token fence.Token) error {
 	l.mu.Lock()
 	defer l.mu.Unlock()
-	if err := l.fence.Check(token); err != nil {
-		return err
-	}
 	l.expireLocked()
 	if !l.held {
 		return ErrNotHeld
+	}
+	if err := l.fence.Check(token); err != nil {
+		return err
 	}
 	return nil
 }

@@ -16,6 +16,10 @@ type Token uint64
 // ErrStaleToken 表示写入携带的令牌小于当前水位，可通过 errors.Is 判定。
 var ErrStaleToken = errors.New("fence: stale token")
 
+// ErrZeroToken 表示写入携带了零值令牌（0 表示「无令牌」，不是合法令牌），
+// 可通过 errors.Is 判定。
+var ErrZeroToken = errors.New("fence: zero token")
+
 // StaleError 描述一次被水位拒绝的写入，携带令牌与当前水位。
 type StaleError struct {
 	Token     Token
@@ -46,11 +50,15 @@ func (f *Fence) Issue() Token {
 	return f.high
 }
 
-// Check 校验写入令牌：小于当前水位则返回 *StaleError；
-// 否则接受并把水位抬升到 token（相等时水位不变）。
+// Check 校验写入令牌：零值令牌返回 ErrZeroToken；小于当前水位则返回
+// *StaleError；否则接受并把水位抬升到 token（相等时水位不变）。
+// 被拒绝的校验不会改变水位。
 func (f *Fence) Check(token Token) error {
 	f.mu.Lock()
 	defer f.mu.Unlock()
+	if token == 0 {
+		return ErrZeroToken
+	}
 	if token < f.high {
 		return &StaleError{Token: token, Watermark: f.high}
 	}
