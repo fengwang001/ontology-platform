@@ -114,6 +114,7 @@ func (r *Reassembler) Status(id string) Status {
 func (r *Reassembler) Used() int64 {
 	r.mu.Lock()
 	defer r.mu.Unlock()
+	r.evictLocked(r.now())
 	return r.ledger.Used()
 }
 
@@ -122,7 +123,7 @@ func (r *Reassembler) Used() int64 {
 func (r *Reassembler) evictLocked(now time.Time) {
 	for id, m := range r.pending {
 		if !now.Before(m.deadline) {
-			r.ledger.Release(int64(m.total))
+			r.ledger.Release(int64(m.set.Received()))
 			delete(r.pending, id)
 		}
 	}
