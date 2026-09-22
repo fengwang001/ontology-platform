@@ -74,7 +74,7 @@ func (l *Log) Recover() Recovery {
 		rec.Entries = append(rec.Entries, Entry{Offset: off, Payload: payload})
 		return true
 	})
-	// 恢复顺带把同步点推进到写入点，避免下次重复扫描未变区域。
+	// 同步点跟进恢复进度，避免下次重复扫描已恢复区域。
 	l.mu.Lock()
 	l.synced = l.dev.Len()
 	l.mu.Unlock()
