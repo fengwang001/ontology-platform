@@ -134,10 +134,19 @@ func overlaps(h hunk, g1, g2 int) bool {
 		if g1 == g2 {
 			return h.start == g1
 		}
-		return g1 <= h.start && h.start <= g2
+		// Bug was: closed bounds (<=) pulled an insertion anchored at
+		// either edge of the group into it, fusing independent edits
+		// into one false conflict that then dropped both sides' lines.
+		// An insertion at the boundary inserts before the first or
+		// after the last affected line, so it is independent; only a
+		// strictly interior anchor is entangled with the group.
+		return g1 < h.start && h.start < g2
 	}
 	if g1 == g2 {
-		return h.start <= g1 && g1 < h.end
+		// Bug was: h.start <= g1 let a replacement starting exactly
+		// at the insertion point swallow that independent insertion.
+		// The replacement must strictly contain the point to join.
+		return h.start < g1 && g1 < h.end
 	}
 	return h.start < g2 && g1 < h.end
 }

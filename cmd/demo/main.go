@@ -72,6 +72,21 @@ func main() {
 	_, err = r.Render("", "theirs")
 	check("empty label rejected", err, merge3.ErrEmptyLabel)
 
+	// Exercise the overlaps() boundary fix: an insertion anchored at
+	// either edge of a replacement is an independent edit, not a
+	// conflict (previously fused into one group, dropping lines).
+	ub := []string{"a", "b", "c", "d"}
+	r = merge(ub, []string{"a", "b", "X", "c", "d"}, []string{"a", "b", "C", "d"})
+	fmt.Printf("     user case: lines=%v conflicts=%d\n", r.Lines, len(r.Conflicts))
+	check("user case lines", r.Lines, []string{"a", "b", "X", "C", "d"})
+	check("user case zero conflicts", r.HasConflicts(), false)
+
+	r = merge(ub, []string{"a", "B", "c", "d"}, []string{"a", "b", "X", "c", "d"})
+	check("insert at replace end", r.Lines, []string{"a", "B", "X", "c", "d"})
+
+	r = merge(ub, []string{"a", "B", "d"}, []string{"a", "b", "X", "c", "d"})
+	check("insert inside replace conflicts", r.HasConflicts(), true)
+
 	if failed {
 		os.Exit(1)
 	}
