@@ -1,0 +1,39 @@
+package main
+
+import (
+	"errors"
+	"fmt"
+	"time"
+
+	"ontology/correlate"
+)
+
+type clock struct{ t time.Time }
+
+func (c *clock) now() time.Time      { return c.t }
+func (c *clock) add(d time.Duration) { c.t = c.t.Add(d) }
+
+func main() {
+	clk := &clock{t: time.Unix(0, 0)}
+	cor := correlate.New(2, clk.now)
+	a, _ := cor.Issue(10 * time.Second)
+	b, _ := cor.Issue(10 * time.Second)
+	fmt.Println("a,b", a, b)
+	cor.Deliver(b)
+	cor.Deliver(a)
+	clk.add(10 * time.Second)
+	first, err := cor.Issue(10 * time.Second)
+	fmt.Println("first", first, err, "t", clk.t)
+	clk.add(10 * time.Second)
+	fmt.Println("TimedOut", cor.Counters().TimedOut, "t", clk.t)
+	_, w := cor.Lookup(first.ID)
+	fmt.Println("stillWaiting", w)
+	clk.add(time.Second)
+	second, err2 := cor.Issue(10 * time.Second)
+	fmt.Println("second", second, err2)
+	clk.add(time.Second)
+	errL := cor.Deliver(first)
+	fmt.Println("late stale?", errors.Is(errL, correlate.ErrOrphanStale), errL)
+	_, nw := cor.Lookup(second.ID)
+	fmt.Println("newerWaiting", nw, cor.Counters())
+}
