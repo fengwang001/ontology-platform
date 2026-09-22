@@ -8,7 +8,9 @@ import (
 	"errors"
 	"fmt"
 	"os"
+	"runtime"
 	"sync"
+	"sync/atomic"
 
 	"ontology"
 )
@@ -65,6 +67,12 @@ func main() {
 
 	report(runConcurrent(), "concurrent:    16 goroutines, one gap, deterministic order, self-check passed")
 
+	rounds, inserts, finalLen, longest, stressOK := runStress()
+	report(stressOK, "stress:        %d rebalance rounds x %d concurrent inserts, self-check OK after every round",
+		rounds, inserts)
+	report(stressOK, "stress final:  len=%d, longest key=%d bytes, single generation",
+		finalLen, longest)
+
 	_, errOrder := gen.Between("b", "a", 0)
 	report(errors.Is(errOrder, ontology.ErrInvalidOrder), "illegal order: %v", errOrder)
 	_, errCharL := gen.Between("A", "", 0)
@@ -77,6 +85,63 @@ func main() {
 		os.Exit(1)
 	}
 	fmt.Println("OK   total: all checks passed")
+}
+
+// runStress exercises the rebalance/insert race fix: front-only inserts
+// from 6 goroutines while the main goroutine rebalances 500 times and
+// runs SelfCheck after every round. It reports the round count, the
+// number of concurrent inserts, the final length and longest key, and
+// whether every round stayed healthy.
+func runStress() (rounds, inserts, finalLen, longest int, ok bool) {
+	s := ontology.NewSequence(nil, 64)
+	for i := 0; i < 200; i++ {
+		if _, err := s.Insert("", "", fmt.Sprintf("seed-%03d", i)); err != nil {
+			return 0, 0, 0, 0, false
+		}
+	}
+	s.Rebalance()
+
+	var count atomic.Int64
+	stop := make(chan struct{})
+	var wg sync.WaitGroup
+	for w := 0; w < 6; w++ {
+		wg.Add(1)
+		go func(id int) {
+			defer wg.Done()
+			for i := 0; ; i++ {
+				select {
+				case <-stop:
+					return
+				default:
+				}
+				if s.Len() >= 1000 {
+					runtime.Gosched()
+					continue
+				}
+				v := fmt.Sprintf("w%d-%06d", id, i)
+				if _, err := s.Insert("", firstKey(s), v); err == nil {
+					count.Add(1)
+				}
+			}
+		}(w)
+	}
+
+	const totalRounds = 500
+	ok = true
+	for round := 0; round < totalRounds; round++ {
+		s.Rebalance()
+		if err := s.SelfCheck(); err != nil {
+			ok = false
+			break
+		}
+	}
+	close(stop)
+	wg.Wait()
+
+	s.Rebalance()
+	longest, _ = s.LongestKey()
+	ok = ok && count.Load() > 0 && longest <= 2
+	return totalRounds, int(count.Load()), s.Len(), longest, ok
 }
 
 // runConcurrent inserts 16 values into one gap from 16 goroutines and

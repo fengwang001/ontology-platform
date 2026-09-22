@@ -3,14 +3,14 @@ package ontology
 // Rebalance reassigns every entry a fresh, evenly spaced short key while
 // preserving the exact relative order of all elements.
 //
-// The new key slice is built completely before it is swapped in under the
+// The new keys are computed for the sequence length observed under the
 // write lock, so the rebalance is atomic: it either takes full effect or
 // no effect, and concurrent Snapshot readers observe either all old keys
 // or all new keys, never a mixture.
 func (s *Sequence) Rebalance() {
-	// Take only the read lock to size the sequence, then compute the new
-	// keys outside the lock so the write lock is held for as short a time
-	// as possible.
+	// Fast path: size the sequence under the read lock and compute the
+	// new keys outside any lock, so the write lock is held for as short
+	// a time as possible.
 	s.mu.RLock()
 	n := len(s.entries)
 	s.mu.RUnlock()
@@ -21,13 +21,18 @@ func (s *Sequence) Rebalance() {
 
 	s.mu.Lock()
 	defer s.mu.Unlock()
+	if len(s.entries) != n {
+		// Inserts landed between the sizing read above and this write
+		// lock, so the precomputed keys no longer cover every entry.
+		// The old code kept the stale keys and left the tail entries
+		// with their old-generation keys, mixing long and short keys
+		// and breaking strict key ordering. Recompute for the length
+		// actually observed under the write lock instead.
+		keys = spreadKeys(len(s.entries))
+	}
 	next := make([]Entry, len(s.entries))
 	for i, e := range s.entries {
-		if i < len(keys) {
-			next[i] = Entry{Key: keys[i], Value: e.Value}
-		} else {
-			next[i] = e
-		}
+		next[i] = Entry{Key: keys[i], Value: e.Value}
 	}
 	s.entries = next
 }
