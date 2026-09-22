@@ -26,10 +26,10 @@ func daysInMonth(year, month int) int {
 	switch month {
 	case 1, 3, 5, 7, 8, 10, 12:
 		return 31
-	case 4, 6, 9:
+	// 11 月只有 30 天；此前被误列为 31 天，导致 11 月计数多一天、
+	// 月末顺延产出不存在的 YYYY1131，且 12 月 weekday 整体偏移一天。
+	case 4, 6, 9, 11:
 		return 30
-	case 11:
-		return 31
 	case 2:
 		if isLeapYear(year) {
 			return 29

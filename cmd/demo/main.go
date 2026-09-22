@@ -65,6 +65,14 @@ func main() {
 	_, err = c.IsBusinessDay(20260230)
 	checkErr("非法日期报错", err, bizday.ErrInvalidDate)
 
+	// 本次修复演练：11 月只有 30 天。
+	got, _ = c.CountBusinessDays(20261101, 20261201)
+	check("11月工作日天数=21", got, 21)
+	got, _ = c.AddBusinessDays(20261130, 1) // 2026-11-30 周一
+	check("11月末顺延=12月1日", got, 20261201)
+	_, err = c.IsBusinessDay(20261131) // 日历上不存在的一天
+	checkErr("20261131被正确拒绝", err, bizday.ErrInvalidDate)
+
 	if failed {
 		os.Exit(1)
 	}
