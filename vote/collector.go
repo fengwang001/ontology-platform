@@ -93,7 +93,7 @@ func (c *Collector) Timeout(id string) error {
 	if c.decided {
 		return ErrDecided
 	}
-	if c.accountedLocked(id) {
+	if c.timedOut[id] {
 		return ErrAlreadyAccounted
 	}
 	c.timedOut[id] = true
