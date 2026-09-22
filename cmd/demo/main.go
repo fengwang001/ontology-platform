@@ -73,6 +73,44 @@ func main() {
 	now = 1000 // 让 C 过期，但记录仍在
 	check("过期后 Release 幂等成功", m.Release("C", tokC2) == nil)
 
+	// ---- 以下为追加的三条最关键边界演练（独立状态，互不影响）----
+
+	// 边界 1：到期那一刻——前一刻写/续约成功，now==expiresAt 起二者皆拒。
+	var edge int64
+	e := lease.New(func() int64 { return edge })
+	tokE, _ := e.Acquire("E", 50)
+	edge = 49
+	check("边界1 前一刻 Write/Renew 成功",
+		e.Write(tokE, "e", "1") == nil && e.Renew("E", tokE, 50) == nil)
+	edge = 99 // Renew 时到期刷到 99；下一拍 99 恰好为新到期时刻
+	check("边界1 到期那一刻 Write/Renew 双拒(ErrLeaseExpired)",
+		errors.Is(e.Write(tokE, "e", "2"), lease.ErrLeaseExpired) &&
+			errors.Is(e.Renew("E", tokE, 50), lease.ErrLeaseExpired))
+
+	// 边界 2：被抢占后旧 token 写被拒且 Read 逐键不变。
+	var pc int64
+	p := lease.New(func() int64 { return pc })
+	tokP, _ := p.Acquire("P", 50)
+	_ = p.Write(tokP, "p", "orig")
+	pc = 50
+	tokQ, _ := p.Acquire("Q", 50)
+	oldP, _ := p.Read("p")
+	errP := p.Write(tokP, "p", "tampered")
+	newP, _ := p.Read("p")
+	check("边界2 被抢占旧 token 写拒(ErrStaleToken)", errors.Is(errP, lease.ErrStaleToken))
+	check("边界2 Read 内容逐键不变且新持有者可写",
+		oldP == "orig" && newP == "orig" && p.Write(tokQ, "q", "ok") == nil)
+
+	// 边界 3：同 holder 重复 Acquire 发新 token，旧 token 立即失效。
+	var rc int64
+	r := lease.New(func() int64 { return rc })
+	tokR1, _ := r.Acquire("R", 50)
+	tokR2, errR := r.Acquire("R", 50)
+	check("边界3 同人重复 Acquire 发新 token", errR == nil && tokR2 == tokR1+1)
+	check("边界3 旧 token 失效/新 token 可写",
+		errors.Is(r.Write(tokR1, "r", "x"), lease.ErrStaleToken) &&
+			r.Write(tokR2, "r", "y") == nil)
+
 	if failed {
 		os.Exit(1)
 	}
