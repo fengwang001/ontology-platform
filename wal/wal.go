@@ -76,7 +76,7 @@ func (l *Log) Recover() Recovery {
 	})
 	// 同步点跟进恢复进度，避免下次重复扫描已恢复区域。
 	l.mu.Lock()
-	l.synced = l.dev.Len()
+	l.synced = rec.Report.StopAt
 	l.mu.Unlock()
 	return rec
 }
