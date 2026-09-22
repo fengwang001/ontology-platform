@@ -73,6 +73,26 @@ func main() {
 	now = 1000 // 让 C 过期，但记录仍在
 	check("过期后 Release 幂等成功", m.Release("C", tokC2) == nil)
 
+	// === 追加：三条最关键边界演练（独立 Manager，与上文互不影响） ===
+	var t2 int64
+	m2 := lease.New(func() int64 { return t2 })
+	tok, _ := m2.Acquire("H", 50)
+	_ = m2.Write(tok, "k", "v1")
+
+	t2 = 50 // 边界一：now 恰好等于到期时刻，写与续约都必须失效
+	check("边界: 到期那一刻 Write/Renew 均失效(ErrLeaseExpired)",
+		errors.Is(m2.Write(tok, "k", "x"), lease.ErrLeaseExpired) &&
+			errors.Is(m2.Renew("H", tok, 50), lease.ErrLeaseExpired))
+
+	tokNew, _ := m2.Acquire("G", 50) // 边界二：H 被 G 抢占
+	readV1 := func() bool { v, _ := m2.Read("k"); return v == "v1" }
+	check("边界: 被抢占旧 token 写被拒且 Read 不变",
+		errors.Is(m2.Write(tok, "k", "evil"), lease.ErrStaleToken) && readV1())
+
+	tokAgain, _ := m2.Acquire("G", 50) // 边界三：同 holder 有效期内重复 Acquire
+	check("边界: 重复 Acquire 发新 token 且旧 token 失效",
+		tokAgain == tokNew+1 && errors.Is(m2.Write(tokNew, "k", "y"), lease.ErrStaleToken))
+
 	if failed {
 		os.Exit(1)
 	}
