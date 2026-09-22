@@ -47,7 +47,7 @@ func escaperFor(k contextKind) map[byte]string {
 			'\'': "&#39;",
 		}
 	case ctxAttrUnquoted:
-		return map[byte]string{
+		t := map[byte]string{
 			'&':  "&amp;",
 			'<':  "&lt;",
 			'>':  "&gt;",
@@ -55,11 +55,14 @@ func escaperFor(k contextKind) map[byte]string {
 			'\'': "&#39;",
 			'`':  "&#96;",
 			'=':  "&#61;",
-			' ':  "&#32;",
-			'\t': "&#9;",
-			'\n': "&#10;",
-			'\r': "&#13;",
 		}
+		// Encode exactly the bytes the scanner (isASCIISpace) treats as
+		// ending an unquoted value. The table used to list space/tab/LF/CR
+		// only, so '\f' and '\v' passed through and injected a new attribute.
+		for sp, entity := range asciiSpaceEntities {
+			t[sp] = entity
+		}
+		return t
 	case ctxComment:
 		return map[byte]string{
 			'-': "&#45;",
