@@ -21,13 +21,18 @@ func (s *Sequence) Rebalance() {
 
 	s.mu.Lock()
 	defer s.mu.Unlock()
+	// The precomputed keys are only valid for the length observed above:
+	// an insert committed during the unlocked window shifts positions and
+	// grows the slice, so applying the stale keys would leave old long
+	// keys past index n (mixed generations, non-increasing keys). Inserts
+	// are the only mutation and always grow the slice, so a changed
+	// length means the snapshot is stale and the keys must be recomputed.
+	if len(s.entries) != n {
+		keys = spreadKeys(len(s.entries))
+	}
 	next := make([]Entry, len(s.entries))
 	for i, e := range s.entries {
-		if i < len(keys) {
-			next[i] = Entry{Key: keys[i], Value: e.Value}
-		} else {
-			next[i] = e
-		}
+		next[i] = Entry{Key: keys[i], Value: e.Value}
 	}
 	s.entries = next
 }

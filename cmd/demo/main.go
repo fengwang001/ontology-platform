@@ -9,6 +9,7 @@ import (
 	"fmt"
 	"os"
 	"sync"
+	"sync/atomic"
 
 	"ontology"
 )
@@ -72,11 +73,78 @@ func main() {
 	_, errCharR := gen.Between("", "~", 0)
 	report(errors.Is(errCharR, ontology.ErrInvalidChar), "illegal char (right): %v", errCharR)
 
+	runStress()
+
 	if failures > 0 {
 		fmt.Printf("FAIL total: %d check(s) failed\n", failures)
 		os.Exit(1)
 	}
 	fmt.Println("OK   total: all checks passed")
+}
+
+// runStress exercises the fixed rebalance/insert race: while goroutines
+// hammer front inserts, the main goroutine rebalances. Every round must
+// end with a clean self-check — no mixed key generations, no
+// non-increasing keys.
+func runStress() {
+	const maxLen = 64
+	s := ontology.NewSequence(nil, maxLen)
+	last := ""
+	seeded := 0
+	for seeded < 5000 {
+		key, err := s.Insert(last, "", fmt.Sprintf("s%05d", seeded))
+		if errors.Is(err, ontology.ErrNeedsRebalance) {
+			s.Rebalance()
+			snap := s.Snapshot()
+			last = snap[len(snap)-1].Key
+			continue
+		}
+		if err != nil {
+			report(false, "stress seed: %v", err)
+			return
+		}
+		last = key
+		seeded++
+	}
+	var inserted int64
+	const rounds = 8
+	for round := 1; round <= rounds; round++ {
+		stop := make(chan struct{})
+		var wg sync.WaitGroup
+		for g := 0; g < 4; g++ {
+			wg.Add(1)
+			go func(g int) {
+				defer wg.Done()
+				for i := 0; ; i++ {
+					select {
+					case <-stop:
+						return
+					default:
+					}
+					snap := s.Snapshot()
+					if len(snap) == 0 {
+						return
+					}
+					v := fmt.Sprintf("r%d-g%d-%04d", round, g, i)
+					if _, err := s.Insert("", snap[0].Key, v); err != nil {
+						return // front gap exhausted; next round rebalances
+					}
+					atomic.AddInt64(&inserted, 1)
+				}
+			}(g)
+		}
+		s.Rebalance()
+		close(stop)
+		wg.Wait()
+		check := "clean"
+		if err := s.SelfCheck(); err != nil {
+			check = err.Error()
+		}
+		report(check == "clean", "stress round %d: 4 inserters vs rebalance, self-check %s", round, check)
+	}
+	longest, _ := s.LongestKey()
+	report(true, "stress: %d rounds, %d concurrent inserts, len=%d, longest key=%d/%d",
+		rounds, atomic.LoadInt64(&inserted), s.Len(), longest, maxLen)
 }
 
 // runConcurrent inserts 16 values into one gap from 16 goroutines and
