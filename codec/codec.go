@@ -95,7 +95,7 @@ func Decode(buf []byte) Result {
 			Kind:     KindTruncated,
 			Reason:   reason,
 			Declared: declared,
-			Need:     int(total - uint64(len(buf))),
+			Need:     int(uint64(PrefixLen) + uint64(declared) - uint64(len(buf))),
 		}
 	}
 	payload := buf[PrefixLen : PrefixLen+int(declared)]
