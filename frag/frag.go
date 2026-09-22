@@ -61,9 +61,6 @@ func (s *Set) Add(off int, data []byte, reserve func(n int) error) (int, error) 
 				diffEnd = i + 1
 			}
 		}
-		if diffStart >= 0 {
-			break
-		}
 	}
 	if diffStart >= 0 {
 		return 0, &ConflictError{Start: diffStart, End: diffEnd}
