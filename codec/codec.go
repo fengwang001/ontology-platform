@@ -88,7 +88,7 @@ func Decode(buf []byte) Result {
 	total := uint64(HeaderLen) + uint64(declared)
 	if total > uint64(len(buf)) {
 		reason := TruncPayload
-		if uint64(PrefixLen)+uint64(declared) < uint64(len(buf)) {
+		if uint64(PrefixLen)+uint64(declared) <= uint64(len(buf)) {
 			reason = TruncChecksum
 		}
 		return Result{
