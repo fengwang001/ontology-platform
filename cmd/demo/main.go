@@ -5,6 +5,8 @@ import (
 	"errors"
 	"fmt"
 	"os"
+	"reflect"
+	"unsafe"
 
 	"ontology/internal/ttlcache"
 )
@@ -32,6 +34,13 @@ func mustCache(capacity int, clk *clock) *ttlcache.Cache {
 		os.Exit(1)
 	}
 	return c
+}
+
+// lastExamined 读取缓存内部非导出的驱逐考察计数。
+// 计数器刻意不在公开接口里，这里只能用反射读取。
+func lastExamined(c *ttlcache.Cache) int64 {
+	f := reflect.ValueOf(c).Elem().FieldByName("lastEvictExamined")
+	return reflect.NewAt(f.Type(), unsafe.Pointer(f.UnsafeAddr())).Elem().Int()
 }
 
 func main() {
@@ -92,6 +101,41 @@ func main() {
 	clk4.Advance(1)
 	_, ok104 := c4.Get("a")
 	check("重复 Put 不刷新 TTL: t9 得新值, t10 过期", ok94 && v9 == "new" && !ok104)
+
+	// 场景 5：写入时刻并列且均未访问，驱逐并列中最近使用的 b。
+	clk5 := &clock{}
+	c5 := mustCache(2, clk5)
+	_ = c5.Put("a", "1", 10)
+	_ = c5.Put("b", "2", 10) // 与 a 同一时刻写入
+	clk5.Advance(10)
+	_ = c5.Put("c", "3", 100)
+	check("并列均未访问: 驱逐最近使用的 b", !c5.Delete("b") && c5.Delete("a"))
+
+	// 场景 6：并列但 a 被 Get 提升为最近使用，驱逐的变成 a。
+	clk6 := &clock{}
+	c6 := mustCache(2, clk6)
+	_ = c6.Put("a", "1", 10)
+	_ = c6.Put("b", "2", 10)
+	clk6.Advance(5)
+	c6.Get("a")
+	clk6.Advance(5)
+	_ = c6.Put("c", "3", 100)
+	check("并列但 a 被提升: 驱逐 a", !c6.Delete("a") && c6.Delete("b"))
+
+	// 场景 7：N 项同时过期时，单次驱逐考察的候选数不随 N 线性增长。
+	examined := func(n int) int64 {
+		clkN := &clock{}
+		cN := mustCache(n, clkN)
+		for i := 0; i < n; i++ {
+			_ = cN.Put(fmt.Sprintf("k%d", i), "v", 10)
+		}
+		clkN.Advance(10)
+		_ = cN.Put("trigger", "v", 100)
+		return lastExamined(cN)
+	}
+	e100, e1000 := examined(100), examined(1000)
+	fmt.Printf("       N=100 考察 %d 项, N=1000 考察 %d 项\n", e100, e1000)
+	check("驱逐考察数不随 N 线性增长", e1000 <= e100*2+16 && e1000 <= 64)
 
 	if failed {
 		os.Exit(1)
