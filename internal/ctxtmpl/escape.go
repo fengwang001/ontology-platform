@@ -47,19 +47,7 @@ func escaperFor(k contextKind) map[byte]string {
 			'\'': "&#39;",
 		}
 	case ctxAttrUnquoted:
-		return map[byte]string{
-			'&':  "&amp;",
-			'<':  "&lt;",
-			'>':  "&gt;",
-			'"':  "&quot;",
-			'\'': "&#39;",
-			'`':  "&#96;",
-			'=':  "&#61;",
-			' ':  "&#32;",
-			'\t': "&#9;",
-			'\n': "&#10;",
-			'\r': "&#13;",
-		}
+		return unquotedEscaper()
 	case ctxComment:
 		return map[byte]string{
 			'-': "&#45;",
@@ -67,4 +55,28 @@ func escaperFor(k contextKind) map[byte]string {
 	default:
 		return nil
 	}
+}
+
+// unquotedEscaper builds the table for ctxAttrUnquoted. The whitespace
+// entries are derived from isASCIISpace — the same definition the scanner
+// uses to decide where an unquoted value ends — so the two cannot drift
+// apart. The original bug was a hand-maintained whitespace list here that
+// omitted '\f' and '\v', letting those bytes terminate an unquoted
+// attribute value in the rendered output and inject a new attribute.
+func unquotedEscaper() map[byte]string {
+	m := map[byte]string{
+		'&':  "&amp;",
+		'<':  "&lt;",
+		'>':  "&gt;",
+		'"':  "&quot;",
+		'\'': "&#39;",
+		'`':  "&#96;",
+		'=':  "&#61;",
+	}
+	for ch := byte(0); ch < 0x80; ch++ {
+		if isASCIISpace(ch) {
+			m[ch] = "&#" + itoa(int(ch)) + ";"
+		}
+	}
+	return m
 }
