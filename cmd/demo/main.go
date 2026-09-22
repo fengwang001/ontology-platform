@@ -5,6 +5,8 @@ import (
 	"errors"
 	"fmt"
 	"os"
+	"reflect"
+	"strconv"
 
 	"ontology/internal/ttlcache"
 )
@@ -32,6 +34,24 @@ func mustCache(capacity int, clk *clock) *ttlcache.Cache {
 		os.Exit(1)
 	}
 	return c
+}
+
+// lastExamined 读取缓存内部非导出的驱逐考察计数（仅供演示观测）。
+func lastExamined(c *ttlcache.Cache) int {
+	return int(reflect.ValueOf(c).Elem().FieldByName("lastExamined").Int())
+}
+
+// massExpiryExamined 装满 n 项并让它们同时过期，再触发一次驱逐，
+// 返回这次驱逐考察的候选数。
+func massExpiryExamined(n int) int {
+	clk := &clock{}
+	c := mustCache(n, clk)
+	for i := 0; i < n; i++ {
+		_ = c.Put("k"+strconv.Itoa(i), "v", 10)
+	}
+	clk.Advance(10) // 全部同时过期
+	_ = c.Put("trigger", "v", 100)
+	return lastExamined(c)
 }
 
 func main() {
@@ -92,6 +112,31 @@ func main() {
 	clk4.Advance(1)
 	_, ok104 := c4.Get("a")
 	check("重复 Put 不刷新 TTL: t9 得新值, t10 过期", ok94 && v9 == "new" && !ok104)
+
+	// 场景 5：并列写入时刻的驱逐规则（重构后原样保留）。
+	clk5 := &clock{}
+	c5 := mustCache(2, clk5)
+	_ = c5.Put("a", "1", 10)
+	_ = c5.Put("b", "2", 10)
+	clk5.Advance(10)
+	_ = c5.Put("c", "3", 100)
+	check("并列且均未访问: 驱逐最近使用的 b", !c5.Delete("b") && c5.Delete("a"))
+
+	clk6 := &clock{}
+	c6 := mustCache(2, clk6)
+	_ = c6.Put("a", "1", 10)
+	_ = c6.Put("b", "2", 10)
+	clk6.Advance(5)
+	c6.Get("a") // a 提升为最近使用
+	clk6.Advance(5)
+	_ = c6.Put("c", "3", 100)
+	check("并列但 a 被命中提升: 驱逐 a", !c6.Delete("a") && c6.Delete("b"))
+
+	// 场景 6：大量项同时过期时，驱逐考察的候选数不随规模线性增长。
+	e100 := massExpiryExamined(100)
+	e1000 := massExpiryExamined(1000)
+	check(fmt.Sprintf("N=100 同时过期, 驱逐考察 %d 个候选", e100), e100 > 0 && e100 <= 20)
+	check(fmt.Sprintf("N=1000 同时过期, 驱逐考察 %d 个候选(非线性)", e1000), e1000 > 0 && e1000 <= e100*2+4)
 
 	if failed {
 		os.Exit(1)
