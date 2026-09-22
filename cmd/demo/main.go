@@ -72,6 +72,19 @@ func main() {
 	_, err = r.Render("", "theirs")
 	check("empty label rejected", err, merge3.ErrEmptyLabel)
 
+	// Exercise the boundary-overlap fix: an insertion touching a
+	// replacement's edge is independent and must merge cleanly.
+	b4 := []string{"a", "b", "c", "d"}
+	r = merge(b4, []string{"a", "b", "X", "c", "d"}, []string{"a", "b", "C", "d"})
+	check("insert at replace start", r.Lines, []string{"a", "b", "X", "C", "d"})
+	check("insert at replace start: clean", r.HasConflicts(), false)
+
+	r = merge(b4, []string{"a", "B", "c", "d"}, []string{"a", "b", "X", "c", "d"})
+	check("insert at replace end", r.Lines, []string{"a", "B", "X", "c", "d"})
+
+	r = merge(b4, []string{"a", "B", "C", "d"}, []string{"a", "b", "X", "c", "d"})
+	check("insert inside replace conflicts", r.HasConflicts(), true)
+
 	if failed {
 		os.Exit(1)
 	}

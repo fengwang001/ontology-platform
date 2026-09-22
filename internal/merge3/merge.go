@@ -134,10 +134,16 @@ func overlaps(h hunk, g1, g2 int) bool {
 		if g1 == g2 {
 			return h.start == g1
 		}
-		return g1 <= h.start && h.start <= g2
+		// An insertion exactly at g1 or g2 sits just outside the
+		// region, not inside it; the old closed bounds wrongly
+		// absorbed such boundary insertions into the group.
+		return g1 < h.start && h.start < g2
 	}
 	if g1 == g2 {
-		return h.start <= g1 && g1 < h.end
+		// A replacement starting exactly at the insertion point g1
+		// does not contain that point; the old closed left bound
+		// wrongly pulled it into the point's group.
+		return h.start < g1 && g1 < h.end
 	}
 	return h.start < g2 && g1 < h.end
 }
