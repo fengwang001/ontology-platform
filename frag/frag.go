@@ -61,6 +61,9 @@ func (s *Set) Add(off int, data []byte, reserve func(n int) error) (int, error) 
 				diffEnd = i + 1
 			}
 		}
+		if diffStart >= 0 {
+			break
+		}
 	}
 	if diffStart >= 0 {
 		return 0, &ConflictError{Start: diffStart, End: diffEnd}
@@ -83,9 +86,9 @@ func (s *Set) merge(start, end int) {
 	out := make([]Interval, 0, len(s.ivs)+1)
 	for _, iv := range s.ivs {
 		switch {
-		case iv.End <= start:
+		case iv.End < start:
 			out = append(out, iv)
-		case iv.Start >= end:
+		case iv.Start > end:
 			out = append(out, iv)
 		default:
 			start = min(start, iv.Start)
