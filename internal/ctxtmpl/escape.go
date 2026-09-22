@@ -47,7 +47,14 @@ func escaperFor(k contextKind) map[byte]string {
 			'\'': "&#39;",
 		}
 	case ctxAttrUnquoted:
-		return map[byte]string{
+		// Root cause of the unquoted-attribute escape: this table's
+		// whitespace entries were maintained by hand, separately from the
+		// scanner's isASCIISpace, and drifted — '\f' and '\v' were missing,
+		// so they were emitted raw even though the scanner treats them as
+		// attribute-value terminators. The whitespace entries now live in
+		// one named set (unquotedWhitespaceEscapes) whose equality with
+		// isASCIISpace is enforced by TestWhitespaceDefinitionsAgree.
+		m := map[byte]string{
 			'&':  "&amp;",
 			'<':  "&lt;",
 			'>':  "&gt;",
@@ -55,11 +62,11 @@ func escaperFor(k contextKind) map[byte]string {
 			'\'': "&#39;",
 			'`':  "&#96;",
 			'=':  "&#61;",
-			' ':  "&#32;",
-			'\t': "&#9;",
-			'\n': "&#10;",
-			'\r': "&#13;",
 		}
+		for ch, entity := range unquotedWhitespaceEscapes {
+			m[ch] = entity
+		}
+		return m
 	case ctxComment:
 		return map[byte]string{
 			'-': "&#45;",
@@ -67,4 +74,17 @@ func escaperFor(k contextKind) map[byte]string {
 	default:
 		return nil
 	}
+}
+
+// unquotedWhitespaceEscapes holds the whitespace half of the unquoted
+// attribute escape table. It must cover exactly the bytes isASCIISpace
+// recognizes: any byte the scanner treats as ending an unquoted value must
+// never appear literally in the escaped output.
+var unquotedWhitespaceEscapes = map[byte]string{
+	' ':  "&#32;",
+	'\t': "&#9;",
+	'\n': "&#10;",
+	'\v': "&#11;",
+	'\f': "&#12;",
+	'\r': "&#13;",
 }

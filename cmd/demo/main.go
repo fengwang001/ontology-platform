@@ -5,6 +5,7 @@ package main
 import (
 	"errors"
 	"fmt"
+	"strings"
 
 	"ontology/internal/ctxtmpl"
 )
@@ -41,6 +42,29 @@ func main() {
 			failures++
 			fmt.Printf("FAIL %s err=%v out=%q\n", c.name, err, out)
 		}
+	}
+	// Exercise the unquoted-attribute whitespace fix: the bytes that once
+	// escaped the value must now render as entities.
+	for _, b := range []byte{'\v', '\f'} {
+		out, err := ctxtmpl.Render("<a c={{x}}>", map[string]string{"x": "v" + string(b) + "onclick=pwn"})
+		if err == nil && !strings.Contains(out, string(b)) && strings.Contains(out, "&#") {
+			fmt.Printf("OK   unquoted escape 0x%02x -> %s\n", b, out)
+		} else {
+			failures++
+			fmt.Printf("FAIL unquoted escape 0x%02x err=%v out=%q\n", b, err, out)
+		}
+	}
+	if out, err := ctxtmpl.Render("<a c={{x}}>", map[string]string{"x": "abc-123_x"}); err == nil && out == "<a c=abc-123_x>" {
+		fmt.Printf("OK   unquoted normal value intact -> %s\n", out)
+	} else {
+		failures++
+		fmt.Printf("FAIL unquoted normal value err=%v out=%q\n", err, out)
+	}
+	if out, err := ctxtmpl.Render(`<a t="{{x}}">`, map[string]string{"x": `a"b&c`}); err == nil && out == `<a t="a&quot;b&amp;c">` {
+		fmt.Printf("OK   double quote attr unchanged -> %s\n", out)
+	} else {
+		failures++
+		fmt.Printf("FAIL double quote attr unchanged err=%v out=%q\n", err, out)
 	}
 	if failures > 0 {
 		fmt.Printf("%d case(s) failed\n", failures)
