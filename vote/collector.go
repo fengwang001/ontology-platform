@@ -93,7 +93,7 @@ func (c *Collector) Timeout(id string) error {
 	if c.decided {
 		return ErrDecided
 	}
-	if c.timedOut[id] {
+	if c.accountedLocked(id) {
 		return ErrAlreadyAccounted
 	}
 	c.timedOut[id] = true
@@ -122,8 +122,7 @@ func (c *Collector) finalizeLocked() {
 	if c.decided || c.remaining > 0 {
 		return
 	}
-	for i := len(c.order) - 1; i >= 0; i-- {
-		id := c.order[i]
+	for _, id := range c.order {
 		if !c.timedOut[id] && c.ballots[id] == BallotReject {
 			c.decision = Decision{Verdict: VerdictAbort, Reason: ReasonRejected, Culprit: id}
 			c.decided = true

@@ -152,11 +152,9 @@ func (t *Txn) deliverLocked() {
 		t.phase = PhaseCommit
 	}
 	for _, id := range t.order {
-		// Participants that never answered the prepare request have no
-		// local transaction state to roll back, so skip them.
-		if t.members[id].State() == participant.StatePending {
-			continue
-		}
+		// The decision is delivered to every registered participant,
+		// including those never asked to prepare: an abort must also
+		// release participants still pending so none is left behind.
 		// Delivery is a consequence of the recorded decision; the
 		// state machine makes illegal combinations impossible, so a
 		// well-formed run never errors here.
