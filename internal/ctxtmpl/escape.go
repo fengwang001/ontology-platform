@@ -47,19 +47,7 @@ func escaperFor(k contextKind) map[byte]string {
 			'\'': "&#39;",
 		}
 	case ctxAttrUnquoted:
-		return map[byte]string{
-			'&':  "&amp;",
-			'<':  "&lt;",
-			'>':  "&gt;",
-			'"':  "&quot;",
-			'\'': "&#39;",
-			'`':  "&#96;",
-			'=':  "&#61;",
-			' ':  "&#32;",
-			'\t': "&#9;",
-			'\n': "&#10;",
-			'\r': "&#13;",
-		}
+		return unquotedEscaper()
 	case ctxComment:
 		return map[byte]string{
 			'-': "&#45;",
@@ -67,4 +55,37 @@ func escaperFor(k contextKind) map[byte]string {
 	default:
 		return nil
 	}
+}
+
+// unquotedPunctuationEscaper is the whitespace-independent part of the
+// unquoted-attribute escape table.
+var unquotedPunctuationEscaper = map[byte]string{
+	'&':  "&amp;",
+	'<':  "&lt;",
+	'>':  "&gt;",
+	'"':  "&quot;",
+	'\'': "&#39;",
+	'`':  "&#96;",
+	'=':  "&#61;",
+}
+
+// unquotedEscaper builds the unquoted-attribute table as punctuation plus
+// every byte isASCIISpace recognizes. The whitespace entries must be derived
+// from isASCIISpace, not listed by hand: the scanner (scanner.go) ends an
+// unquoted value at exactly those bytes, so any byte the scanner treats as
+// whitespace but this table leaves raw — previously '\f' and '\v', which a
+// hand-maintained list omitted — passes through unescaped and can terminate
+// the value in the browser, letting a value inject a new attribute name.
+func unquotedEscaper() map[byte]string {
+	esc := make(map[byte]string, len(unquotedPunctuationEscaper)+6)
+	for ch, repl := range unquotedPunctuationEscaper {
+		esc[ch] = repl
+	}
+	for b := 0; b < 256; b++ {
+		ch := byte(b)
+		if isASCIISpace(ch) {
+			esc[ch] = "&#" + itoa(b) + ";"
+		}
+	}
+	return esc
 }

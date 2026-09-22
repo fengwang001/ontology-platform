@@ -5,6 +5,7 @@ package main
 import (
 	"errors"
 	"fmt"
+	"strings"
 
 	"ontology/internal/ctxtmpl"
 )
@@ -42,6 +43,36 @@ func main() {
 			fmt.Printf("FAIL %s err=%v out=%q\n", c.name, err, out)
 		}
 	}
+	if failures > 0 {
+		fmt.Printf("%d case(s) failed\n", failures)
+		return
+	}
+
+	// Regression demo for the unquoted-attribute whitespace fix: the bytes
+	// the scanner treats as value terminators must never pass through raw.
+	check := func(name string, ok bool, detail string) {
+		if ok {
+			fmt.Printf("OK   %s -> %s\n", name, detail)
+		} else {
+			failures++
+			fmt.Printf("FAIL %s -> %s\n", name, detail)
+		}
+	}
+	for _, ws := range []struct {
+		name, ch, entity string
+	}{
+		{`unquoted \f escaped`, "\f", "&#12;"},
+		{`unquoted \v escaped`, "\v", "&#11;"},
+	} {
+		out, err := ctxtmpl.Render("<a c={{x}}>", map[string]string{"x": "1" + ws.ch + "onmouseover=evil"})
+		val := strings.TrimSuffix(strings.TrimPrefix(out, "<a c="), ">")
+		check(ws.name, err == nil && strings.Contains(out, ws.entity) && !strings.Contains(val, ws.ch), out)
+	}
+	out, err := ctxtmpl.Render("<a c={{x}}>", map[string]string{"x": "abc-123_x"})
+	check("unquoted normal value verbatim", err == nil && out == "<a c=abc-123_x>", out)
+	out, err = ctxtmpl.Render(`<a t="{{x}}">`, map[string]string{"x": `"&<`})
+	check("double-quote attr unchanged", err == nil && out == `<a t="&quot;&amp;&lt;">`, out)
+
 	if failures > 0 {
 		fmt.Printf("%d case(s) failed\n", failures)
 		return
