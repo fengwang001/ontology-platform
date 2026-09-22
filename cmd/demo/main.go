@@ -77,3 +77,22 @@ func main() {
 		os.Exit(1)
 	}
 }
+
+// 以下为追加的三条关键边界演练（在 init 中执行，失败会置 failed，
+// 由 main 末尾统一的退出码逻辑兜底）。
+func init() {
+	var clk int64
+	bm := lease.New(func() int64 { return clk })
+	tokA, _ := bm.Acquire("A", 100)
+	clk = 100 // 边界 1：now 恰好等于到期时刻
+	check("边界: 到期那一刻 Write 被拒(ErrLeaseExpired)",
+		errors.Is(bm.Write(tokA, "k", "v"), lease.ErrLeaseExpired))
+	tokB, _ := bm.Acquire("B", 100) // 边界 2：A 被抢占
+	check("边界: 被抢占后旧 token 写被拒(ErrStaleToken)",
+		errors.Is(bm.Write(tokA, "k", "evil"), lease.ErrStaleToken))
+	_, ok := bm.Read("k")
+	check("边界: 被拒的写无副作用 Read 不变", !ok)
+	tokB2, _ := bm.Acquire("B", 100) // 边界 3：同 holder 重复 Acquire
+	check("边界: 重复 Acquire 发新 token 且旧 token 失效",
+		tokB2 > tokB && errors.Is(bm.Write(tokB, "k", "x"), lease.ErrStaleToken))
+}
