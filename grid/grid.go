@@ -33,8 +33,14 @@ type Grid struct {
 	totalCells int
 }
 
-// New creates an empty grid with the given leaf capacity over bounds b.
-func New(b geom.Rect, capacity int) *Grid {
+// DefaultCap is the leaf point capacity mandated by DESIGN.md §2.
+const DefaultCap = 32
+
+// New creates an empty grid over bounds b with the default leaf capacity.
+func New(b geom.Rect) *Grid { return NewWithCap(b, DefaultCap) }
+
+// NewWithCap creates an empty grid with the given leaf capacity over b.
+func NewWithCap(b geom.Rect, capacity int) *Grid {
 	if capacity < 1 {
 		capacity = 1
 	}
@@ -184,4 +190,40 @@ func (g *Grid) Rebuild(root *cell.Cell, cells int, nextID uint64) {
 	g.root = root
 	g.totalCells = cells
 	g.nextID = nextID
+}
+
+// SetSkipped restores the rejected-coordinate counters (used on load).
+func (g *Grid) SetSkipped(nanN, infN int) {
+	g.mu.Lock()
+	defer g.mu.Unlock()
+	g.skipNaN, g.skipInf = nanN, infN
+	g.rejected = nanN + infN
+}
+
+// Skipped returns the NaN and Inf rejected-coordinate counters.
+func (g *Grid) Skipped() (nanN, infN int) {
+	g.mu.RLock()
+	defer g.mu.RUnlock()
+	return g.skipNaN, g.skipInf
+}
+
+// MaxID returns the highest point ID handed out so far.
+func (g *Grid) MaxID() uint64 {
+	g.mu.RLock()
+	defer g.mu.RUnlock()
+	return g.nextID
+}
+
+// ReplaceTree swaps in an externally built tree (used by persist recovery).
+func (g *Grid) ReplaceTree(root *cell.Cell, cells int) {
+	g.mu.Lock()
+	defer g.mu.Unlock()
+	g.root, g.totalCells = root, cells
+}
+
+// Snapshot returns a consistent (root, bounds, capacity, skippedNaN) view.
+func (g *Grid) Snapshot() (*cell.Cell, geom.Rect, int, int) {
+	g.mu.RLock()
+	defer g.mu.RUnlock()
+	return g.root, g.root.Bounds, g.capacity, g.skipNaN
 }

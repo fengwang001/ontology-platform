@@ -2,15 +2,11 @@
 // holds points and may split into four children when over capacity.
 package cell
 
-import (
-	"math"
-
-	"ontology/geom"
-)
+import "ontology/geom"
 
 // MaxDepth bounds recursion so that pathological inputs (e.g. many points at
 // identical coordinates) cannot split forever.
-const MaxDepth = 64
+const MaxDepth = 48
 
 // Cell is a node of the split tree. A leaf keeps its points directly. After
 // a split, Points is empty and the four quadrants own them instead.
@@ -41,9 +37,9 @@ func (c *Cell) Count() int {
 
 // Quadrant returns the child that owns (x,y) under the half-open split rules:
 // x>=mx goes east, y>=my goes north, so points on a split line land in exactly
-// one child. It panics if (x,y) is outside c.
+// one child.
 func (c *Cell) Quadrant(x, y float64) *Cell {
-	mx, my := c.mid()
+	mx, my := c.Bounds.MidX(), c.Bounds.MidY()
 	switch {
 	case x >= mx && y >= my:
 		return c.NE
@@ -56,29 +52,10 @@ func (c *Cell) Quadrant(x, y float64) *Cell {
 	}
 }
 
-// mid returns the split coordinates, avoiding overflow on huge magnitudes.
-func (c *Cell) mid() (mx, my float64) {
-	return midpoint(c.Bounds.X0, c.Bounds.X1), midpoint(c.Bounds.Y0, c.Bounds.Y1)
-}
-
-func midpoint(a, b float64) float64 {
-	m := a + (b-a)/2
-	if m < a || m > b { // fell outside due to precision: cannot subdivide
-		return a
-	}
-	return m
-}
-
 // splittable reports whether both axes still admit a distinct midpoint and the
 // depth limit has not been reached.
 func (c *Cell) splittable() bool {
-	if c.Depth >= MaxDepth {
-		return false
-	}
-	mx, my := c.mid()
-	xOK := mx != c.Bounds.X0 && mx != c.Bounds.X1
-	yOK := my != c.Bounds.Y0 && my != c.Bounds.Y1
-	return xOK && yOK
+	return c.Bounds.Splittable(c.Depth, MaxDepth)
 }
 
 // TrySplit splits c into four children and rehomes every point when it is over
@@ -89,13 +66,11 @@ func (c *Cell) TrySplit(capacity int) bool {
 	if c.Split || len(c.Points) <= capacity || !c.splittable() {
 		return false
 	}
-	mx, my := c.mid()
+	kids, _, _ := c.Bounds.Split()
 	next := c.Depth + 1
 	mk := func(b geom.Rect) *Cell { return &Cell{Bounds: b, Depth: next} }
-	c.SW = mk(geom.Rect{X0: c.Bounds.X0, Y0: c.Bounds.Y0, X1: mx, Y1: my})
-	c.SE = mk(geom.Rect{X0: mx, Y0: c.Bounds.Y0, X1: c.Bounds.X1, Y1: my})
-	c.NW = mk(geom.Rect{X0: c.Bounds.X0, Y0: my, X1: mx, Y1: c.Bounds.Y1})
-	c.NE = mk(geom.Rect{X0: mx, Y0: my, X1: c.Bounds.X1, Y1: c.Bounds.Y1})
+	c.SW, c.SE, c.NW, c.NE = mk(kids[geom.SW]), mk(kids[geom.SE]),
+		mk(kids[geom.NW]), mk(kids[geom.NE])
 	for _, p := range c.Points {
 		c.Quadrant(p.X, p.Y).Points = append(c.Quadrant(p.X, p.Y).Points, p)
 	}
@@ -107,6 +82,3 @@ func (c *Cell) TrySplit(capacity int) bool {
 // Children returns the four children in fixed SW,SE,NW,NE order (nil for a
 // leaf).
 func (c *Cell) Children() [4]*Cell { return [4]*Cell{c.SW, c.SE, c.NW, c.NE} }
-
-// EnsureMidFinite is a small guard used by callers building cells from disk.
-func EnsureMidFinite(v float64) bool { return !math.IsNaN(v) && !math.IsInf(v, 0) }
