@@ -1,0 +1,3 @@
+package dec
+
+func Skeleton() {}
