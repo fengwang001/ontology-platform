@@ -1,18 +1,147 @@
+// Package change defines a single base-table change record and its encoding.
 package change
 
 import (
+	"encoding/json"
 	"errors"
 	"math"
 )
 
-// Op 是变更操作类型。
+// Op is the mutation kind carried by a Change.
 type Op uint8
 
 const (
-	Insert Op = iota + 1
-	Delete
-	Update
+	// Insert adds a record into NewGroup with NewValue.
+	Insert Op = 1
+	// Delete removes the record identified by OldGroup/OldValue.
+	Delete Op = 2
+	// Update replaces OldGroup/OldValue by NewGroup/NewValue.
+	Update Op = 3
 )
+
+// Sentinel errors returned by Valid / Decode; all are errors.Is-matchable.
+var (
+	ErrBadVersion   = errors.New("change: version must be positive")
+	ErrBadOp        = errors.New("change: unknown op")
+	ErrMissingGroup = errors.New("change: group key missing")
+	ErrNaN          = errors.New("change: NaN value rejected")
+	ErrBadEncoding  = errors.New("change: malformed encoding")
+)
+
+// Change is one base-table mutation. The *OK flags distinguish a present
+// empty-string group key from an absent (rejected) key.
+type Change struct {
+	Version    int64
+	Op         Op
+	OldGroup   string
+	OldGroupOK bool
+	NewGroup   string
+	NewGroupOK bool
+	OldValue   float64
+	NewValue   float64
+}
+
+type wire struct {
+	V  int64    `json:"v"`
+	O  int      `json:"o"`
+	OG *string  `json:"og"`
+	NG *string  `json:"ng"`
+	OV *float64 `json:"ov"`
+	NV *float64 `json:"nv"`
+}
+
+// Valid checks op-specific presence rules and rejects NaN / nonpositive versions.
+func (c Change) Valid() error {
+	if c.Version <= 0 {
+		return ErrBadVersion
+	}
+	switch c.Op {
+	case Insert:
+		if !c.NewGroupOK || math.IsNaN(c.NewValue) {
+			return missingOrNaN(c.NewGroupOK, c.NewValue)
+		}
+	case Delete:
+		if !c.OldGroupOK || math.IsNaN(c.OldValue) {
+			return missingOrNaN(c.OldGroupOK, c.OldValue)
+		}
+	case Update:
+		if !c.OldGroupOK || !c.NewGroupOK {
+			return ErrMissingGroup
+		}
+		if math.IsNaN(c.OldValue) || math.IsNaN(c.NewValue) {
+			return ErrNaN
+		}
+	default:
+		return ErrBadOp
+	}
+	return nil
+}
+
+func missingOrNaN(groupOK bool, v float64) error {
+	if !groupOK {
+		return ErrMissingGroup
+	}
+	if math.IsNaN(v) {
+		return ErrNaN
+	}
+	return nil
+}
+
+// Encode returns the canonical self-describing JSON form of the change.
+func (c Change) Encode() ([]byte, error) {
+	if err := c.Valid(); err != nil {
+		return nil, err
+	}
+	w := wire{V: c.Version, O: int(c.Op)}
+	if c.OldGroupOK {
+		g := c.OldGroup
+		w.OG = &g
+		w.OV = &c.OldValue
+	}
+	if c.NewGroupOK {
+		g := c.NewGroup
+		w.NG = &g
+		w.NV = &c.NewValue
+	}
+	b, err := json.Marshal(w)
+	if err != nil {
+		return nil, errors.Join(ErrBadEncoding, err)
+	}
+	return b, nil
+}
+
+// Decode parses an encoded change and re-validates it.
+func Decode(b []byte) (Change, error) {
+	var w wire
+	if err := json.Unmarshal(b, &w); err != nil {
+		return Change{}, errors.Join(ErrBadEncoding, err)
+	}
+	c := Change{Version: w.V, Op: Op(w.O)}
+	if w.OG != nil {
+		if w.OV == nil {
+			return Change{}, ErrBadEncoding
+		}
+		c.OldGroup, c.OldGroupOK, c.OldValue = *w.OG, true, *w.OV
+	}
+	if w.NG != nil {
+		if w.NV == nil {
+			return Change{}, ErrBadEncoding
+		}
+		c.NewGroup, c.NewGroupOK, c.NewValue = *w.NG, true, *w.NV
+	}
+	if err := c.Valid(); err != nil {
+		return Change{}, err
+	}
+	return c, nil
+}
+
+// NormalizeZero canonicalizes -0 to +0 so the two zeros compare equal.
+func NormalizeZero(v float64) float64 {
+	if v == 0 {
+		return 0
+	}
+	return v
+}
 
 func (o Op) String() string {
 	switch o {
@@ -24,98 +153,4 @@ func (o Op) String() string {
 		return "update"
 	}
 	return "unknown"
-}
-
-var (
-	// ErrInvalidVersion 版本号非正。
-	ErrInvalidVersion = errors.New("change: version must be positive")
-	// ErrMissingGroup 新旧分组键都缺失。
-	ErrMissingGroup = errors.New("change: missing group key")
-	// ErrNaNValue 数值为 NaN。
-	ErrNaNValue = errors.New("change: NaN value is not allowed")
-	// ErrInvalidOp 操作类型与字段不匹配。
-	ErrInvalidOp = errors.New("change: invalid operation or fields")
-)
-
-// Change 是一条基表变更。Insert 只填 New*，Delete 只填 Old*，Update 全填。
-type Change struct {
-	Op       Op      `json:"op"`
-	Version  int64   `json:"v"`
-	OldGroup string  `json:"og,omitempty"`
-	NewGroup string  `json:"ng,omitempty"`
-	OldValue float64 `json:"ov,omitempty"`
-	NewValue float64 `json:"nv,omitempty"`
-	// HasOld/HasNew 区分空串键与「未提供」。
-	HasOld bool `json:"ho,omitempty"`
-	HasNew bool `json:"hn,omitempty"`
-}
-
-// normZero 把 -0 归一为 +0。
-func normZero(x float64) float64 {
-	if math.Float64bits(x) == math.Float64bits(0) {
-		return 0
-	}
-	return x
-}
-
-// Normalize 归一化正负零。
-func (c *Change) Normalize() {
-	c.OldValue = normZero(c.OldValue)
-	c.NewValue = normZero(c.NewValue)
-}
-
-// Validate 校验变更并归一化。
-func (c *Change) Validate() error {
-	if c.Version <= 0 {
-		return ErrInvalidVersion
-	}
-	switch c.Op {
-	case Insert:
-		if !c.HasNew || c.HasOld {
-			return ErrInvalidOp
-		}
-	case Delete:
-		if !c.HasOld || c.HasNew {
-			return ErrInvalidOp
-		}
-	case Update:
-		if !c.HasOld || !c.HasNew {
-			return ErrInvalidOp
-		}
-	default:
-		return ErrInvalidOp
-	}
-	if !c.HasOld && !c.HasNew {
-		return ErrMissingGroup
-	}
-	if math.IsNaN(c.OldValue) || math.IsNaN(c.NewValue) {
-		return ErrNaNValue
-	}
-	c.Normalize()
-	return nil
-}
-
-// Groups 返回受影响的组（去重）与每条的 (key,value,isAdd) 增减动作。
-func (c Change) Actions() []Action {
-	var out []Action
-	switch c.Op {
-	case Insert:
-		out = append(out, Action{c.NewGroup, c.NewValue, true})
-	case Delete:
-		out = append(out, Action{c.OldGroup, c.OldValue, false})
-	case Update:
-		if c.NewGroup == c.OldGroup && math.Float64bits(c.NewValue) == math.Float64bits(c.OldValue) {
-			return nil
-		}
-		out = append(out, Action{c.OldGroup, c.OldValue, false})
-		out = append(out, Action{c.NewGroup, c.NewValue, true})
-	}
-	return out
-}
-
-// Action 是对单个分组多重集的一次加/减。
-type Action struct {
-	Group string
-	Value float64
-	Add   bool
 }
