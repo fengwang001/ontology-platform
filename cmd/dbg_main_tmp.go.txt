@@ -1,0 +1,14 @@
+package main
+import("fmt";"ontology/event";"ontology/segment";"ontology/sparse";"ontology/replay")
+func main(){
+ dir:="/tmp/dblog"; 
+ w,_:=segment.Create(dir,1,0)
+ for i:=0;i<300;i++ { w.Append(event.Event{Seq:uint64(i),Payload:[]byte("payload")}) }
+ w.Close()
+ p:=segment.Path(dir,1)
+ x,_:=sparse.Build(p,128)
+ x.Save(p)
+ fmt.Println("anchors",len(x.Anchors()),x.Anchors()[:3])
+ res,err:=replay.New(dir,128).Range(150,160)
+ fmt.Println("res",len(res.Events),res.Stats,err)
+}
