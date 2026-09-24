@@ -1,0 +1,3 @@
+package main
+import ("fmt"; "ontology/api")
+func main(){ fmt.Println(api.New().SelfCheck()) }
