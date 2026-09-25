@@ -1,0 +1,7 @@
+package main
+import ("fmt";"ontology/edit";"ontology/lines")
+func main(){
+ s,_:=edit.Diff(lines.Split("a\nb\n"),lines.Split("b\na\n"),edit.Options{})
+ for _,o:=range s.Ops{ var x string; switch o.Kind{case edit.Equal:x="=";case edit.Delete:x="-"+o.A.Text;case edit.Insert:x="+"+o.B.Text}; fmt.Println(x)}
+ fmt.Println("dist",s.Distance)
+}
