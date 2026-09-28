@@ -2,6 +2,10 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 组件
+
+- [`agg/`](agg/README.md)：两阶段本地→全局预聚合（分组求和/计数/平均值/去重计数，任意切批结果一致、并发安全）。
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
