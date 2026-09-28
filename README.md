@@ -38,6 +38,12 @@ go test -coverprofile=coverage.out ./...
 go tool cover -html=coverage.out
 ```
 
+## 组件
+
+- `lwwset/`：LWW 元素集合 CRDT（最后写入者胜出、并列时间戳偏删除、
+  支持两两整份合并与按变更序号的增量合并、并发安全）。
+  规则、边界与错误类别见 `lwwset/README.md`。
+
 ## 代码检查
 
 ```bash
