@@ -6,6 +6,10 @@
 
 - Go 1.26+（`go version` 确认）
 
+## 设计文档
+
+- [变更流消费端位点提交器](docs/offset-committer.md)（`ontology/offset` 包）
+
 ## 运行
 
 ```bash
