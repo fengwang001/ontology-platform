@@ -2,6 +2,13 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 组件
+
+- [`causalbuf/`](./causalbuf/) —— 基于向量时钟的因果交付缓冲：乱序/重复到达的
+  广播消息按因果序交付，暂不能交付的有界缓冲，重复消息丢弃并计数。
+  交付条件、级联与重复判定规则详见 [causalbuf/README.md](./causalbuf/README.md)。
+  快速体验：`go run ./cmd/vcdemo`（打印输入、判定依据与交付结果）。
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
