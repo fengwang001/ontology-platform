@@ -2,6 +2,11 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 组件
+
+- [`watermark/`](./watermark/)：多分区输入的合并水位组件——结合各分区水位与
+  空闲判定，输出单调前进的合并水位。详见 [`watermark/README.md`](./watermark/README.md)。
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
