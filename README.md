@@ -2,6 +2,10 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 组件
+
+- `filterview/`：行级过滤视图增量维护。源表中满足左闭右开区间 `[Low, High)` 的行构成视图；随插入/删除/更新实时输出净变化（先撤回旧值、再写入新值），批处理原子提交，支持并发一致快照。详见 `filterview/README.md`。
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
