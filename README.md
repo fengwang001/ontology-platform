@@ -2,6 +2,11 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 组件
+
+- `applier/`：按键有序、故障隔离的变更应用组件（阻塞、重试、死信与 FIFO
+  排空规则见 `applier/README.md`）。
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
