@@ -44,3 +44,10 @@ go tool cover -html=coverage.out
 gofmt -l .
 go vet ./...
 ```
+
+## 组件
+
+- [`consistentread`](consistentread/README.md)：带滞后上限的一致性读取器，
+  维护单调推进的提交/已应用位点，支持降级（立即返回并报告降级）与阻塞
+  （冻结调用时刻目标再等待）两种模式；语义、失败原因与本地验证方法见
+  `consistentread/README.md`。
