@@ -2,6 +2,11 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 模块
+
+- [`creditflow`](creditflow/README.md)：基于信用的单发送端 / 单接收端点对点流控
+  （信用扣减、积压自动补发、通告与探测、有序消费、可区分错误类别）。
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
