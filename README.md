@@ -2,6 +2,11 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 包说明
+
+- `scd/`：缓慢变化维（SCD Type-2）历史区间维护。支持乱序变更事件、
+  整批原子提交、并发只读访问与不变量自检，详见 [scd/README.md](scd/README.md)。
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
