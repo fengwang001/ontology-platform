@@ -2,6 +2,10 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 包
+
+- `preagg`：面向倾斜键的两阶段预聚合器，见 [preagg/README.md](preagg/README.md)。
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
