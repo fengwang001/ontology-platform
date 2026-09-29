@@ -44,3 +44,13 @@ go tool cover -html=coverage.out
 gofmt -l .
 go vet ./...
 ```
+
+## 按键节流的物化视图刷新器
+
+包 `refresher` 提供按键节流的物化视图刷新器：同一键的连续变更合并
+为一次刷新，推进时按刷新时刻批量产出并更新视图。规则详见
+[docs/refresher.md](docs/refresher.md)。
+
+```bash
+go test -race -v ./refresher/
+```
