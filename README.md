@@ -2,6 +2,10 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 组件
+
+- [`creditflow/`](creditflow/README.md)：基于信用的点对点流控——接收端按空位通告信用，发送端先扣信用再发送，发不出的消息留在积压中自动补发；含探测、非法输入整体拒绝、并发安全与逐步日志。
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
