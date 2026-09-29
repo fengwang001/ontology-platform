@@ -44,3 +44,9 @@ go tool cover -html=coverage.out
 gofmt -l .
 go vet ./...
 ```
+
+## 组件
+
+- [`materializer/`](materializer/README.md)：全或无原子批次键值物化器。批内顺序预演（前置期望可观察前序写入/删除），全部通过后单次原子指针切换生效；空批、空键、期望失败为三类互不相同的可判定错误，失败无痕。并发读只见完整批次边界。
+  - 演示：`go run ./cmd/materializer-demo`
+  - 测试：`go test -race -v ./materializer/`
