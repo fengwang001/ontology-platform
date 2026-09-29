@@ -2,6 +2,11 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 组件
+
+- [`segmentlog`](segmentlog/README.md)：分段日志与两阶段保留（时间 + 总大小，
+  删除最小单位为整段，活动段永不删除，起始位点只进不退）。
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
