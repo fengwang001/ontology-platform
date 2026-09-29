@@ -2,6 +2,12 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 组件
+
+- `delegation/`：权限委托组件——带有效期与再委托标记的权限委托、
+  撤销后链式失效、委托环检测、并发一致求值。模型与本地验证方法见
+  `delegation/README.md`。
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
