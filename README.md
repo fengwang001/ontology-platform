@@ -2,6 +2,11 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 组件
+
+- `sticky/`：消费组粘性分区分配（批提交、均衡配额、最少迁移、确定性、并发安全）。
+  规则、错误类别与验证方法见 `sticky/README.md`。
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
