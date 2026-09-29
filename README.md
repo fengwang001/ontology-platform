@@ -2,6 +2,11 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 组件
+
+- [`rename/`](rename/README.md)：可撤销的批量重命名执行器——同批映射同时生效、
+  链/环确定性拆分、临时名破环、失败逆序回滚、仅最近成功批次可撤销一次。
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
