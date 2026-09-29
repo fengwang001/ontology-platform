@@ -2,6 +2,11 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 组件
+
+- [`extendhash/`](extendhash/README.md)：可扩展哈希桶页索引（目录加倍 / 桶分裂、
+  伙伴桶合并、目录收缩、溢出撤回、并发安全）。
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
