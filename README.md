@@ -2,6 +2,12 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 组件
+
+- `scheduler/`：多节点作业的保留加回填调度器（影子时刻保留 + 两类回填
+  条件、注入时钟、并发安全、可复现）。算法说明与本地验证方法见
+  `scheduler/README.md`。
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
