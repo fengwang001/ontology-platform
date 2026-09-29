@@ -2,6 +2,10 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 组件
+
+- `logstore/`：日志结构存储与代价收益段清理器，详见 `logstore/README.md`。
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
