@@ -2,6 +2,10 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 模块
+
+- `ontology`：物化视图双缓冲重建（后台全量日志重放 + 原子切换），见 `ontology/README.md`。
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
