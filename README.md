@@ -2,6 +2,10 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 模块
+
+- `isr/`：分区副本同步副本集（ISR）维护与高水位推进，详见 `isr/README.md`。
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
