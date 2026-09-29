@@ -2,6 +2,11 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 组件
+
+- `fanout/`：分片扇出查询的部分结果合并器，支持计数、求和、最小值、最大值
+  与前 K 名；部分分片失败时给出带可信范围的答案。详见 `fanout/README.md`。
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
