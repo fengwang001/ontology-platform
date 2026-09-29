@@ -2,6 +2,11 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 组件
+
+- `ontology/lag`：窗口前驱值（LAG）的增量维护，含变更日志、并发视图与
+  批量重算自检。语义、日志规则、错误类别与验证方法见 `ontology/lag/README.md`。
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
