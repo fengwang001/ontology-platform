@@ -2,6 +2,11 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 组件
+
+- [`quantile/`](quantile/README.md)：有界质心近似分位数维护器，支持按预算合并相邻质心、
+  分位点线性插值、撤回时从真实集合重算、并发只读与精确误差上界审计。
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
