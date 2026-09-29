@@ -2,6 +2,10 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 组件
+
+- [增量排名维护器](ranking/README.md)：按分数降序、标识升序维护位次、竞赛排名与稠密排名，支持并发查询、自检和可判定错误。
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
