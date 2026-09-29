@@ -44,3 +44,14 @@ go tool cover -html=coverage.out
 gofmt -l .
 go vet ./...
 ```
+
+## 窗口状态管理器（清理 / 复活语义）
+
+实现位于 `ontology/`（包 `ontology`），提供带阈值触发、清理冻结、迟到事件复活与
+回收互斥语义的并发安全窗口状态管理器。状态迁移、复活与回收互斥规则及测试说明见
+[`ontology/README.md`](ontology/README.md)。
+
+```bash
+# 竞态检测 + 重复运行 + 详细判定日志
+go test -race -count=3 -v ./ontology/
+```
