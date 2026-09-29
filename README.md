@@ -2,6 +2,11 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 组件
+
+- `dimcache/`：CDC 驱动的维表查询缓存与失效（版本栅栏、两步读取回填、负缓存），
+  见 `dimcache/README.md`。
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
