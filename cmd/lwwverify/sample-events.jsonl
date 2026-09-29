@@ -1,0 +1,6 @@
+{"key":"user:1","event_time":10,"value":"alpha"}
+{"key":"user:2","event_time":5,"value":"beta"}
+{"key":"user:1","event_time":10,"value":"alpha-tie-ignored"}
+{"key":"user:2","event_time":9}
+{"key":"user:3","event_time":7,"value":""}
+{"key":"user:1","event_time":8,"value":"alpha-late"}
