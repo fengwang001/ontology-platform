@@ -2,6 +2,11 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 包
+
+- [`migration`](migration/README.md)：键控状态的惰性模式迁移——升级不触碰键，
+  读取旧版本数据时沿迁移链逐版本迁移并原子写回，同键并发读只迁移一次。
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
