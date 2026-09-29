@@ -12,12 +12,8 @@
 # 拉取依赖
 go mod tidy
 
-# 直接运行
-go run ./cmd/server
-
-# 编译后运行
-go build -o bin/server ./cmd/server
-./bin/server
+# 当前模块提供 pitr（带时间线分叉的时间点恢复）包
+ls pitr
 ```
 
 ## 测试
@@ -30,8 +26,11 @@ go test ./...
 go test -race -v ./...
 
 # 单个包 / 单个用例
-go test ./ontology
-go test -run TestObjectType ./ontology
+go test ./pitr
+go test -run TestThreeLevelPlansAndEquivalence ./pitr
+
+# 竞态检测 + 重复执行（验证并发恢复编号连续、计划确定）
+go test -race -count=5 ./pitr
 
 # 覆盖率
 go test -coverprofile=coverage.out ./...
