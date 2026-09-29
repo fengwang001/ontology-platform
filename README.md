@@ -44,3 +44,16 @@ go tool cover -html=coverage.out
 gofmt -l .
 go vet ./...
 ```
+
+## 混合逻辑时钟（HLC）
+
+`hlc/` 包实现了物理时钟回拨下仍严格单调、因果一致的混合逻辑时钟，
+支持本地、发送、接收三类事件、在途消息登记、按时间戳有序的节点历史，
+以及八类互不相同的拒绝原因（失败不留痕）。
+
+```bash
+go test -race -v ./hlc
+```
+
+推进规则、偏差/计数上限、边界行为、错误类别与验证方法见
+[`hlc/README.md`](hlc/README.md)。
