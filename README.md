@@ -2,6 +2,11 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 组件
+
+- [`window/`](window/README.md)：可在线升级窗口大小的滚动窗口聚合器
+  （不停流切换窗口大小，见包内文档的生效点推导、迟到/归属规则与并发语义）。
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
