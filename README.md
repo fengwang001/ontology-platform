@@ -2,6 +2,11 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 包
+
+- `fojoin`：全外连接增量维护器，只消费变更日志增量维护连接结果，
+  详见 [fojoin/README.md](fojoin/README.md)。
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
