@@ -2,6 +2,10 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 组件
+
+- [`reassign/`](reassign/README.md)：分区副本重分配控制器（线程安全，支持追平完成、取消回滚、故障重选与并发上限）。
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
