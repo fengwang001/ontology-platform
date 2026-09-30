@@ -44,3 +44,8 @@ go tool cover -html=coverage.out
 gofmt -l .
 go vet ./...
 ```
+
+## 模块
+
+- `checkpoint/`：检查点协调器（触发、确认、超时、吞并、保留、恢复选点），
+  详见 [checkpoint/README.md](checkpoint/README.md)。
