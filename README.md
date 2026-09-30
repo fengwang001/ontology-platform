@@ -2,6 +2,11 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 组件
+
+- `runtimefilter`：哈希连接运行时过滤器协调器，把构建侧键摘要下发给
+  探测侧扫描以提前丢弃不可能匹配的行。详见 [docs/runtime-filter.md](docs/runtime-filter.md)。
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
