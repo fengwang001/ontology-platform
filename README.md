@@ -44,3 +44,18 @@ go tool cover -html=coverage.out
 gofmt -l .
 go vet ./...
 ```
+
+## 块文件系统映像检查与修复（fsck）
+
+`fsck` 包提供块文件系统映像的一致性检查与修复，详见
+[docs/fsck.md](docs/fsck.md)。
+
+```bash
+# 测试（含竞态检测与判定日志）
+go test -race -v ./fsck/
+
+# CLI
+go run ./cmd/fsck format /tmp/fs.img -blocks 64 -inodes 16
+go run ./cmd/fsck check /tmp/fs.img
+go run ./cmd/fsck repair /tmp/fs.img
+```
