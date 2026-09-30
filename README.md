@@ -2,6 +2,11 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 模块
+
+- [`allocator`](allocator/README.md)：数据加密随机数（密钥版本，序号）分配器，
+  批预留高水位 + 崩溃恢复，保证 `(租户, 密钥版本, 序号)` 在并发、持久化失败与崩溃恢复下永不重复。
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
