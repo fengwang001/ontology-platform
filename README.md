@@ -2,6 +2,11 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 目录
+
+- `merge/`：部分列更新事件的批内合并（详见 [docs/merge.md](docs/merge.md)）。
+- `cmd/merge-demo/`：合并过程的可执行演示，打印每步输入、合并结果与判定依据。
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
@@ -12,12 +17,12 @@
 # 拉取依赖
 go mod tidy
 
-# 直接运行
-go run ./cmd/server
+# 运行合并演示（打印逐步日志）
+go run ./cmd/merge-demo
 
 # 编译后运行
-go build -o bin/server ./cmd/server
-./bin/server
+go build -o bin/merge-demo ./cmd/merge-demo
+./bin/merge-demo
 ```
 
 ## 测试
@@ -30,8 +35,8 @@ go test ./...
 go test -race -v ./...
 
 # 单个包 / 单个用例
-go test ./ontology
-go test -run TestObjectType ./ontology
+go test ./merge
+go test -run TestConsistencyWithNaiveReference ./merge
 
 # 覆盖率
 go test -coverprofile=coverage.out ./...
