@@ -2,6 +2,12 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 组件
+
+- [`certcache/`](certcache/README.md)：证书吊销状态响应缓存。乱序响应合并为每证书一条记录，
+  吊销为不可逆终态；按有效区间 `[a,b)` 判定可信性；容量满时只淘汰已过期正常记录；
+  支持并发提交/判定与全局吊销闩锁。规则说明见 `certcache/README.md`。
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
