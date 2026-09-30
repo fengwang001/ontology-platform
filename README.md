@@ -2,6 +2,12 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 模块
+
+- `scoreboard/`：基于选择确认（SACK）的发送端记分板，记录已发段、累计确认与选择确认区间，
+  判定丢失段并按最小起点优先重传。判丢条件、在途字节定义、拒绝规则与本地验证方法见
+  `scoreboard/README.md`。
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
