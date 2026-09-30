@@ -44,3 +44,14 @@ go tool cover -html=coverage.out
 gofmt -l .
 go vet ./...
 ```
+
+## 日志截断位点一致维护器
+
+`logtrunc` 包实现日志截断的位点一致维护：持久化位点只进不退、截断分
+“先落标记再物理删除”两步、恢复时按标记与实际起始做崩溃双判定（一致即
+干净、实际小于标记补删收敛、实际大于标记报告损坏）。详见
+[docs/log-truncation.md](docs/log-truncation.md)。
+
+```bash
+go test -race -v ./logtrunc
+```
