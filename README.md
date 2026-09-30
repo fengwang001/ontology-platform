@@ -2,6 +2,10 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 原子快照
+
+无等待原子快照位于 `snapshot` 包，支持 1 到 16 个单写者单元、原子向量读和收集次数统计。设计说明见 `snapshot/README.md`。
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
