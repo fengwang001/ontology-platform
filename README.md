@@ -2,6 +2,10 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 模块
+
+- [directorycache](directorycache/README.md)：目录式缓存一致性协议模拟器，包含私有缓存、目录持有者集合、失效、降级、写回与 LRU 淘汰。
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
@@ -12,12 +16,8 @@
 # 拉取依赖
 go mod tidy
 
-# 直接运行
-go run ./cmd/server
-
-# 编译后运行
-go build -o bin/server ./cmd/server
-./bin/server
+# 运行目录缓存模拟器测试
+go test -v ./directorycache
 ```
 
 ## 测试
@@ -30,8 +30,8 @@ go test ./...
 go test -race -v ./...
 
 # 单个包 / 单个用例
-go test ./ontology
-go test -run TestObjectType ./ontology
+go test ./directorycache
+go test -run TestRandomOperationsMatchSingleMemoryReference ./directorycache
 
 # 覆盖率
 go test -coverprofile=coverage.out ./...
