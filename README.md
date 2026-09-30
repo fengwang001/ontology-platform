@@ -44,3 +44,13 @@ go tool cover -html=coverage.out
 gofmt -l .
 go vet ./...
 ```
+
+## 编号池（idpool）
+
+`idpool` 子包实现带隔离期与短命抖动加长的编号池（分配最小空闲编号、
+释放后隔离、短命复用隔离期翻倍并封顶、正常寿命重置为 Q）。
+规则与本地验证方法详见 [`idpool/README.md`](idpool/README.md)：
+
+```bash
+go test -race -v ./idpool
+```
