@@ -44,3 +44,9 @@ go tool cover -html=coverage.out
 gofmt -l .
 go vet ./...
 ```
+
+## 组件
+
+- `plancache/`：预备语句计划缓存选择器，按已执行次数与代价在定制计划与
+  通用计划之间做可复现选择，支持架构版本重置与并发。决定规则、协议配对、
+  错误顺序与本地验证方法见 `plancache/README.md`。
