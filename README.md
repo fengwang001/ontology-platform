@@ -2,39 +2,62 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## keyset：基于邻键锁的有序整数键集合
+
+`keyset` 包实现了一个并发安全的有序整数键集合，通过邻键锁（next-key lock，
+记录锁 + 空隙锁）保证同一事务对同一范围的重复扫描不出现幻读。
+
+### 锁模型
+
+- **记录锁**：加在单个现存键上，分共享（`Shared`）与排他（`Exclusive`），
+  仅共享与共享兼容；事务自己的锁不与自己冲突，共享升级排他要求别的事务
+  不持该键的锁。
+- **空隙锁**：记为键值开区间 `(p, s)`，端点在加锁时固定（不随后续插入移动），
+  彼此永不冲突；`p`/`s` 不存在时分别取负无穷 / 正无穷。插入键 `k` 时，若 `k`
+  落在其他事务持有的任一空隙锁内，则报「间隙被占」并给出持锁事务。
+
+### 各操作加锁规则
+
+- `Scan(tx, lo, hi, mode)`：对 `[lo, hi]`（含端点）内每个现存键加 `mode`
+  记录锁，并对开区间 `(p, s)` 加空隙锁——`p` 是小于 `lo` 的最大现存键，
+  `s` 是大于 `hi` 的最小现存键（`s` 本身不加记录锁）。先整体校验再加锁，
+  任一键冲突则整个扫描失败并报持锁事务，不留任何锁。
+- `Get(tx, k, mode)`：键存在则只加 `mode` 记录锁；不存在则只加 `k` 所在的
+  `(p, s)` 空隙锁（`p`、`s` 为 `k` 的现存前驱与后继）。
+- `Insert(tx, k)`：`k` 已存在报「键已存在」；`k` 被他人空隙锁覆盖报
+  「间隙被占」；否则插入并由插入者持 `k` 的排他记录锁。
+- `Commit(tx)`：释放该事务全部锁。
+- `Abort(tx)`：释放该事务全部锁，并撤销它的全部插入。
+
+### 空隙划分规则
+
+空隙由**加锁时刻**的现存键序列划分：对目标点（扫描端点之外或点读未命中键）
+取其在现存键中的前驱 `p` 与后继 `s`，构成开区间 `(p, s)`；端点不存在时取
+正负无穷。端点值在加锁时固化，之后即使新键落入区间外沿也不改变已有空隙锁。
+
+### 错误校验顺序
+
+事务不存在 → 事务已提交 / 已中止 → 模式非法（非共享/排他）→ 范围颠倒
+（`lo > hi`），按此顺序只报第一个并整体拒绝；任何失败都不改变状态。
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
 
-## 运行
-
-```bash
-# 拉取依赖
-go mod tidy
-
-# 直接运行
-go run ./cmd/server
-
-# 编译后运行
-go build -o bin/server ./cmd/server
-./bin/server
-```
-
-## 测试
+## 本地验证
 
 ```bash
 # 全量测试
 go test ./...
 
-# 带竞态检测与详细输出
-go test -race -v ./...
+# keyset 包：带竞态检测与详细日志（打印输入、输出与判定依据）
+go test -race -v ./keyset
 
-# 单个包 / 单个用例
-go test ./ontology
-go test -run TestObjectType ./ontology
+# 单个用例
+go test -race -run TestRepeatScanNoPhantom -v ./keyset
 
 # 覆盖率
-go test -coverprofile=coverage.out ./...
+go test -coverprofile=coverage.out ./keyset
 go tool cover -html=coverage.out
 ```
 
