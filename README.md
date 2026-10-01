@@ -2,6 +2,11 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 模块
+
+- `coordinator`：消费组协调者（加入/同步状态机），详见
+  [coordinator/README.md](coordinator/README.md)。
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
