@@ -2,6 +2,12 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 子模块
+
+- [`itc/`](itc/README.md)：区间树时钟（Interval Tree Clock）命名副本注册表，
+  支持 Fork / Event / Peek / Join / Compare；包含与朴素参考实现的 2000 组
+  随机序列差分测试。
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
