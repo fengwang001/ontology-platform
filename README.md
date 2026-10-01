@@ -2,6 +2,10 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 组件
+
+- [`regbank/`](./regbank/README.md)：带访问类型（RW/RO/WO/W1C/W1S/RC）的 32 位寄存器位域模拟器，支持字节使能写、软件读改写（RMW）、硬件侧置位、复位与无副作用 `Raw`，并发安全。语义、字节使能规则、RMW 展开与验证方法见 `regbank/README.md`。
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
