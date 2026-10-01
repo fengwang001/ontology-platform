@@ -2,6 +2,10 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 组件
+
+- `ontology/`：文件监视事件合并去抖器（`Debouncer`），折叠规则、到期判定与验证方法见 `ontology/README.md`。
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
