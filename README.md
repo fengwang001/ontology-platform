@@ -2,6 +2,12 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 包
+
+- `bencode`：bencode 流式增量解码器。任意切分的字节流还原为值树，
+  规范性破坏时按首个违规字节精确拒绝，结果与切分方式无关。
+  规范性规则、错误偏移约定与本地验证方法见 [bencode/README.md](bencode/README.md)。
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
