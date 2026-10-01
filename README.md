@@ -44,3 +44,8 @@ go tool cover -html=coverage.out
 gofmt -l .
 go vet ./...
 ```
+
+## 组件
+
+- `vegas/`：带令牌超时回收、丢弃降级冷却与滑动最小时延窗口的 Vegas 式并发限制器。
+  规则、排队估计公式、拒绝优先级、摊销复杂度与本地验证方法见 `vegas/DESIGN.md`。
