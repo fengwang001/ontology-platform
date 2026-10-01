@@ -2,6 +2,10 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 组件
+
+- [固定视图 PBFT 请求日志](pbft/README.md)：`pbft` 包实现预准备、准备、提交两级证书判定与严格升序执行。
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
