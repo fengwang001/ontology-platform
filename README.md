@@ -2,6 +2,11 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 组件文档
+
+- [顺序预读窗口状态机](README_READAHEAD.md)：有限页缓存、同步/异步预读、
+  LRU 淘汰与抖动收缩的规则、接口与本地验证方法。
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
