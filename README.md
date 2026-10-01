@@ -38,6 +38,12 @@ go test -coverprofile=coverage.out ./...
 go tool cover -html=coverage.out
 ```
 
+## 组件
+
+- `recordlog/`：块对齐的记录分片日志（7 字节片段头、首/中/末/完整分片、
+  四类可区分损坏错误与块边界恢复），格式与验证方法见
+  `recordlog/README.md`。
+
 ## 代码检查
 
 ```bash
