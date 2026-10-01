@@ -2,6 +2,12 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 组件
+
+- `raid`：带分布式奇偶校验的条带化块卷（单盘失效降级读写、换盘重建、
+  意图日志消除写洞），设计与恢复规则见
+  [docs/striped-parity-volume.md](docs/striped-parity-volume.md)。
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
