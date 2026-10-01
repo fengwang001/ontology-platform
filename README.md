@@ -2,45 +2,87 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
-## 环境要求
+当前实现了 `placement` 包：一个并发安全、结果可精确复现的 Pod 放置过滤器，支持带最少个数的必需亲和、必需反亲和、已有 Pod 的对称排斥，以及对预留 Pod 即时可见的放置判定。
 
-- Go 1.26+（`go version` 确认）
+## 放置模型
 
-## 运行
+- 节点由名称与可用区登记；名称和可用区都必须是非空字符串。
+- 拓扑键仅有：
+  - `"node"`：拓扑域是单个节点名；
+  - `"zone"`：拓扑域是节点所在可用区。
+- Pod 包含唯一 ID、标签集合、亲和项与反亲和项。选择器是键值对集合：Pod 标签包含选择器中的全部键值对才匹配；空选择器匹配所有 Pod。
+- 已放置 Pod 同时包含**已提交**与**预留中**两类，所有规则对二者一视同仁；待判定 Pod 自身不计入匹配数量，也不会因自己的选择器匹配自己而排斥自己。
+
+### 亲和（必需，含最少个数）
+
+对待判定 Pod `x` 与候选节点 `n`，每条亲和项包含 `(selector, topology, m)`，其中 `1 ≤ m ≤ 100`。
+
+1. 统计已放置 Pod 中匹配 `selector`、且按 `topology` 与 `n` 同域的 Pod 数；数量不少于 `m` 即满足。
+2. **首个成员豁免**：若全集群没有任何已放置 Pod 匹配 `selector`，并且 `x` 自身标签匹配 `selector`，该项也视为满足。
+3. 豁免按亲和项逐项独立判断。只要全集群存在任意一个匹配的已放置 Pod，即使它数量不足 `m` 或位于别的域，该项都不再豁免。
+4. 亲和不具有对称性：`x` 需要靠近 `q`，不代表 `q` 当初需要靠近 `x`。
+
+例：`zone=a` 有 `n1,n2`，`zone=b` 有 `n3`，已提交 `db1@n1`、`db2@n2`，则带亲和项 `(app=db, zone, 2)` 的 Pod 可放在 `n1,n2`；若只剩 `db1`，全集群已有匹配 Pod，豁免失效，没有可行节点。
+
+### 反亲和（必需）
+
+- 对 `x` 的每条反亲和项，不得存在任何匹配其选择器、并与 `n` 按该项拓扑键同域的已放置 Pod。
+- **对称排斥**：还要检查每个已放置 Pod `q` 的每条反亲和项。若 `x` 的标签匹配 `q` 的选择器，且 `q` 与 `n` 同域，则 `x` 也不能放在 `n`。
+- 只报第一个失败原因；反亲和冲突携带第一个冲突项的下标（按声明顺序，从 0 开始）与阻挡 Pod 中字节序最小的 ID；对称排斥携带所有排斥者中字节序最小的 Pod ID。
+
+## 操作语义
+
+`NewScheduler(Q)` 创建调度器，预留 Pod 总数永远不超过 `Q`（`1 ≤ Q ≤ 1000`）。
+
+- `AddNode(name, zone)` / `RemoveNode(name)`：登记节点；仅当节点上没有任何已提交或预留 Pod 时才允许删除。
+- `Reserve(pod, node)`：通过与 `Place` 相同的放置判定后登记为预留，并占用一个预配额。
+- `Place(pod, node)`：通过判定后直接提交，不占用预留额度。
+- `Commit(id)`：把预留转成已提交，不再做任何校验，并释放一个预留额度。
+- `Cancel(id)`：删除预留并释放额度。
+- `Remove(id)`：只删除已提交 Pod；预留中的 Pod 必须先 `Commit` 或 `Cancel`。删除不会触发其他 Pod 的重新校验。
+- `Relabel(id, labels)`：替换已提交或预留 Pod 的标签。只检查“其他已放置 Pod 是否会按其反亲和项排斥新标签”这一方向；不重新检查该 Pod 自身的亲和/反亲和。被拒绝时状态不变。
+- `Feasible(pod)`：无副作用，按名称字节序返回所有可放置节点；参数非法或 Pod ID 已存在时返回错误。
+
+所有方法都用同一把互斥锁串行化状态变更与判定，因此并发调用等价于某个串行顺序；同一 ID 并发 `Place`/`Reserve` 恰有一个成功。成功操作会深拷贝调用方输入，调用方之后修改 map/slice 不会影响调度器状态。
+
+### 拒绝原因与顺序
+
+错误类型为 `*placement.Reject`，可通过 `Code`、`Index`、`BlockingPod` 精确分支。
+
+- 通用顺序（`Reserve` / `Place`）：参数非法 → Pod 已存在 → 节点不存在 → 第一条未满足亲和 → 第一条反亲和冲突（含最小阻挡 ID）→ 被已有 Pod 排斥（含最小排斥 ID）→ 预留已满（仅 `Reserve`，最后判断）。
+- `Feasible` 只会因参数非法或 Pod 已存在而返回错误；节点级失败只体现在结果集合中。
+- `Relabel`：参数非法 → Pod 不存在 → 被已有 Pod 排斥。
+- `Commit` / `Cancel`：Pod 不存在 与 Pod 已提交（不在预留中）相互区分。
+- `Remove`：Pod 不存在 与 Pod 仍在预留中相互区分。
+- `AddNode`：参数非法与重名相互区分；`RemoveNode`：节点不存在与节点上仍有 Pod 相互区分。
+- 任何被拒绝的操作都不改变状态。
+
+参数非法包括：Pod ID 为空、标签键或选择器键为空串、`m` 不在 `[1,100]`、拓扑键不是 `"node"` 或 `"zone"`。
+
+## 本地验证
+
+需要 Go 1.26+（`go version` 确认）。
 
 ```bash
-# 拉取依赖
-go mod tidy
-
-# 直接运行
-go run ./cmd/server
-
-# 编译后运行
-go build -o bin/server ./cmd/server
-./bin/server
-```
-
-## 测试
-
-```bash
-# 全量测试
+# 全量测试（含 2000 组随机操作序列与独立朴素模拟差分、重放一致性）
 go test ./...
 
 # 带竞态检测与详细输出
 go test -race -v ./...
 
-# 单个包 / 单个用例
-go test ./ontology
-go test -run TestObjectType ./ontology
+# 打印每组随机序列的输入、输出与判定依据
+PLACEMENT_TEST_VERBOSE=1 go test -v ./placement -run TestDifferentialRandomSequences
 
-# 覆盖率
-go test -coverprofile=coverage.out ./...
-go tool cover -html=coverage.out
-```
+# 快速模式（2000 组降为 50 组）
+go test -short ./...
 
-## 代码检查
-
-```bash
+# 代码检查
 gofmt -l .
 go vet ./...
+```
+
+若环境中的 Go 缓存目录不可写，可指定临时缓存，例如：
+
+```bash
+GOCACHE=/tmp/gocache go test ./...
 ```
