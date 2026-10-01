@@ -44,3 +44,9 @@ go tool cover -html=coverage.out
 gofmt -l .
 go vet ./...
 ```
+
+## 模块
+
+- `ontology/lzw`：GIF 风格变宽码字 LZW 流式编码器/解码器（码宽 9→12、
+  LSB-first、字典写满自动清除），规则、解码端升宽推导与本地验证方法见
+  `ontology/lzw/README.md`。
