@@ -2,6 +2,12 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 组件
+
+- [`dmaring`](dmaring/README.md)：DMA 描述符环主机侧驱动模型。无界指针
+  `prod/dev/reap` + 槽号取余，按 OWN 位交接分散聚集包，支持设备出错连带
+  丢弃与主机整包回收；规则、错误码与本地验证方法见该目录文档。
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
