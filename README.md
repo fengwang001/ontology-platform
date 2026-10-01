@@ -2,6 +2,10 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 模块文档
+
+- [分布式追踪跨度组装器](docs/tracing.md)：乱序跨度组装、跨服务时钟偏移校正与关键路径输出。
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
