@@ -38,6 +38,10 @@ go test -coverprofile=coverage.out ./...
 go tool cover -html=coverage.out
 ```
 
+## 子包
+
+- [`zlibstore/`](./zlibstore/README.md)：仅使用 DEFLATE 存储块的 zlib 容器流式编码器/解码器，字节布局可精确复现，解码结果与输入切分无关。
+
 ## 代码检查
 
 ```bash
