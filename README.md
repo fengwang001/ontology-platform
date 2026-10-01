@@ -2,6 +2,11 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 组件
+
+- `cursor/`：可滚动结果集游标管理器。位置模型、操作规则与本地验证方法
+  见 `cursor/DOC.md`。
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
