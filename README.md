@@ -2,6 +2,10 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 子包
+
+- [`snapshotfs`](snapshotfs/README.md)：带持有计数与回滚的写时复制文件系统快照空间账本（按块的出生/死亡事务号判定持有关系）。
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
