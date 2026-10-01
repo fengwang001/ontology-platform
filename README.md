@@ -2,6 +2,11 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 组件
+
+- [`wsframe`](wsframe/README.md)：服务端 WebSocket 帧解码与消息重组状态机
+  （掩码、长度最小编码、分片与控制帧穿插、切分无关的错误偏移）。
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
