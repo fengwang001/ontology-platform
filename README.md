@@ -2,45 +2,89 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 容器镜像制品回收器
+
+根包提供 `Reclaimer`，构造参数 `R` 为毫秒保留期：
+
+```go
+r, err := ontology.NewReclaimer(retentionMillis)
+```
+
+### 对象与标签
+
+- 层：摘要与正数字节数。
+- 清单：摘要与非空、无重复的层摘要列表。
+- 多架构索引：摘要与非空、无重复的清单摘要列表。
+- 三类对象共用一个摘要命名空间；同一摘要至多存在一个对象。
+- 标签是名字到清单或索引摘要的映射，重打同名标签会改指。
+
+### 活死判定
+
+每次成功的 `PutLayer`、`PutManifest`、`PutIndex`、`Tag`、`Untag` 完成后，都从当前标签根全量重算：
+
+- 标签直接指向的清单或索引为活。
+- 活索引引用的清单为活。
+- 活清单引用的层为活。
+- 其他对象为死。
+
+对象由活变死时，`deadSince` 记为本次操作的 `now`；新建即死也使用该 `now`。对象由死变活时清除 `deadSince`。持续为活或持续为死不会改写既有时间，因此共享层的起点是最后一个活引用者失活的时刻。重复上传同摘要、同字节数的层会成功并推进最大 `now`，但不改变对象状态与 `deadSince`。
+
+### GC 规则
+
+`GC(now)` 仅删除同时满足以下条件的对象：
+
+- 当前为死。
+- `now-deadSince >= R`，等于 `R` 即可删除。
+- 没有任何仍存在的清单或索引引用它；引用者本身是死也会阻止删除。
+
+删除严格按以下顺序进行：
+
+1. 全部索引。
+2. 全部清单。
+3. 全部层。
+
+每类内部按摘要字节序升序；前一类删除立即影响后一类的引用判断，所以同一次 GC 可以级联删除索引、清单和层。返回值按实际删除先后排列。
+
+### 错误与时钟
+
+所有携带 `now` 的操作首先检查时钟回拨：`now` 小于此前任一次已接受操作的最大 `now` 时返回 `ErrClockSkew`。被拒绝的操作不会改变对象、标签、`deadSince` 或最大 `now`。
+
+通过后只返回第一个错误：
+
+- `PutLayer`：空摘要；字节数不大于 0；同摘要对象种类不同；字节数不同。
+- `PutManifest` / `PutIndex`：空摘要；摘要已存在；引用列表为空；含重复引用；第一个不存在的引用；第一个类型不符的引用。
+- `Tag`：空标签名；目标不存在；目标是层。
+- `Untag`：空标签名；标签不存在。
+- 构造时 `R < 0` 返回 `ErrInvalidRetention`。
+
+所有公开操作由同一把互斥锁保护，并发调用的结果等价于某个串行顺序；相同操作序列重放得到相同删除序列。
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
 
-## 运行
-
-```bash
-# 拉取依赖
-go mod tidy
-
-# 直接运行
-go run ./cmd/server
-
-# 编译后运行
-go build -o bin/server ./cmd/server
-./bin/server
-```
-
-## 测试
+## 回收器本地验证
 
 ```bash
 # 全量测试
 go test ./...
 
-# 带竞态检测与详细输出
-go test -race -v ./...
+# 竞态检测
+go test -race ./...
 
-# 单个包 / 单个用例
-go test ./ontology
-go test -run TestObjectType ./ontology
-
-# 覆盖率
-go test -coverprofile=coverage.out ./...
-go tool cover -html=coverage.out
+# 查看定向语义测试与 2000 组随机对拍日志（输入、输出、朴素模型判定依据）
+go test -v
 ```
 
-## 代码检查
+如果环境中的 Go 缓存目录只读，可以指定临时缓存：
 
 ```bash
-gofmt -l .
-go vet ./...
+GOCACHE=/tmp/ontology-gocache go test -race -v ./...
+```
+
+覆盖率：
+
+```bash
+go test -coverprofile=coverage.out ./...
+go tool cover -html=coverage.out
 ```
