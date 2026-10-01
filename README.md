@@ -44,3 +44,7 @@ go tool cover -html=coverage.out
 gofmt -l .
 go vet ./...
 ```
+
+## 组件
+
+- `rollout/`：带注入时刻的特性渐进发布控制器（阶梯百分比、保持时长、暂停/恢复/回滚、FNV-1a 确定性分桶），规则与验证方法见 `rollout/README.md`。
