@@ -2,6 +2,17 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 多粒度意向锁层级管理器
+
+`ontology.LockManager` 支持资源树上 IS/IX/S/SIX/X 五种锁模式的授予、
+按 join 转换与释放，保证祖先意向齐全与同节点模式相容，并发可线性化。
+
+- 设计说明（强度偏序、join、相容矩阵、转换规则、祖先意向、错误与验证方法）：
+  `docs/lock_manager.md`
+- 对拍测试使用 2000 组随机操作序列与逐步朴素参考模型逐操作比对，
+  可通过 `go test -run TestRandomDifferential -difflog -v` 打印
+  输入、输出与每步判定依据。
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
