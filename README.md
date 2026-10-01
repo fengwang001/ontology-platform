@@ -2,6 +2,10 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 包
+
+- `index`：多列有序索引的访问路径推导与扫描器，见 [index/README.md](index/README.md)。
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
