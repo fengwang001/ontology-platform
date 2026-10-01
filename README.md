@@ -2,6 +2,11 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 模块
+
+- [`bracket/`](bracket/README.md)：带轮空与退赛级联晋级的单败淘汰赛对阵树
+  （折叠种子位、`Report`/`Correct`/`Withdraw`、技术判定、并发安全，含参考实现对拍）。
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
