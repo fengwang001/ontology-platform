@@ -1,46 +1,61 @@
-# ontology-platform
+# ontology
 
-本体服务平台（对标 Palantir Foundry Ontology）。
+确定性的增量有向无环图拓扑序维护器。所有方法均可并发调用；互斥锁保证查询看到的是某个完整串行操作之后的状态。
 
-## 环境要求
+## API
 
-- Go 1.26+（`go version` 确认）
+- `NewMaintainer(n, e)`：创建总数上限 `1..100000`、存活边数上限 `1..500000`。
+- `AddNode() (int, error)`：节点编号从 0 开始严格递增，删除后不复用；新节点序值等于节点编号。达到上限返回 `ErrNodeLimit`。
+- `AddEdge(u, v) (AddEdgeResult, error)`：先报节点不存在；节点存在的自环按成环处理，否则依次检查重复边、边数已满、成环；成功结果包含 `Moved`、`Forward=|δF|`、`Backward=|δB|`。
+- `AddEdges(edges [][2]int) (AddEdgesResult, error)`：长度必须为 `1..1000`。批内逐条可见，任一条失败即原子回滚；失败通过 `*BatchError` 返回下标与原因。
+- `RemoveEdge(u,v)`、`RemoveNode(x)`：只删边或节点及关联边，绝不改序值。
+- `Order()`、`OrdOf(x)`：返回当前存活节点的拓扑序快照与单个节点序值。
+- `Touched()`：非导出语义的测试辅助计数器，统计成功重排标记过的节点总数。
 
-## 运行
+错误哨兵包括 `ErrNodeNotFound`、`ErrEdgeAlreadyExists`、`ErrEdgeLimit`、`ErrEdgeNotFound`、`ErrNodeLimit`、`ErrInvalidBatchSize`。成环错误为 `*CycleError`，其 `Witness` 字段保存确定性路径。
+
+## 增量重排
+
+当 `ord(u) < ord(v)` 时，`AddEdge(u,v)` 已满足拓扑约束，只加边，`touched` 增加 0。
+
+当 `ord(u) > ord(v)` 时定义：
+
+- `lb = ord(v)`，`ub = ord(u)`。
+- `δF`：从 `v` 沿现有出边可达、且序值不大于 `ub` 的节点，包含 `v`。
+- 若 `u ∈ δF`，则现有图已有 `v →* u`，新边 `u → v` 成环并拒绝。
+- `δB`：沿现有入边可到达 `u`、且序值不小于 `lb` 的节点，包含 `u`。
+- 池：`δB ∪ δF` 中所有节点的旧序值，升序排列。
+- 新序列：先把 `δB` 节点按旧序值升序排列，再把 `δF` 节点按旧序值升序排列。
+- 新序列中的节点按顺序依次取得池中的序值；区间外节点完全不动。
+- `Moved` 只列出新序值确实不同于旧序值的节点，并按新序值升序返回。
+
+这种局部池化把原来分散在 `[lb,ub]` 内的后向集合整体放到前向集合之前，同时保留两个集合内部的原顺序。拒绝成环边前不会写入边或序值。
+
+## 环路见证
+
+成环见证是从 `v` 到 `u` 的最短现有路径；边数相同时选择节点编号序列字典序最小者，写为 `[v … u]`。自环的见证为 `[u]`。补上被拒绝的新边 `u → v` 即得到完整环。前向可达搜索按 BFS 层数扩展，并在同一层按节点编号升序确定父节点，从而稳定复现上述见证。
+
+## 序值空洞
+
+序值是互不相同的非负整数，不要求连续。`RemoveNode` 不改变其他节点序值，也不把删除节点的序值放入池中。后续 `AddNode` 的编号和序值都等于当前累计创建数，因此会自然接续而不是复用空洞。
+
+## 批量语义
+
+`AddEdges` 在加锁前复制输入，然后在同一个临界区内逐条执行：
+
+- 批内先前成功加入的边立即可用于后续重复边、边数、成环和可达性判定。
+- 每条记录 `( |δF|, |δB| )`；无需重排的边为 `(0,0)`。
+- 全部成功时，`Moved` 比较批前与批末序值；中途移动但最后回到原序值的节点不列入。
+- 任一失败时，删除本批已加入的边并恢复批前序值与 `touched`；本批不能创建节点，所以创建计数不变。
+
+## 本地验证
+
+本模块没有外部依赖：
 
 ```bash
-# 拉取依赖
-go mod tidy
-
-# 直接运行
-go run ./cmd/server
-
-# 编译后运行
-go build -o bin/server ./cmd/server
-./bin/server
-```
-
-## 测试
-
-```bash
-# 全量测试
 go test ./...
-
-# 带竞态检测与详细输出
 go test -race -v ./...
-
-# 单个包 / 单个用例
-go test ./ontology
-go test -run TestObjectType ./ontology
-
-# 覆盖率
-go test -coverprofile=coverage.out ./...
-go tool cover -html=coverage.out
-```
-
-## 代码检查
-
-```bash
-gofmt -l .
 go vet ./...
 ```
+
+测试覆盖题目中的完整示例、相邻交换、上下界截断、多节点池分配、等长见证字典序、自环和重复边、删除后空洞、反向重新加边、拒绝不变性、批量回滚与批内依赖。`TestRandomSequencesAgainstNaive` 重放 2000 组确定性随机序列（含批量），每一步用独立朴素模型对照输入、输出、`Order`、`touched`、计数和拓扑合法性；使用 `go test -v -run TestRandomSequencesAgainstNaive` 可查看逐步日志。`TestLongChainLocalTouched` 在 100000 节点链上验证相邻序值加边只标记 2 个节点。
