@@ -2,6 +2,11 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 组件
+
+- [`debloat/`](debloat/README.md)：带滑动吞吐窗口、迟滞确认、振荡抑制与
+  内存池上限的网络缓冲去膨胀控制器（`debloat.Controller`）。
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
