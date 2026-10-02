@@ -2,6 +2,19 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 包：`cron`
+
+五字段 Cron 表达式触发时刻计算器与 CronJob 式错过触发判定控制器。
+语法、日/周 OR/AND 规则、错过触发窗口、只补最近一次与三种并发策略
+详见 [cron/README.md](cron/README.md)。
+
+```bash
+go test ./cron
+go test -race -v ./cron
+# 2000 组随机表达式差分测试，日志写入 cron/diff_test.log
+go test -run TestDifferentialRandom2000 -v ./cron
+```
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
