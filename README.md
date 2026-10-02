@@ -2,6 +2,16 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 信任锚跟踪
+
+RFC 5011 风格信任锚自动更新跟踪器位于 `trustanchor/`，状态转移表、三阶段观测处理、固定拒绝次序和安全不变量见 `trustanchor/README.md`。
+
+```bash
+go test ./...
+go test -race -v ./trustanchor
+go test -v ./trustanchor -run TestRandomSequencesMatchNaiveSimulation
+```
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
