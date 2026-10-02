@@ -2,6 +2,11 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 模块
+
+- [`hm/`](hm/README.md)：带层级泛化与值限制的 Hindley–Milner 合一会话，
+  含原子合一、模式泛化/实例化与 2000 组随机差分测试。
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
