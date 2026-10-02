@@ -2,6 +2,11 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 组件
+
+- [`lessor/`](./lessor/README.md)：etcd 式租约管理器（TTL 授予/续约、键挂靠、
+  限速撤销积压、检查点与主从切换），详见包内文档与测试。
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
