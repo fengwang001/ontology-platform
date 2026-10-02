@@ -2,6 +2,11 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 模块
+
+- `hpack/`：带动态表尺寸协商的 HPACK 式头部压缩编码器/解码器，详见
+  `hpack/README.md`。
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
