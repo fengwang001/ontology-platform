@@ -2,6 +2,10 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 组件
+
+- [`quicloss`](quicloss/README.md)：RFC 9002 风格的丢包检测与 PTO 定时器控制器（H/A 两个包号空间，确定性可复现，含 2000 组随机朴素模型对照测试）。
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
