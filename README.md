@@ -38,6 +38,18 @@ go test -coverprofile=coverage.out ./...
 go tool cover -html=coverage.out
 ```
 
+## 变更缓冲（change buffer）
+
+带空闲空间估计位图的变更缓冲模型位于 `changebuffer/`：对不在池中的二级
+索引页缓冲 `Insert`/`DeleteMark`/`Purge`，在页读入或估计空间不足时按到达
+序合并。空闲桶、保证下界、缓冲/强制合并判定、条目语义、不变式与本地验证
+方法见 `changebuffer/README.md`。
+
+```bash
+GOCACHE=/tmp/gocache go test -race ./changebuffer/
+GOCACHE=/tmp/gocache go test ./changebuffer/ -run TestRandomDifferential -v
+```
+
 ## 代码检查
 
 ```bash
