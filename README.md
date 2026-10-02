@@ -2,6 +2,12 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 模块
+
+- [`percolator`](percolator/README.md)：Percolator 式两阶段事务锁解析器
+  （主键提交、读者前滚/回滚、保护性 Rollback、确定性可复现），含 2000 组
+  随机序列与朴素模型的差分对照测试。
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
