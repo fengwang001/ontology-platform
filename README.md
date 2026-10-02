@@ -1,46 +1,83 @@
-# ontology-platform
+# retry-budget
 
-本体服务平台（对标 Palantir Foundry Ontology）。
+带双窗口、存入封顶与递增定价的并发滑动窗口重试预算。
 
-## 环境要求
+## 预算模型
 
-- Go 1.26+（`go version` 确认）
+`NewRetryBudget(Wd, Wc, D, C, R, Mx, Cm)` 的参数含义：
 
-## 运行
+- `Wd`：存入事件有效期。
+- `Wc`：取出事件有效期。
+- `D`：每个有效存入请求提供的额度。
+- `C`：第一次重试的基础成本。
+- `R`：不依赖请求的保底额度。
+- `Mx`：定价倍数上限。
+- `Cm`：计入余额的有效存入事件数上限。
 
-```bash
-# 拉取依赖
-go mod tidy
+事件有效期采用左闭右开规则：
 
-# 直接运行
-go run ./cmd/server
+- 存入事件时刻为 `t`，当且仅当 `t + Wd > now` 时有效，恰在 `t + Wd` 已失效。
+- 取出事件时刻为 `t`，当且仅当 `t + Wc > now` 时有效，恰在 `t + Wc` 已失效。
 
-# 编译后运行
-go build -o bin/server ./cmd/server
-./bin/server
+`Request(now)` 在通过时间校验后登记一笔存入。`TryRetry(now)` 先统计当前有效取出事件数 `k`，本次成本在记账时冻结：
+
+```text
+cost = C × min(Mx, 1+k)
 ```
 
-## 测试
+允许条件是当前余额不小于 `cost`。允许后，取出事件永久保存本次冻结的 `cost`；之后即使较早取出事件过期、`k` 下降，旧事件的成本也不会重新计算。拒绝时只推进时间，不登记取出事件。
+
+余额公式为：
+
+```text
+Balance(now) = R + D × min(Cm, 有效存入事件数) − 有效取出事件冻结成本之和
+```
+
+余额允许为负。
+
+## 校验与并发
+
+配置合法范围：
+
+- `Wd`、`Wc`：`1..1_000_000_000`。
+- `D`、`C`：`1..1_000_000`。
+- `R`：`0..1_000_000_000`。
+- `Mx`：`1..10`。
+- `Cm`：`1..1_000_000`。
+
+`Request`、`TryRetry`、`Balance` 都要求 `0 <= now <= 10^15`，且 `now` 不能小于已接受操作见过的最大时间。拒绝原因按以下顺序只返回第一个：
+
+1. `ErrInvalidTime`：时间非法。
+2. `ErrClockBacktrack`：时钟回退。
+
+任何被接受的操作都会推进最大时间，包括返回拒绝结果的 `TryRetry`；参数错误或时钟回退不会修改账本和最大时间。所有操作由同一把互斥保护，因此结果等价于某个串行顺序。
+
+## 增量维护与清理
+
+实现维护两条按时间追加的事件队列，以及两个非导出状态：
+
+- `validDeposits`：当前有效存入事件数（已应用 `Cm` 封顶）。
+- `frozenCost`：当前有效取出事件冻结成本之和。
+
+每次操作只从队头连续考察已过期事件；队列遇到第一笔仍有效事件即停止，因此不会扫描整条仍有效账本。过期事件先以队头偏移跳过，当至少一半容量是过期前缀时才复制剩余活跃事件。复制次数按登记事件数摊还，清理总数不超过登记总数；有效存入数和冻结成本只对移出队头的事件增量调整，不重新求和。
+
+测试通过 1000 与 100000 次操作检查清理计数和考察计数，并构造 100000 笔仍有效事件，确认一次 `Balance` 只考察每条账本的队头第一笔。
+
+## 本地验证
 
 ```bash
-# 全量测试
+# 如果 go 不在 PATH 中，可使用 /usr/local/go/bin/go
 go test ./...
 
-# 带竞态检测与详细输出
-go test -race -v ./...
+# 竞态检测
+go test -race ./...
 
-# 单个包 / 单个用例
-go test ./ontology
-go test -run TestObjectType ./ontology
+# 2000 组随机序列与朴素逐事件扫描实现对照
+# 测试会为每笔操作记录输入、输出、有效事件、冻结成本和允许/拒绝依据
+go test -run TestRandomDifferentialAgainstNaiveScan -v ./...
 
-# 覆盖率
-go test -coverprofile=coverage.out ./...
-go tool cover -html=coverage.out
-```
+# 摊还清理计数与长账本测试
+go test -run 'TestAmortizedCleaningBounds|TestLongActiveLedgerDoesNotMakeOperationsLinear' -v ./...
 
-## 代码检查
-
-```bash
-gofmt -l .
 go vet ./...
 ```
