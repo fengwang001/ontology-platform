@@ -1,24 +1,65 @@
 # ontology-platform
 
-本体服务平台（对标 Palantir Foundry Ontology）。
+本体服务平台（对标 Palantir Foundry Ontology）。当前包含可确定复现的二维整数 R 树实现，代码位于 `rtree` 包。
 
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
 
-## 运行
+## 二维整数 R 树
 
-```bash
-# 拉取依赖
-go mod tidy
+通过 `rtree.New(M, m, C)` 创建树：
 
-# 直接运行
-go run ./cmd/server
+- `M`：节点容量，范围 `3..16`。
+- `m`：非根节点最少条目数，范围 `1..floor(M/2)`。
+- `C`：对象总数上限，范围 `1..1_000_000`。
+- 矩形使用闭区间 `rtree.Rect{X1, Y1, X2, Y2}`，坐标范围 `−10^9..10^9`，允许点和线段。
 
-# 编译后运行
-go build -o bin/server ./cmd/server
-./bin/server
-```
+叶子条目是对象；内部条目是子节点及其紧 MBR。叶子高度为 0，除空树根外所有叶子同高。
+
+### 插入
+
+`Insert(id, rect)` 返回本次插入产生的分裂次数。
+
+1. 从根下降，每层选择 `area(并集 MBR) - area(子 MBR)` 最小的子节点。
+2. 扩张量相同，选择自身 MBR 面积较小者；再相同选择位置序号较小者。
+3. 新对象追加到目标叶子末尾。
+4. 节点条目数超过 `M` 时，按 `(x1+x2, y1+y2)` 对条目矩形做稳定字典序排序。
+5. 前 `ceil((M+1)/2)` 个条目留在原节点，其余放入新节点；新节点紧挨原节点挂入父节点。
+6. 根分裂时新建根，树高增加 1；插入路径与新父节点 MBR 均重新收紧。
+
+### 删除与条件重插
+
+`Delete(id)` 返回 `(摘除节点数, 重插条目数, error)`。
+
+1. 使用对象表中的原始矩形定位，从根按条目次序深度优先搜索。
+2. 仅进入 MBR 包含对象矩形的子节点；非导出计数器 `located` 记录定位阶段进入的节点数。
+3. 在叶子删除目标条目，其余条目次序不变。
+4. 自叶向根处理：非根节点条目数小于 `m` 时从父节点摘除，并将其全部条目按原次序放入重插队列；条目保留所属子树高度。
+5. 条目数不少于 `m` 的节点只收紧 MBR。
+6. 队列按摘除先后、自底向上处理：高度 0 的对象插入叶子；高度大于 0 的子树下降到与该子树匹配的父层后追加。
+7. 重插使用与插入相同的选择、分裂和 MBR 收紧规则。
+8. 所有重插完成后，若内部根只有一个子节点，则用该子节点替换根，并重复到根为叶子或至少有两个子节点。
+9. 对象全部删除后树根为高度 0 的空叶子。
+
+### 查询、并发与 Dump
+
+- `Search(rect)` 返回与查询矩形有公共点的对象 id 升序列表；边、角相接算相交。
+- 非导出计数器 `visited` 记录一次查询进入的节点数，恒为 `1 + MBR 与查询矩形相交的非根节点数`。
+- 所有读写操作受互斥锁保护，查询只看到完整提交后的插入或删除。
+- `Dump()` 以先根序输出确定结构：
+  - 空树：`L[]()`
+  - 叶子：`L[x1 y1 x2 y2](id id …)`
+  - 内部节点：`N[x1 y1 x2 y2]{子节点,子节点}`
+
+错误使用哨兵值区分，检查顺序固定为参数非法、重复编号或对象不存在、对象数已满：
+
+- `rtree.ErrInvalidArgument`
+- `rtree.ErrDuplicateID`
+- `rtree.ErrObjectNotFound`
+- `rtree.ErrCapacityFull`
+
+被拒绝的操作不会修改树结构、对象数、`visited` 或 `located`。
 
 ## 测试
 
@@ -26,12 +67,18 @@ go build -o bin/server ./cmd/server
 # 全量测试
 go test ./...
 
+# R 树包测试
+go test ./rtree
+
+# 单个规格用例
+go test -run TestSpecExample -v ./rtree
+
+# 2000 组随机插入、删除、查询重放
+# -v 会打印每步输入、输出、暴力扫描判定和 visited
+go test -run TestRandomSequences -v ./rtree
+
 # 带竞态检测与详细输出
 go test -race -v ./...
-
-# 单个包 / 单个用例
-go test ./ontology
-go test -run TestObjectType ./ontology
 
 # 覆盖率
 go test -coverprofile=coverage.out ./...
