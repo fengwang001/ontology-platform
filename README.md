@@ -2,6 +2,13 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 组件
+
+- `dbscan`：滑动窗口增量 DBSCAN 聚类服务。在二维整数点随插入、删除与
+  时间过期持续变化时，维护每个点的核心 / 边界 / 噪声身份与确定的簇
+  标签，精确报告每次操作的标签变化（Changes）与簇事件（Events），
+  支持并发调用。定义、规则与验证方法见 [dbscan/README.md](dbscan/README.md)。
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
