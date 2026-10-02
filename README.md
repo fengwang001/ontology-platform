@@ -2,6 +2,12 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 包
+
+- `overagg`：事件时间 OVER 范围聚合器，按水位线推进释放缓冲行并输出
+  范围帧 `[ts-R, ts]` 内的求和、计数与最大值，支持迟到丢弃、补发与
+  状态清理。语义与增量维护详见 [overagg/README.md](overagg/README.md)。
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
