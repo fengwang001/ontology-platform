@@ -2,6 +2,11 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 嵌套记录列式拆分/重装
+
+`ontology/` 子包实现 Dremel 风格的嵌套记录列式拆分与重装，详见
+[`ontology/README.md`](ontology/README.md)。
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
