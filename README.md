@@ -2,6 +2,15 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+
+## 偏移区间调度器
+
+`scheduler` 包提供可并发调用的半开偏移区间追踪调度器，支持分批领取、批确认、按分数拆分剩余偏移、保持值与单调输出水位线。规则、取整公式、拒绝原因与测试说明见 `scheduler/README.md`。
+
+```bash
+go test -race -v ./scheduler
+```
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
