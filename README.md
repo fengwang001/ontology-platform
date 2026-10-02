@@ -2,6 +2,12 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 模块
+
+- `dbscan/`：滑动窗口增量 DBSCAN 聚类服务（邻域 / 核心 / 簇 / 边界点定义、
+  窗口与时钟规则、变化报告与簇事件口径、局部性计数与本地验证方法见
+  [`dbscan/README.md`](dbscan/README.md)）。
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
