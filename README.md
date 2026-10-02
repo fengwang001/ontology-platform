@@ -44,3 +44,8 @@ go tool cover -html=coverage.out
 gofmt -l .
 go vet ./...
 ```
+
+## 包
+
+- `tlb`：带 ASID 世代回绕与惰性整表刷新的多 CPU 软件 TLB 模型，
+  详见 [docs/tlb.md](docs/tlb.md)。
