@@ -2,6 +2,11 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 包
+
+- `redolog`：带小事务（MTR）原子性与文件操作屏障的重做日志并行回放器，
+  详见 [redolog/README.md](redolog/README.md)。
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
