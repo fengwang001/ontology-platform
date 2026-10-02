@@ -2,6 +2,10 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 包
+
+- `seating` — 带保留时限与孤座回避的影厅选座登记器，详见 [seating/README.md](seating/README.md)。
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
