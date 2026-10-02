@@ -2,6 +2,10 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 包
+
+- `scheduler`：抢占阈值调度器（单核离散步进模型），见 [scheduler/README.md](scheduler/README.md)
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
