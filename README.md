@@ -44,3 +44,9 @@ go tool cover -html=coverage.out
 gofmt -l .
 go vet ./...
 ```
+
+## 子系统
+
+- `sigsub`：多线程进程信号投递子系统（进程级/线程级待处理、标准信号合并、
+  实时信号配额队列、忽略冲刷、目标线程选择、优先级投递、处理函数屏蔽字
+  叠加）。详见 [sigsub/README.md](sigsub/README.md)。
