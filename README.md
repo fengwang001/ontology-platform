@@ -2,6 +2,12 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 包
+
+- `iblt`：可逆布隆查找表（IBLT）集合对账草图，把两个副本的键集合各自
+  写入草图、相减后剥离出各自独有的键。位置与校验的计算、纯格子与剥离
+  次序、错误优先级及本地验证方法见 [iblt/README.md](iblt/README.md)。
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
