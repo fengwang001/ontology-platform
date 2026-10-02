@@ -2,6 +2,11 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 组件
+
+- [`tablespace`](tablespace/README.md)：带区段状态（FREE/FRAG/FULLFRAG/SEG）
+  与段碎片页的并发表空间页分配器，含规则测试与 2000 组随机序列朴素模型对照。
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
