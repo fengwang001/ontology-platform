@@ -2,6 +2,11 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 组件
+
+- `rbac`：带层级角色与 SSD/DSD 职责分离约束的 RBAC 管理器（角色继承、
+  用户分配、会话激活、权限检查、级联停用）。详见 [docs/rbac.md](docs/rbac.md)。
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
