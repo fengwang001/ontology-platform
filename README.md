@@ -6,6 +6,14 @@
 
 - Go 1.26+（`go version` 确认）
 
+
+## 包
+
+- `allocator/`：按检查点纪元回收的数据源拆分分配器（偏好分配、失败回收、
+  隔离、精确的「无更多拆分」信号）。设计说明见
+  [allocator/README.md](allocator/README.md)，测试见
+  `go test ./allocator/`（含 2000 组随机操作序列与朴素模拟的对照）。
+
 ## 运行
 
 ```bash
