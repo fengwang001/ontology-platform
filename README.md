@@ -2,6 +2,12 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 组件
+
+- `cron/`：五字段 Cron 表达式下一次触发分钟计算器与 CronJob 式错过触发
+  补偿控制器（字段语法、日/周“或与”规则、补偿窗口与 Allow/Forbid/Replace
+  并发策略见 `cron/README.md`）。
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
