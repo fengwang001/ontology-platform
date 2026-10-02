@@ -2,6 +2,10 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 模块
+
+- `paxos`：Multi-Paxos 新主槽位恢复规划器，见 [paxos/README.md](paxos/README.md)。
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
