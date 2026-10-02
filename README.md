@@ -33,6 +33,12 @@ go test -race -v ./...
 go test ./ontology
 go test -run TestObjectType ./ontology
 
+# SYN Cookie 握手验证器（含朴素模拟差分日志与竞态检测）
+go test ./syncookie -v
+go test -race ./syncookie
+go test -run TestNaiveDifferential -v   # 逐条打印输入/输出/判定依据
+# 说明见 syncookie/README.md
+
 # 覆盖率
 go test -coverprofile=coverage.out ./...
 go tool cover -html=coverage.out
