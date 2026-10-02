@@ -44,3 +44,8 @@ go tool cover -html=coverage.out
 gofmt -l .
 go vet ./...
 ```
+
+## 包说明
+
+- `tricolor/`：RFC 4115 风格双速率三色标记器（溢出耦合双桶、红色
+  惩罚期、在线改配置），详见 [tricolor/README.md](tricolor/README.md)。
