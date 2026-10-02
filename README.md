@@ -2,6 +2,11 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 组件
+
+- [`consistenthash`](consistenthash/README.md)：带负载上限的一致性哈希环
+  （Bounded Loads），固定次序的节点移除重放置与再平衡，结果可精确复现。
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
