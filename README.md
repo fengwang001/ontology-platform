@@ -2,6 +2,10 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 组件
+
+- [`leasearbiter/`](leasearbiter/README.md)：Raft 领导者读租约仲裁器（租约本地读 / ReadIndex 降级 / 失联降级 / 挑战者投票静默），含朴素模拟差分测试。
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
