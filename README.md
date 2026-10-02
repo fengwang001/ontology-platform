@@ -2,6 +2,10 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 组件
+
+- `epoll/`：多实例共享文件状态的 epoll 风格就绪事件队列，支持水平触发、边沿触发、一次性、独占唤醒、FIFO 就绪链与原子回填；语义、复杂度和验证方法见 `epoll/README.md`。
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
