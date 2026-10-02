@@ -2,6 +2,10 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 组件
+
+- [`canfault`](./canfault)：CAN 控制器故障界定状态机（TEC/REC、主动/被动/总线关闭三态与恢复），见 `canfault/README.md`。
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
