@@ -2,6 +2,12 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 包
+
+- `tcpchk`：RFC 5961 风格 TCP 已建立连接段合法性校验器（序号窗口 /
+  RST 精确匹配 / SYN 与 ACK 范围检查 + 全局挑战 ACK 限速），详见
+  [tcpchk/README.md](tcpchk/README.md)。
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
