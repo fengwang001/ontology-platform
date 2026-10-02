@@ -44,3 +44,9 @@ go tool cover -html=coverage.out
 gofmt -l .
 go vet ./...
 ```
+
+## 包说明
+
+- `swap/`：交换区槽位账本。为换出的页分配槽位，以引用计数与交换缓存
+  标志共同决定回收，按「簇优先、下一适应、整簇空闲队列」次序分配；
+  批量操作整批原子，所有方法可并发调用。详见 [swap/README.md](swap/README.md)。
