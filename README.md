@@ -44,3 +44,14 @@ go tool cover -html=coverage.out
 gofmt -l .
 go vet ./...
 ```
+
+## 生命周期计费器
+
+访问期分层（热/凉/冷）、早离补费与月度免费检索额度的对象存储计费器位于
+[`lifecycle/`](lifecycle/) 包，层级推导、存储费/补费/检索费公式、拒绝顺序与
+本地验证方法见 [`lifecycle/README.md`](lifecycle/README.md)。
+
+```bash
+# 2000 组随机操作序列对照朴素模拟（带竞态检测，-v 查看输入/输出/判定日志）
+go test -race -v ./lifecycle
+```
