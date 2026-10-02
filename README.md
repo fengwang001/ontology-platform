@@ -32,6 +32,8 @@ go test -race -v ./...
 # 单个包 / 单个用例
 go test ./ontology
 go test -run TestObjectType ./ontology
+go test ./compactor
+go test -v -run TestNaiveDifferential ./compactor
 
 # 覆盖率
 go test -coverprofile=coverage.out ./...
