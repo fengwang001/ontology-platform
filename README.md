@@ -2,6 +2,12 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 模块
+
+- `dirtyflush/`：按首次弄脏 LSN 排序的缓冲池刷写链表与页间写依赖管理器
+  （Modify/Flush/SetFlushed/AddDep/Checkpoint/Plan）。规则、拒绝原因、
+  在途处理与本地验证方法见 `dirtyflush/README.md`。
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
