@@ -2,6 +2,19 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 多实例资源死锁检测与消解
+
+`deadlock` 包实现带备选请求（“任选其一”、按列出顺序取第一个可满足备选）的
+多实例资源分配、bseq 先到先授予不动点、图归约死锁检测（`checks ≤ b(b+1)/2`）
+与按 `Σ alloc·c·(1+rb)` 选最小代价牺牲者的原子消解。规则推导、净增量说明、
+牺牲者选择与本地验证方法见 `deadlock/DESIGN.md`。
+
+```bash
+go test ./...
+go test -race ./...
+go test -run TestRandomDifferential -v ./deadlock  # 2000 组随机序列 + 朴素 oracle 对照日志
+```
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
