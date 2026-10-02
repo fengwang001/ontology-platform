@@ -2,6 +2,12 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 包
+
+- `costalloc`：逐级下推的内部服务部门成本分摊账本。每个结账期按动态重算的
+  比例次序把服务部门成本分摊给尚未下推的部门，余数分按跨期累计分摊额 `H`
+  决定归属。规则与公式详见 [costalloc/README.md](costalloc/README.md)。
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
