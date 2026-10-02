@@ -2,6 +2,14 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 模块
+
+- [`kerberos`](kerberos/DESIGN.md)：Kerberos 风格的票据发放、续期与重放缓存簿。
+  支持可后置 TGT（`IssueTGT`）、凭 TGT 签发服务票据（`TGS`）、续期
+  （`Renew`）、后置票据验证（`Validate`）、服务端偏差与重放校验
+  （`Authenticate`）以及改密失效（`ChangeKey`）。票据时间公式、各操作固定
+  判定次序、重放缓存保留范围与测试方法见 `kerberos/DESIGN.md`。
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
