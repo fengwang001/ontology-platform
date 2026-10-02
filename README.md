@@ -2,6 +2,12 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 包
+
+- `aries`：ARIES 风格的事务回滚与崩溃重启撤销阶段模型（保存点部分回滚、
+  跨事务按 LSN 从大到小的重启撤销、可中断续做的 `RestartStep`）。
+  详见 [aries/README.md](aries/README.md)。
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
