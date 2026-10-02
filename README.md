@@ -2,6 +2,12 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 包
+
+- `frame`：带自适应跳过压缩的分块流式写出器与校验读取器（类 Snappy 分帧
+  格式，内部字节游程压缩）。分帧与掩码、压缩算法与收益判据、自适应跳过
+  规则、读取端错误次序与偏移详见 [frame/README.md](frame/README.md)。
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
