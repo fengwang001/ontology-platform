@@ -2,6 +2,12 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 组件
+
+- `fsmapper/`：跨平台文件名安全映射器（四步基础映射、目录内唯一与
+  稳定命名、改名先释放后分配、路径长度判定与回滚）。详见
+  `fsmapper/README.md`。
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
