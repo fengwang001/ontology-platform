@@ -1,0 +1,573 @@
+case 1 seed=1 S=2 rcpts=[r0 r1 r2 r3] deadline=47
+  Receipt(msg0,r2,sent,a=1,ts=46) -> real=Applied[] sim=Applied[] | fail=none: sentA/max logic, r 1->1 Applied
+  Receipt(msg0,r2,delivered,a=3,ts=59) -> real=Applied[] sim=Applied[] | fail=none: sentA/max logic, r 2->2 Applied
+  Tick(21) -> real=[][] sim=[][] | deadline<=21 newly expired -> exp
+  Receipt(msg0,r1,delivered,a=1,ts=16) -> real=Applied[] sim=Applied[] | fail=none: sentA/max logic, r 2->2 Applied
+  Tick(57) -> real=[[msg0 r0] [msg0 r3]][] sim=[[msg0 r0] [msg0 r3]][] | deadline<=57 newly expired -> exp
+  Tick(57) -> real=[][] sim=[][] | deadline<=57 newly expired -> exp
+  Receipt(msg0,r3,delivered,a=4,ts=27) -> real=Applied[] sim=Applied[] | exp revoked by delivered ts=27 < deadline=47 -> r=max -> Applied
+  Receipt(msg0,r1,delivered,a=3,ts=21) -> real=Stale[] sim=Stale[] | fail=none but r did not increase -> Stale (sentA still advanced if sent)
+  Receipt(msg0,r2,soft,a=1,ts=34) -> real=Stale[] sim=Stale[] | soft while r>=2 -> Stale, not recorded
+  Receipt(msg0,r1,read,a=4,ts=4) -> real=Applied[] sim=Applied[] | fail=none: sentA/max logic, r 3->3 Applied
+  Status -> summary=partial
+  Receipt(msg0,r1,delivered,a=5,ts=49) -> real=Stale[] sim=Stale[] | fail=none but r did not increase -> Stale (sentA still advanced if sent)
+  Receipt(msg0,r1,soft,a=4,ts=33) -> real=Stale[] sim=Stale[] | soft while r>=2 -> Stale, not recorded
+  Receipt(msg0,r3,sent,a=1,ts=66) -> real=Stale[] sim=Stale[] | fail=none but r did not increase -> Stale (sentA still advanced if sent)
+  Receipt(msg0,r0,delivered,a=3,ts=33) -> real=Applied[] sim=Applied[] | exp revoked by delivered ts=33 < deadline=47 -> r=max -> Applied
+  Receipt(msg0,r3,delivered,a=3,ts=58) -> real=Stale[] sim=Stale[] | fail=none but r did not increase -> Stale (sentA still advanced if sent)
+  Tick(55) -> real=[][skew] sim=[][skew] | now before last tick
+  Receipt(msg0,r0,sent,a=4,ts=43) -> real=Stale[] sim=Stale[] | fail=none but r did not increase -> Stale (sentA still advanced if sent)
+  Tick(61) -> real=[][] sim=[][] | deadline<=61 newly expired -> exp
+  Status -> summary=delivered
+  Receipt(msg0,r3,delivered,a=3,ts=48) -> real=Duplicate[] sim=Duplicate[] | (kind,attempt) already in seen -> Duplicate, state unchanged
+  Receipt(msg0,r2,read,a=1,ts=53) -> real=Applied[] sim=Applied[] | fail=none: sentA/max logic, r 3->3 Applied
+  Receipt(msg0,r3,sent,a=4,ts=55) -> real=Stale[] sim=Stale[] | fail=none but r did not increase -> Stale (sentA still advanced if sent)
+  Receipt(msg0,r3,read,a=3,ts=10) -> real=Applied[] sim=Applied[] | fail=none: sentA/max logic, r 3->3 Applied
+  Receipt(msg0,r1,sent,a=3,ts=18) -> real=Stale[] sim=Stale[] | fail=none but r did not increase -> Stale (sentA still advanced if sent)
+  Receipt(msg0,r3,read,a=5,ts=47) -> real=Stale[] sim=Stale[] | fail=none but r did not increase -> Stale (sentA still advanced if sent)
+  Tick(61) -> real=[][] sim=[][] | deadline<=61 newly expired -> exp
+  Receipt(msg0,r2,read,a=2,ts=69) -> real=Stale[] sim=Stale[] | fail=none but r did not increase -> Stale (sentA still advanced if sent)
+  Receipt(msg0,r2,soft,a=2,ts=49) -> real=Stale[] sim=Stale[] | soft while r>=2 -> Stale, not recorded
+  Receipt(msg0,r0,sent,a=1,ts=40) -> real=Stale[] sim=Stale[] | fail=none but r did not increase -> Stale (sentA still advanced if sent)
+  Tick(61) -> real=[][] sim=[][] | deadline<=61 newly expired -> exp
+  Tick(60) -> real=[][skew] sim=[][skew] | now before last tick
+  Receipt(msg0,r3,read,a=3,ts=56) -> real=Duplicate[] sim=Duplicate[] | (kind,attempt) already in seen -> Duplicate, state unchanged
+  Status -> summary=delivered
+  Receipt(msg0,r2,delivered,a=2,ts=60) -> real=Stale[] sim=Stale[] | fail=none but r did not increase -> Stale (sentA still advanced if sent)
+  Receipt(msg0,r0,hard,a=1,ts=3) -> real=Stale[] sim=Stale[] | hard while r>=2 -> late=true, Stale
+  Receipt(msg0,r2,read,a=4,ts=17) -> real=Stale[] sim=Stale[] | fail=none but r did not increase -> Stale (sentA still advanced if sent)
+  Receipt(msg0,r2,hard,a=3,ts=13) -> real=Stale[] sim=Stale[] | hard while r>=2 -> late=true, Stale
+  Receipt(msg0,r0,soft,a=4,ts=36) -> real=Stale[] sim=Stale[] | soft while r>=2 -> Stale, not recorded
+  Receipt(msg0,r3,sent,a=5,ts=2) -> real=Stale[] sim=Stale[] | fail=none but r did not increase -> Stale (sentA still advanced if sent)
+  Tick(61) -> real=[][] sim=[][] | deadline<=61 newly expired -> exp
+  Status -> summary=delivered
+  Receipt(msg0,r1,sent,a=5,ts=60) -> real=Stale[] sim=Stale[] | fail=none but r did not increase -> Stale (sentA still advanced if sent)
+  Receipt(msg0,r2,hard,a=3,ts=0) -> real=Duplicate[] sim=Duplicate[] | (kind,attempt) already in seen -> Duplicate, state unchanged
+  Receipt(msg0,r2,hard,a=1,ts=58) -> real=Stale[] sim=Stale[] | hard while r>=2 -> late=true, Stale
+  Receipt(msg0,r3,delivered,a=1,ts=16) -> real=Stale[] sim=Stale[] | fail=none but r did not increase -> Stale (sentA still advanced if sent)
+  Status -> summary=delivered
+  Receipt(msg0,r3,read,a=2,ts=30) -> real=Stale[] sim=Stale[] | fail=none but r did not increase -> Stale (sentA still advanced if sent)
+  Status -> summary=delivered
+case 2 seed=2 S=3 rcpts=[r0 r1 r2] deadline=12
+  Receipt(msg1,r2,sent,a=5,ts=61) -> real=Applied[] sim=Applied[] | fail=none: sentA/max logic, r 1->1 Applied
+  Receipt(msg1,r2,hard,a=1,ts=12) -> real=Applied[] sim=Applied[] | hard while r<2 (fail=exp) -> fail=hard Applied
+  Receipt(msg1,r2,sent,a=5,ts=69) -> real=Duplicate[] sim=Duplicate[] | (kind,attempt) already in seen -> Duplicate, state unchanged
+  Tick(68) -> real=[[msg1 r0] [msg1 r1]][] sim=[[msg1 r0] [msg1 r1]][] | deadline<=68 newly expired -> exp
+  Receipt(msg1,r1,hard,a=5,ts=53) -> real=Applied[] sim=Applied[] | hard while r<2 (fail=exp) -> fail=hard Applied
+  Receipt(msg1,r0,hard,a=1,ts=50) -> real=Applied[] sim=Applied[] | hard while r<2 (fail=exp) -> fail=hard Applied
+  Receipt(msg1,r1,delivered,a=5,ts=59) -> real=Ignored[] sim=Ignored[] | fail=hard terminal -> progress Ignored
+  Receipt(msg1,r0,delivered,a=3,ts=38) -> real=Ignored[] sim=Ignored[] | fail=hard terminal -> progress Ignored
+  Receipt(msg1,r1,hard,a=4,ts=68) -> real=Ignored[] sim=Ignored[] | hard with fail=hard -> Ignored
+  Receipt(msg1,r2,read,a=5,ts=62) -> real=Ignored[] sim=Ignored[] | fail=hard terminal -> progress Ignored
+  Tick(68) -> real=[][] sim=[][] | deadline<=68 newly expired -> exp
+  Receipt(msg1,r2,delivered,a=1,ts=5) -> real=Ignored[] sim=Ignored[] | fail=hard terminal -> progress Ignored
+  Receipt(msg1,r2,delivered,a=1,ts=57) -> real=Duplicate[] sim=Duplicate[] | (kind,attempt) already in seen -> Duplicate, state unchanged
+  Receipt(msg1,r2,read,a=5,ts=68) -> real=Duplicate[] sim=Duplicate[] | (kind,attempt) already in seen -> Duplicate, state unchanged
+  Receipt(msg1,r1,read,a=3,ts=25) -> real=Ignored[] sim=Ignored[] | fail=hard terminal -> progress Ignored
+  Receipt(msg1,r0,hard,a=1,ts=45) -> real=Duplicate[] sim=Duplicate[] | (kind,attempt) already in seen -> Duplicate, state unchanged
+  Receipt(msg1,r0,delivered,a=1,ts=29) -> real=Ignored[] sim=Ignored[] | fail=hard terminal -> progress Ignored
+  Receipt(msg1,r2,soft,a=5,ts=14) -> real=Ignored[] sim=Ignored[] | soft with fail=hard -> Ignored
+  Receipt(msg1,r1,hard,a=5,ts=49) -> real=Duplicate[] sim=Duplicate[] | (kind,attempt) already in seen -> Duplicate, state unchanged
+  Receipt(msg1,r0,read,a=3,ts=11) -> real=Ignored[] sim=Ignored[] | fail=hard terminal -> progress Ignored
+  Receipt(msg1,r2,hard,a=5,ts=55) -> real=Ignored[] sim=Ignored[] | hard with fail=hard -> Ignored
+  Receipt(msg1,r2,delivered,a=3,ts=62) -> real=Ignored[] sim=Ignored[] | fail=hard terminal -> progress Ignored
+  Receipt(msg1,r1,soft,a=3,ts=36) -> real=Ignored[] sim=Ignored[] | soft with fail=hard -> Ignored
+  Status -> summary=failed
+  Receipt(msg1,r2,soft,a=1,ts=3) -> real=Ignored[] sim=Ignored[] | soft with fail=hard -> Ignored
+  Receipt(msg1,r0,hard,a=3,ts=52) -> real=Ignored[] sim=Ignored[] | hard with fail=hard -> Ignored
+  Tick(65) -> real=[][skew] sim=[][skew] | now before last tick
+  Receipt(msg1,r1,hard,a=5,ts=40) -> real=Duplicate[] sim=Duplicate[] | (kind,attempt) already in seen -> Duplicate, state unchanged
+  Status -> summary=failed
+  Receipt(msg1,r0,soft,a=3,ts=47) -> real=Ignored[] sim=Ignored[] | soft with fail=hard -> Ignored
+case 3 seed=3 S=1 rcpts=[r0 r1] deadline=36
+  Tick(36) -> real=[[msg2 r0] [msg2 r1]][] sim=[[msg2 r0] [msg2 r1]][] | deadline<=36 newly expired -> exp
+  Tick(35) -> real=[][skew] sim=[][skew] | now before last tick
+  Receipt(msg2,r0,delivered,a=3,ts=26) -> real=Applied[] sim=Applied[] | exp revoked by delivered ts=26 < deadline=36 -> r=max -> Applied
+  Receipt(msg2,r0,soft,a=5,ts=32) -> real=Stale[] sim=Stale[] | soft while r>=2 -> Stale, not recorded
+  Receipt(msg2,r1,hard,a=3,ts=51) -> real=Applied[] sim=Applied[] | hard while r<2 (fail=exp) -> fail=hard Applied
+  Status -> summary=partial
+  Tick(36) -> real=[][] sim=[][] | deadline<=36 newly expired -> exp
+  Receipt(msg2,r0,read,a=1,ts=32) -> real=Applied[] sim=Applied[] | fail=none: sentA/max logic, r 3->3 Applied
+  Receipt(msg2,r0,read,a=1,ts=16) -> real=Duplicate[] sim=Duplicate[] | (kind,attempt) already in seen -> Duplicate, state unchanged
+  Status -> summary=partial
+  Receipt(msg2,r0,soft,a=5,ts=55) -> real=Duplicate[] sim=Duplicate[] | (kind,attempt) already in seen -> Duplicate, state unchanged
+  Receipt(msg2,r0,hard,a=4,ts=16) -> real=Stale[] sim=Stale[] | hard while r>=2 -> late=true, Stale
+  Receipt(msg2,r1,delivered,a=2,ts=55) -> real=Ignored[] sim=Ignored[] | fail=hard terminal -> progress Ignored
+  Receipt(msg2,r0,soft,a=4,ts=28) -> real=Stale[] sim=Stale[] | soft while r>=2 -> Stale, not recorded
+  Receipt(msg2,r1,sent,a=5,ts=58) -> real=Ignored[] sim=Ignored[] | fail=hard terminal -> progress Ignored
+  Receipt(msg2,r1,sent,a=5,ts=51) -> real=Duplicate[] sim=Duplicate[] | (kind,attempt) already in seen -> Duplicate, state unchanged
+  Tick(36) -> real=[][] sim=[][] | deadline<=36 newly expired -> exp
+  Receipt(msg2,r1,sent,a=2,ts=14) -> real=Ignored[] sim=Ignored[] | fail=hard terminal -> progress Ignored
+  Receipt(msg2,r0,sent,a=3,ts=20) -> real=Stale[] sim=Stale[] | fail=none but r did not increase -> Stale (sentA still advanced if sent)
+  Receipt(msg2,r0,sent,a=1,ts=42) -> real=Stale[] sim=Stale[] | fail=none but r did not increase -> Stale (sentA still advanced if sent)
+  Tick(36) -> real=[][] sim=[][] | deadline<=36 newly expired -> exp
+  Status -> summary=partial
+  Receipt(msg2,r1,soft,a=1,ts=13) -> real=Ignored[] sim=Ignored[] | soft with fail=hard -> Ignored
+  Status -> summary=partial
+  Receipt(msg2,r1,delivered,a=4,ts=16) -> real=Ignored[] sim=Ignored[] | fail=hard terminal -> progress Ignored
+  Tick(47) -> real=[][] sim=[][] | deadline<=47 newly expired -> exp
+  Receipt(msg2,r0,hard,a=3,ts=14) -> real=Stale[] sim=Stale[] | hard while r>=2 -> late=true, Stale
+  Receipt(msg2,r1,read,a=2,ts=15) -> real=Ignored[] sim=Ignored[] | fail=hard terminal -> progress Ignored
+  Receipt(msg2,r1,hard,a=2,ts=9) -> real=Ignored[] sim=Ignored[] | hard with fail=hard -> Ignored
+  Receipt(msg2,r0,read,a=2,ts=20) -> real=Stale[] sim=Stale[] | fail=none but r did not increase -> Stale (sentA still advanced if sent)
+  Receipt(msg2,r1,hard,a=2,ts=22) -> real=Duplicate[] sim=Duplicate[] | (kind,attempt) already in seen -> Duplicate, state unchanged
+  Receipt(msg2,r1,hard,a=1,ts=36) -> real=Ignored[] sim=Ignored[] | hard with fail=hard -> Ignored
+  Receipt(msg2,r1,soft,a=3,ts=10) -> real=Ignored[] sim=Ignored[] | soft with fail=hard -> Ignored
+  Receipt(msg2,r1,delivered,a=1,ts=14) -> real=Ignored[] sim=Ignored[] | fail=hard terminal -> progress Ignored
+  Receipt(msg2,r1,soft,a=1,ts=58) -> real=Duplicate[] sim=Duplicate[] | (kind,attempt) already in seen -> Duplicate, state unchanged
+  Receipt(msg2,r1,hard,a=2,ts=14) -> real=Duplicate[] sim=Duplicate[] | (kind,attempt) already in seen -> Duplicate, state unchanged
+  Status -> summary=partial
+  Status -> summary=partial
+  Receipt(msg2,r1,hard,a=4,ts=19) -> real=Ignored[] sim=Ignored[] | hard with fail=hard -> Ignored
+  Receipt(msg2,r0,soft,a=5,ts=61) -> real=Duplicate[] sim=Duplicate[] | (kind,attempt) already in seen -> Duplicate, state unchanged
+case 4 seed=4 S=2 rcpts=[r0] deadline=13
+  Tick(14) -> real=[[msg3 r0]][] sim=[[msg3 r0]][] | deadline<=14 newly expired -> exp
+  Receipt(msg3,r0,delivered,a=3,ts=6) -> real=Applied[] sim=Applied[] | exp revoked by delivered ts=6 < deadline=13 -> r=max -> Applied
+  Receipt(msg3,r0,sent,a=1,ts=29) -> real=Stale[] sim=Stale[] | fail=none but r did not increase -> Stale (sentA still advanced if sent)
+  Receipt(msg3,r0,soft,a=1,ts=39) -> real=Stale[] sim=Stale[] | soft while r>=2 -> Stale, not recorded
+  Tick(16) -> real=[][] sim=[][] | deadline<=16 newly expired -> exp
+  Receipt(msg3,r0,soft,a=3,ts=1) -> real=Stale[] sim=Stale[] | soft while r>=2 -> Stale, not recorded
+  Receipt(msg3,r0,sent,a=5,ts=69) -> real=Stale[] sim=Stale[] | fail=none but r did not increase -> Stale (sentA still advanced if sent)
+  Receipt(msg3,r0,hard,a=4,ts=44) -> real=Stale[] sim=Stale[] | hard while r>=2 -> late=true, Stale
+  Receipt(msg3,r0,read,a=3,ts=15) -> real=Applied[] sim=Applied[] | fail=none: sentA/max logic, r 3->3 Applied
+  Receipt(msg3,r0,delivered,a=1,ts=35) -> real=Stale[] sim=Stale[] | fail=none but r did not increase -> Stale (sentA still advanced if sent)
+  Tick(13) -> real=[][skew] sim=[][skew] | now before last tick
+  Tick(44) -> real=[][] sim=[][] | deadline<=44 newly expired -> exp
+  Status -> summary=read
+  Receipt(msg3,r0,hard,a=2,ts=6) -> real=Stale[] sim=Stale[] | hard while r>=2 -> late=true, Stale
+  Receipt(msg3,r0,delivered,a=2,ts=51) -> real=Stale[] sim=Stale[] | fail=none but r did not increase -> Stale (sentA still advanced if sent)
+  Receipt(msg3,r0,delivered,a=3,ts=33) -> real=Duplicate[] sim=Duplicate[] | (kind,attempt) already in seen -> Duplicate, state unchanged
+  Receipt(msg3,r0,delivered,a=4,ts=63) -> real=Stale[] sim=Stale[] | fail=none but r did not increase -> Stale (sentA still advanced if sent)
+  Status -> summary=read
+  Receipt(msg3,r0,soft,a=1,ts=25) -> real=Duplicate[] sim=Duplicate[] | (kind,attempt) already in seen -> Duplicate, state unchanged
+  Receipt(msg3,r0,hard,a=5,ts=5) -> real=Stale[] sim=Stale[] | hard while r>=2 -> late=true, Stale
+  Receipt(msg3,r0,sent,a=5,ts=20) -> real=Duplicate[] sim=Duplicate[] | (kind,attempt) already in seen -> Duplicate, state unchanged
+  Receipt(msg3,r0,hard,a=5,ts=20) -> real=Duplicate[] sim=Duplicate[] | (kind,attempt) already in seen -> Duplicate, state unchanged
+  Status -> summary=read
+  Receipt(msg3,r0,delivered,a=2,ts=40) -> real=Duplicate[] sim=Duplicate[] | (kind,attempt) already in seen -> Duplicate, state unchanged
+  Receipt(msg3,r0,soft,a=3,ts=42) -> real=Duplicate[] sim=Duplicate[] | (kind,attempt) already in seen -> Duplicate, state unchanged
+  Receipt(msg3,r0,read,a=4,ts=32) -> real=Stale[] sim=Stale[] | fail=none but r did not increase -> Stale (sentA still advanced if sent)
+  Receipt(msg3,r0,delivered,a=4,ts=50) -> real=Duplicate[] sim=Duplicate[] | (kind,attempt) already in seen -> Duplicate, state unchanged
+  Receipt(msg3,r0,hard,a=3,ts=16) -> real=Stale[] sim=Stale[] | hard while r>=2 -> late=true, Stale
+  Receipt(msg3,r0,read,a=4,ts=3) -> real=Duplicate[] sim=Duplicate[] | (kind,attempt) already in seen -> Duplicate, state unchanged
+  Receipt(msg3,r0,soft,a=1,ts=18) -> real=Duplicate[] sim=Duplicate[] | (kind,attempt) already in seen -> Duplicate, state unchanged
+  Tick(44) -> real=[][] sim=[][] | deadline<=44 newly expired -> exp
+  Receipt(msg3,r0,sent,a=2,ts=15) -> real=Stale[] sim=Stale[] | fail=none but r did not increase -> Stale (sentA still advanced if sent)
+  Receipt(msg3,r0,delivered,a=1,ts=56) -> real=Duplicate[] sim=Duplicate[] | (kind,attempt) already in seen -> Duplicate, state unchanged
+  Receipt(msg3,r0,hard,a=4,ts=50) -> real=Duplicate[] sim=Duplicate[] | (kind,attempt) already in seen -> Duplicate, state unchanged
+  Tick(44) -> real=[][] sim=[][] | deadline<=44 newly expired -> exp
+  Status -> summary=read
+  Receipt(msg3,r0,sent,a=2,ts=8) -> real=Duplicate[] sim=Duplicate[] | (kind,attempt) already in seen -> Duplicate, state unchanged
+  Status -> summary=read
+  Receipt(msg3,r0,hard,a=4,ts=1) -> real=Duplicate[] sim=Duplicate[] | (kind,attempt) already in seen -> Duplicate, state unchanged
+  Tick(44) -> real=[][] sim=[][] | deadline<=44 newly expired -> exp
+  Receipt(msg3,r0,soft,a=4,ts=50) -> real=Stale[] sim=Stale[] | soft while r>=2 -> Stale, not recorded
+  Tick(63) -> real=[][] sim=[][] | deadline<=63 newly expired -> exp
+  Receipt(msg3,r0,hard,a=4,ts=59) -> real=Duplicate[] sim=Duplicate[] | (kind,attempt) already in seen -> Duplicate, state unchanged
+  Receipt(msg3,r0,sent,a=2,ts=56) -> real=Duplicate[] sim=Duplicate[] | (kind,attempt) already in seen -> Duplicate, state unchanged
+  Receipt(msg3,r0,delivered,a=3,ts=60) -> real=Duplicate[] sim=Duplicate[] | (kind,attempt) already in seen -> Duplicate, state unchanged
+case 5 seed=5 S=3 rcpts=[r0] deadline=49
+  Tick(26) -> real=[][] sim=[][] | deadline<=26 newly expired -> exp
+  Status -> summary=inflight
+  Receipt(msg4,r0,soft,a=5,ts=9) -> real=Applied[] sim=Applied[] | soft recorded; cnt(>=sentA=0)=1 < S=3 Applied, no fail yet
+  Receipt(msg4,r0,soft,a=4,ts=17) -> real=Applied[] sim=Applied[] | soft recorded; cnt(>=sentA=0)=2 < S=3 Applied, no fail yet
+  Tick(67) -> real=[[msg4 r0]][] sim=[[msg4 r0]][] | deadline<=67 newly expired -> exp
+  Receipt(msg4,r0,read,a=1,ts=64) -> real=Ignored[] sim=Ignored[] | exp: revoke needs delivered/read with ts strictly < deadline
+  Status -> summary=failed
+  Receipt(msg4,r0,read,a=1,ts=34) -> real=Duplicate[] sim=Duplicate[] | (kind,attempt) already in seen -> Duplicate, state unchanged
+  Receipt(msg4,r0,read,a=3,ts=21) -> real=Applied[] sim=Applied[] | exp revoked by read ts=21 < deadline=49 -> r=max -> Applied
+  Tick(67) -> real=[][] sim=[][] | deadline<=67 newly expired -> exp
+  Receipt(msg4,r0,sent,a=3,ts=8) -> real=Stale[] sim=Stale[] | fail=none but r did not increase -> Stale (sentA still advanced if sent)
+  Receipt(msg4,r0,soft,a=2,ts=52) -> real=Stale[] sim=Stale[] | soft while r>=2 -> Stale, not recorded
+  Status -> summary=read
+  Tick(67) -> real=[][] sim=[][] | deadline<=67 newly expired -> exp
+  Receipt(msg4,r0,soft,a=4,ts=9) -> real=Duplicate[] sim=Duplicate[] | (kind,attempt) already in seen -> Duplicate, state unchanged
+  Receipt(msg4,r0,sent,a=5,ts=62) -> real=Stale[] sim=Stale[] | fail=none but r did not increase -> Stale (sentA still advanced if sent)
+  Status -> summary=read
+  Status -> summary=read
+  Tick(67) -> real=[][] sim=[][] | deadline<=67 newly expired -> exp
+  Tick(67) -> real=[][] sim=[][] | deadline<=67 newly expired -> exp
+  Status -> summary=read
+  Receipt(msg4,r0,delivered,a=3,ts=4) -> real=Stale[] sim=Stale[] | fail=none but r did not increase -> Stale (sentA still advanced if sent)
+  Receipt(msg4,r0,hard,a=3,ts=50) -> real=Stale[] sim=Stale[] | hard while r>=2 -> late=true, Stale
+  Receipt(msg4,r0,soft,a=2,ts=53) -> real=Duplicate[] sim=Duplicate[] | (kind,attempt) already in seen -> Duplicate, state unchanged
+  Receipt(msg4,r0,hard,a=1,ts=34) -> real=Stale[] sim=Stale[] | hard while r>=2 -> late=true, Stale
+  Receipt(msg4,r0,delivered,a=2,ts=48) -> real=Stale[] sim=Stale[] | fail=none but r did not increase -> Stale (sentA still advanced if sent)
+  Status -> summary=read
+  Receipt(msg4,r0,soft,a=2,ts=65) -> real=Duplicate[] sim=Duplicate[] | (kind,attempt) already in seen -> Duplicate, state unchanged
+  Receipt(msg4,r0,soft,a=2,ts=48) -> real=Duplicate[] sim=Duplicate[] | (kind,attempt) already in seen -> Duplicate, state unchanged
+  Receipt(msg4,r0,read,a=5,ts=22) -> real=Stale[] sim=Stale[] | fail=none but r did not increase -> Stale (sentA still advanced if sent)
+case 6 seed=6 S=1 rcpts=[r0 r1 r2 r3] deadline=8
+  Receipt(msg5,r3,soft,a=1,ts=35) -> real=Applied[] sim=Applied[] | soft recorded; cnt(>=sentA=0)=1 >= S=1 -> fail=soft Applied
+  Tick(63) -> real=[[msg5 r0] [msg5 r1] [msg5 r2]][] sim=[[msg5 r0] [msg5 r1] [msg5 r2]][] | deadline<=63 newly expired -> exp
+  Receipt(msg5,r3,delivered,a=2,ts=58) -> real=Ignored[] sim=Ignored[] | fail=soft terminal -> progress Ignored
+  Tick(63) -> real=[][] sim=[][] | deadline<=63 newly expired -> exp
+  Receipt(msg5,r1,sent,a=3,ts=56) -> real=Ignored[] sim=Ignored[] | exp: revoke needs delivered/read with ts strictly < deadline
+  Tick(60) -> real=[][skew] sim=[][skew] | now before last tick
+  Receipt(msg5,r2,read,a=2,ts=33) -> real=Ignored[] sim=Ignored[] | exp: revoke needs delivered/read with ts strictly < deadline
+  Receipt(msg5,r1,sent,a=3,ts=53) -> real=Duplicate[] sim=Duplicate[] | (kind,attempt) already in seen -> Duplicate, state unchanged
+  Receipt(msg5,r2,soft,a=3,ts=35) -> real=Ignored[] sim=Ignored[] | soft with fail=exp -> Ignored
+  Receipt(msg5,r2,delivered,a=4,ts=62) -> real=Ignored[] sim=Ignored[] | exp: revoke needs delivered/read with ts strictly < deadline
+  Tick(63) -> real=[][] sim=[][] | deadline<=63 newly expired -> exp
+  Tick(60) -> real=[][skew] sim=[][skew] | now before last tick
+  Tick(63) -> real=[][] sim=[][] | deadline<=63 newly expired -> exp
+  Receipt(msg5,r0,sent,a=3,ts=29) -> real=Ignored[] sim=Ignored[] | exp: revoke needs delivered/read with ts strictly < deadline
+  Receipt(msg5,r1,sent,a=1,ts=41) -> real=Ignored[] sim=Ignored[] | exp: revoke needs delivered/read with ts strictly < deadline
+  Tick(63) -> real=[][] sim=[][] | deadline<=63 newly expired -> exp
+  Receipt(msg5,r2,delivered,a=3,ts=67) -> real=Ignored[] sim=Ignored[] | exp: revoke needs delivered/read with ts strictly < deadline
+  Receipt(msg5,r3,soft,a=5,ts=43) -> real=Ignored[] sim=Ignored[] | soft with fail=soft -> Ignored
+  Receipt(msg5,r2,hard,a=4,ts=53) -> real=Applied[] sim=Applied[] | hard while r<2 (fail=exp) -> fail=hard Applied
+  Tick(63) -> real=[][] sim=[][] | deadline<=63 newly expired -> exp
+  Receipt(msg5,r0,read,a=1,ts=69) -> real=Ignored[] sim=Ignored[] | exp: revoke needs delivered/read with ts strictly < deadline
+  Receipt(msg5,r0,read,a=3,ts=25) -> real=Ignored[] sim=Ignored[] | exp: revoke needs delivered/read with ts strictly < deadline
+  Receipt(msg5,r3,sent,a=5,ts=65) -> real=Ignored[] sim=Ignored[] | fail=soft terminal -> progress Ignored
+  Receipt(msg5,r1,delivered,a=5,ts=69) -> real=Ignored[] sim=Ignored[] | exp: revoke needs delivered/read with ts strictly < deadline
+  Receipt(msg5,r0,hard,a=4,ts=12) -> real=Applied[] sim=Applied[] | hard while r<2 (fail=exp) -> fail=hard Applied
+  Status -> summary=failed
+  Receipt(msg5,r1,hard,a=3,ts=56) -> real=Applied[] sim=Applied[] | hard while r<2 (fail=exp) -> fail=hard Applied
+  Receipt(msg5,r1,soft,a=1,ts=17) -> real=Ignored[] sim=Ignored[] | soft with fail=hard -> Ignored
+  Status -> summary=failed
+  Receipt(msg5,r0,sent,a=4,ts=44) -> real=Ignored[] sim=Ignored[] | fail=hard terminal -> progress Ignored
+  Receipt(msg5,r3,read,a=5,ts=69) -> real=Ignored[] sim=Ignored[] | fail=soft terminal -> progress Ignored
+  Receipt(msg5,r1,hard,a=3,ts=33) -> real=Duplicate[] sim=Duplicate[] | (kind,attempt) already in seen -> Duplicate, state unchanged
+case 7 seed=7 S=3 rcpts=[r0 r1 r2] deadline=33
+  Receipt(msg6,r2,read,a=3,ts=2) -> real=Applied[] sim=Applied[] | fail=none: sentA/max logic, r 3->3 Applied
+  Receipt(msg6,r2,delivered,a=1,ts=30) -> real=Stale[] sim=Stale[] | fail=none but r did not increase -> Stale (sentA still advanced if sent)
+  Receipt(msg6,r2,read,a=3,ts=19) -> real=Duplicate[] sim=Duplicate[] | (kind,attempt) already in seen -> Duplicate, state unchanged
+  Receipt(msg6,r0,delivered,a=4,ts=1) -> real=Applied[] sim=Applied[] | fail=none: sentA/max logic, r 2->2 Applied
+  Receipt(msg6,r0,delivered,a=2,ts=23) -> real=Stale[] sim=Stale[] | fail=none but r did not increase -> Stale (sentA still advanced if sent)
+  Receipt(msg6,r0,soft,a=5,ts=19) -> real=Stale[] sim=Stale[] | soft while r>=2 -> Stale, not recorded
+  Receipt(msg6,r2,read,a=1,ts=22) -> real=Stale[] sim=Stale[] | fail=none but r did not increase -> Stale (sentA still advanced if sent)
+  Receipt(msg6,r0,delivered,a=1,ts=21) -> real=Stale[] sim=Stale[] | fail=none but r did not increase -> Stale (sentA still advanced if sent)
+  Receipt(msg6,r2,read,a=1,ts=15) -> real=Duplicate[] sim=Duplicate[] | (kind,attempt) already in seen -> Duplicate, state unchanged
+  Status -> summary=inflight
+  Tick(0) -> real=[][] sim=[][] | deadline<=0 newly expired -> exp
+  Tick(14) -> real=[][] sim=[][] | deadline<=14 newly expired -> exp
+  Tick(40) -> real=[[msg6 r1]][] sim=[[msg6 r1]][] | deadline<=40 newly expired -> exp
+  Tick(66) -> real=[][] sim=[][] | deadline<=66 newly expired -> exp
+  Receipt(msg6,r0,soft,a=3,ts=34) -> real=Stale[] sim=Stale[] | soft while r>=2 -> Stale, not recorded
+  Tick(64) -> real=[][skew] sim=[][skew] | now before last tick
+  Receipt(msg6,r1,hard,a=2,ts=69) -> real=Applied[] sim=Applied[] | hard while r<2 (fail=exp) -> fail=hard Applied
+  Receipt(msg6,r1,soft,a=5,ts=30) -> real=Ignored[] sim=Ignored[] | soft with fail=hard -> Ignored
+  Tick(66) -> real=[][] sim=[][] | deadline<=66 newly expired -> exp
+  Receipt(msg6,r0,hard,a=5,ts=52) -> real=Stale[] sim=Stale[] | hard while r>=2 -> late=true, Stale
+  Tick(66) -> real=[][] sim=[][] | deadline<=66 newly expired -> exp
+  Status -> summary=partial
+  Receipt(msg6,r1,sent,a=1,ts=15) -> real=Ignored[] sim=Ignored[] | fail=hard terminal -> progress Ignored
+  Receipt(msg6,r1,hard,a=4,ts=38) -> real=Ignored[] sim=Ignored[] | hard with fail=hard -> Ignored
+  Receipt(msg6,r0,sent,a=2,ts=62) -> real=Stale[] sim=Stale[] | fail=none but r did not increase -> Stale (sentA still advanced if sent)
+  Receipt(msg6,r2,soft,a=1,ts=54) -> real=Stale[] sim=Stale[] | soft while r>=2 -> Stale, not recorded
+  Receipt(msg6,r1,soft,a=5,ts=56) -> real=Duplicate[] sim=Duplicate[] | (kind,attempt) already in seen -> Duplicate, state unchanged
+  Receipt(msg6,r2,soft,a=2,ts=0) -> real=Stale[] sim=Stale[] | soft while r>=2 -> Stale, not recorded
+  Status -> summary=partial
+  Receipt(msg6,r0,read,a=2,ts=29) -> real=Applied[] sim=Applied[] | fail=none: sentA/max logic, r 3->3 Applied
+  Receipt(msg6,r1,read,a=1,ts=9) -> real=Ignored[] sim=Ignored[] | fail=hard terminal -> progress Ignored
+  Tick(66) -> real=[][] sim=[][] | deadline<=66 newly expired -> exp
+  Receipt(msg6,r1,delivered,a=2,ts=43) -> real=Ignored[] sim=Ignored[] | fail=hard terminal -> progress Ignored
+case 8 seed=8 S=1 rcpts=[r0] deadline=29
+  Receipt(msg7,r0,delivered,a=2,ts=37) -> real=Applied[] sim=Applied[] | fail=none: sentA/max logic, r 2->2 Applied
+  Receipt(msg7,r0,read,a=5,ts=26) -> real=Applied[] sim=Applied[] | fail=none: sentA/max logic, r 3->3 Applied
+  Tick(40) -> real=[][] sim=[][] | deadline<=40 newly expired -> exp
+  Receipt(msg7,r0,soft,a=5,ts=44) -> real=Stale[] sim=Stale[] | soft while r>=2 -> Stale, not recorded
+  Tick(47) -> real=[][] sim=[][] | deadline<=47 newly expired -> exp
+  Receipt(msg7,r0,sent,a=2,ts=28) -> real=Stale[] sim=Stale[] | fail=none but r did not increase -> Stale (sentA still advanced if sent)
+  Receipt(msg7,r0,delivered,a=2,ts=20) -> real=Duplicate[] sim=Duplicate[] | (kind,attempt) already in seen -> Duplicate, state unchanged
+  Receipt(msg7,r0,sent,a=3,ts=9) -> real=Stale[] sim=Stale[] | fail=none but r did not increase -> Stale (sentA still advanced if sent)
+  Receipt(msg7,r0,sent,a=3,ts=11) -> real=Duplicate[] sim=Duplicate[] | (kind,attempt) already in seen -> Duplicate, state unchanged
+  Receipt(msg7,r0,read,a=1,ts=42) -> real=Stale[] sim=Stale[] | fail=none but r did not increase -> Stale (sentA still advanced if sent)
+  Receipt(msg7,r0,read,a=1,ts=9) -> real=Duplicate[] sim=Duplicate[] | (kind,attempt) already in seen -> Duplicate, state unchanged
+  Tick(47) -> real=[][] sim=[][] | deadline<=47 newly expired -> exp
+  Receipt(msg7,r0,hard,a=4,ts=27) -> real=Stale[] sim=Stale[] | hard while r>=2 -> late=true, Stale
+  Receipt(msg7,r0,sent,a=3,ts=61) -> real=Duplicate[] sim=Duplicate[] | (kind,attempt) already in seen -> Duplicate, state unchanged
+  Receipt(msg7,r0,read,a=2,ts=65) -> real=Stale[] sim=Stale[] | fail=none but r did not increase -> Stale (sentA still advanced if sent)
+  Tick(47) -> real=[][] sim=[][] | deadline<=47 newly expired -> exp
+  Receipt(msg7,r0,delivered,a=2,ts=2) -> real=Duplicate[] sim=Duplicate[] | (kind,attempt) already in seen -> Duplicate, state unchanged
+  Tick(44) -> real=[][skew] sim=[][skew] | now before last tick
+  Receipt(msg7,r0,delivered,a=2,ts=51) -> real=Duplicate[] sim=Duplicate[] | (kind,attempt) already in seen -> Duplicate, state unchanged
+  Tick(47) -> real=[][] sim=[][] | deadline<=47 newly expired -> exp
+  Tick(47) -> real=[][] sim=[][] | deadline<=47 newly expired -> exp
+  Status -> summary=read
+  Receipt(msg7,r0,sent,a=4,ts=69) -> real=Stale[] sim=Stale[] | fail=none but r did not increase -> Stale (sentA still advanced if sent)
+  Receipt(msg7,r0,hard,a=2,ts=16) -> real=Stale[] sim=Stale[] | hard while r>=2 -> late=true, Stale
+  Receipt(msg7,r0,delivered,a=5,ts=60) -> real=Stale[] sim=Stale[] | fail=none but r did not increase -> Stale (sentA still advanced if sent)
+  Status -> summary=read
+  Receipt(msg7,r0,delivered,a=5,ts=57) -> real=Duplicate[] sim=Duplicate[] | (kind,attempt) already in seen -> Duplicate, state unchanged
+  Receipt(msg7,r0,delivered,a=5,ts=23) -> real=Duplicate[] sim=Duplicate[] | (kind,attempt) already in seen -> Duplicate, state unchanged
+  Receipt(msg7,r0,delivered,a=3,ts=31) -> real=Stale[] sim=Stale[] | fail=none but r did not increase -> Stale (sentA still advanced if sent)
+  Receipt(msg7,r0,hard,a=5,ts=69) -> real=Stale[] sim=Stale[] | hard while r>=2 -> late=true, Stale
+  Receipt(msg7,r0,read,a=4,ts=58) -> real=Stale[] sim=Stale[] | fail=none but r did not increase -> Stale (sentA still advanced if sent)
+  Status -> summary=read
+  Receipt(msg7,r0,delivered,a=5,ts=5) -> real=Duplicate[] sim=Duplicate[] | (kind,attempt) already in seen -> Duplicate, state unchanged
+  Receipt(msg7,r0,delivered,a=1,ts=66) -> real=Stale[] sim=Stale[] | fail=none but r did not increase -> Stale (sentA still advanced if sent)
+  Receipt(msg7,r0,soft,a=1,ts=69) -> real=Stale[] sim=Stale[] | soft while r>=2 -> Stale, not recorded
+  Receipt(msg7,r0,soft,a=1,ts=35) -> real=Duplicate[] sim=Duplicate[] | (kind,attempt) already in seen -> Duplicate, state unchanged
+  Receipt(msg7,r0,read,a=3,ts=69) -> real=Stale[] sim=Stale[] | fail=none but r did not increase -> Stale (sentA still advanced if sent)
+  Status -> summary=read
+  Receipt(msg7,r0,soft,a=5,ts=36) -> real=Duplicate[] sim=Duplicate[] | (kind,attempt) already in seen -> Duplicate, state unchanged
+  Tick(47) -> real=[][] sim=[][] | deadline<=47 newly expired -> exp
+  Receipt(msg7,r0,soft,a=2,ts=22) -> real=Stale[] sim=Stale[] | soft while r>=2 -> Stale, not recorded
+  Receipt(msg7,r0,delivered,a=4,ts=69) -> real=Stale[] sim=Stale[] | fail=none but r did not increase -> Stale (sentA still advanced if sent)
+  Receipt(msg7,r0,hard,a=2,ts=38) -> real=Duplicate[] sim=Duplicate[] | (kind,attempt) already in seen -> Duplicate, state unchanged
+  Tick(47) -> real=[][] sim=[][] | deadline<=47 newly expired -> exp
+  Receipt(msg7,r0,hard,a=5,ts=57) -> real=Duplicate[] sim=Duplicate[] | (kind,attempt) already in seen -> Duplicate, state unchanged
+  Receipt(msg7,r0,delivered,a=4,ts=38) -> real=Duplicate[] sim=Duplicate[] | (kind,attempt) already in seen -> Duplicate, state unchanged
+case 9 seed=9 S=2 rcpts=[r0] deadline=22
+  Receipt(msg8,r0,delivered,a=3,ts=40) -> real=Applied[] sim=Applied[] | fail=none: sentA/max logic, r 2->2 Applied
+  Receipt(msg8,r0,read,a=3,ts=68) -> real=Applied[] sim=Applied[] | fail=none: sentA/max logic, r 3->3 Applied
+  Receipt(msg8,r0,sent,a=3,ts=42) -> real=Stale[] sim=Stale[] | fail=none but r did not increase -> Stale (sentA still advanced if sent)
+  Receipt(msg8,r0,delivered,a=5,ts=13) -> real=Stale[] sim=Stale[] | fail=none but r did not increase -> Stale (sentA still advanced if sent)
+  Tick(46) -> real=[][] sim=[][] | deadline<=46 newly expired -> exp
+  Receipt(msg8,r0,hard,a=4,ts=7) -> real=Stale[] sim=Stale[] | hard while r>=2 -> late=true, Stale
+  Receipt(msg8,r0,hard,a=2,ts=51) -> real=Stale[] sim=Stale[] | hard while r>=2 -> late=true, Stale
+  Receipt(msg8,r0,delivered,a=2,ts=5) -> real=Stale[] sim=Stale[] | fail=none but r did not increase -> Stale (sentA still advanced if sent)
+  Receipt(msg8,r0,sent,a=3,ts=59) -> real=Duplicate[] sim=Duplicate[] | (kind,attempt) already in seen -> Duplicate, state unchanged
+  Receipt(msg8,r0,read,a=5,ts=32) -> real=Stale[] sim=Stale[] | fail=none but r did not increase -> Stale (sentA still advanced if sent)
+  Tick(46) -> real=[][] sim=[][] | deadline<=46 newly expired -> exp
+  Receipt(msg8,r0,soft,a=4,ts=41) -> real=Stale[] sim=Stale[] | soft while r>=2 -> Stale, not recorded
+  Receipt(msg8,r0,hard,a=2,ts=38) -> real=Duplicate[] sim=Duplicate[] | (kind,attempt) already in seen -> Duplicate, state unchanged
+  Receipt(msg8,r0,hard,a=1,ts=14) -> real=Stale[] sim=Stale[] | hard while r>=2 -> late=true, Stale
+  Status -> summary=read
+  Tick(46) -> real=[][] sim=[][] | deadline<=46 newly expired -> exp
+  Tick(46) -> real=[][] sim=[][] | deadline<=46 newly expired -> exp
+  Receipt(msg8,r0,read,a=2,ts=58) -> real=Stale[] sim=Stale[] | fail=none but r did not increase -> Stale (sentA still advanced if sent)
+  Receipt(msg8,r0,soft,a=4,ts=21) -> real=Duplicate[] sim=Duplicate[] | (kind,attempt) already in seen -> Duplicate, state unchanged
+  Receipt(msg8,r0,read,a=2,ts=4) -> real=Duplicate[] sim=Duplicate[] | (kind,attempt) already in seen -> Duplicate, state unchanged
+  Tick(46) -> real=[][] sim=[][] | deadline<=46 newly expired -> exp
+  Tick(46) -> real=[][] sim=[][] | deadline<=46 newly expired -> exp
+  Receipt(msg8,r0,delivered,a=1,ts=63) -> real=Stale[] sim=Stale[] | fail=none but r did not increase -> Stale (sentA still advanced if sent)
+  Tick(51) -> real=[][] sim=[][] | deadline<=51 newly expired -> exp
+  Receipt(msg8,r0,sent,a=1,ts=66) -> real=Stale[] sim=Stale[] | fail=none but r did not increase -> Stale (sentA still advanced if sent)
+  Status -> summary=read
+  Receipt(msg8,r0,delivered,a=4,ts=5) -> real=Stale[] sim=Stale[] | fail=none but r did not increase -> Stale (sentA still advanced if sent)
+  Receipt(msg8,r0,delivered,a=2,ts=54) -> real=Duplicate[] sim=Duplicate[] | (kind,attempt) already in seen -> Duplicate, state unchanged
+  Receipt(msg8,r0,read,a=5,ts=47) -> real=Duplicate[] sim=Duplicate[] | (kind,attempt) already in seen -> Duplicate, state unchanged
+  Receipt(msg8,r0,hard,a=4,ts=58) -> real=Duplicate[] sim=Duplicate[] | (kind,attempt) already in seen -> Duplicate, state unchanged
+  Receipt(msg8,r0,delivered,a=5,ts=29) -> real=Duplicate[] sim=Duplicate[] | (kind,attempt) already in seen -> Duplicate, state unchanged
+  Receipt(msg8,r0,hard,a=2,ts=35) -> real=Duplicate[] sim=Duplicate[] | (kind,attempt) already in seen -> Duplicate, state unchanged
+  Receipt(msg8,r0,sent,a=3,ts=23) -> real=Duplicate[] sim=Duplicate[] | (kind,attempt) already in seen -> Duplicate, state unchanged
+  Receipt(msg8,r0,delivered,a=3,ts=58) -> real=Duplicate[] sim=Duplicate[] | (kind,attempt) already in seen -> Duplicate, state unchanged
+  Receipt(msg8,r0,delivered,a=2,ts=18) -> real=Duplicate[] sim=Duplicate[] | (kind,attempt) already in seen -> Duplicate, state unchanged
+  Receipt(msg8,r0,read,a=5,ts=42) -> real=Duplicate[] sim=Duplicate[] | (kind,attempt) already in seen -> Duplicate, state unchanged
+  Tick(55) -> real=[][] sim=[][] | deadline<=55 newly expired -> exp
+  Tick(52) -> real=[][skew] sim=[][skew] | now before last tick
+  Status -> summary=read
+case 10 seed=10 S=3 rcpts=[r0] deadline=7
+  Tick(39) -> real=[[msg9 r0]][] sim=[[msg9 r0]][] | deadline<=39 newly expired -> exp
+  Receipt(msg9,r0,soft,a=2,ts=3) -> real=Ignored[] sim=Ignored[] | soft with fail=exp -> Ignored
+  Receipt(msg9,r0,hard,a=5,ts=2) -> real=Applied[] sim=Applied[] | hard while r<2 (fail=exp) -> fail=hard Applied
+  Receipt(msg9,r0,hard,a=2,ts=30) -> real=Ignored[] sim=Ignored[] | hard with fail=hard -> Ignored
+  Receipt(msg9,r0,read,a=4,ts=52) -> real=Ignored[] sim=Ignored[] | fail=hard terminal -> progress Ignored
+  Receipt(msg9,r0,hard,a=3,ts=11) -> real=Ignored[] sim=Ignored[] | hard with fail=hard -> Ignored
+  Status -> summary=failed
+  Receipt(msg9,r0,soft,a=1,ts=8) -> real=Ignored[] sim=Ignored[] | soft with fail=hard -> Ignored
+  Receipt(msg9,r0,read,a=4,ts=22) -> real=Duplicate[] sim=Duplicate[] | (kind,attempt) already in seen -> Duplicate, state unchanged
+  Receipt(msg9,r0,soft,a=1,ts=37) -> real=Duplicate[] sim=Duplicate[] | (kind,attempt) already in seen -> Duplicate, state unchanged
+  Receipt(msg9,r0,sent,a=5,ts=63) -> real=Ignored[] sim=Ignored[] | fail=hard terminal -> progress Ignored
+  Tick(67) -> real=[][] sim=[][] | deadline<=67 newly expired -> exp
+  Tick(66) -> real=[][skew] sim=[][skew] | now before last tick
+  Receipt(msg9,r0,soft,a=5,ts=56) -> real=Ignored[] sim=Ignored[] | soft with fail=hard -> Ignored
+  Tick(64) -> real=[][skew] sim=[][skew] | now before last tick
+  Tick(67) -> real=[][] sim=[][] | deadline<=67 newly expired -> exp
+  Receipt(msg9,r0,read,a=2,ts=34) -> real=Ignored[] sim=Ignored[] | fail=hard terminal -> progress Ignored
+  Receipt(msg9,r0,sent,a=1,ts=29) -> real=Ignored[] sim=Ignored[] | fail=hard terminal -> progress Ignored
+  Receipt(msg9,r0,hard,a=2,ts=58) -> real=Duplicate[] sim=Duplicate[] | (kind,attempt) already in seen -> Duplicate, state unchanged
+  Tick(67) -> real=[][] sim=[][] | deadline<=67 newly expired -> exp
+  Tick(67) -> real=[][] sim=[][] | deadline<=67 newly expired -> exp
+  Receipt(msg9,r0,hard,a=4,ts=2) -> real=Ignored[] sim=Ignored[] | hard with fail=hard -> Ignored
+  Receipt(msg9,r0,hard,a=4,ts=27) -> real=Duplicate[] sim=Duplicate[] | (kind,attempt) already in seen -> Duplicate, state unchanged
+  Receipt(msg9,r0,sent,a=4,ts=58) -> real=Ignored[] sim=Ignored[] | fail=hard terminal -> progress Ignored
+  Receipt(msg9,r0,delivered,a=2,ts=50) -> real=Ignored[] sim=Ignored[] | fail=hard terminal -> progress Ignored
+  Receipt(msg9,r0,sent,a=4,ts=1) -> real=Duplicate[] sim=Duplicate[] | (kind,attempt) already in seen -> Duplicate, state unchanged
+  Receipt(msg9,r0,sent,a=4,ts=57) -> real=Duplicate[] sim=Duplicate[] | (kind,attempt) already in seen -> Duplicate, state unchanged
+  Receipt(msg9,r0,read,a=5,ts=39) -> real=Ignored[] sim=Ignored[] | fail=hard terminal -> progress Ignored
+  Receipt(msg9,r0,read,a=1,ts=1) -> real=Ignored[] sim=Ignored[] | fail=hard terminal -> progress Ignored
+  Tick(67) -> real=[][] sim=[][] | deadline<=67 newly expired -> exp
+  Status -> summary=failed
+  Receipt(msg9,r0,read,a=3,ts=32) -> real=Ignored[] sim=Ignored[] | fail=hard terminal -> progress Ignored
+  Receipt(msg9,r0,read,a=1,ts=48) -> real=Duplicate[] sim=Duplicate[] | (kind,attempt) already in seen -> Duplicate, state unchanged
+  Receipt(msg9,r0,read,a=4,ts=25) -> real=Duplicate[] sim=Duplicate[] | (kind,attempt) already in seen -> Duplicate, state unchanged
+  Receipt(msg9,r0,soft,a=5,ts=59) -> real=Duplicate[] sim=Duplicate[] | (kind,attempt) already in seen -> Duplicate, state unchanged
+  Receipt(msg9,r0,hard,a=5,ts=13) -> real=Duplicate[] sim=Duplicate[] | (kind,attempt) already in seen -> Duplicate, state unchanged
+  Tick(67) -> real=[][] sim=[][] | deadline<=67 newly expired -> exp
+  Status -> summary=failed
+  Receipt(msg9,r0,delivered,a=1,ts=54) -> real=Ignored[] sim=Ignored[] | fail=hard terminal -> progress Ignored
+  Tick(67) -> real=[][] sim=[][] | deadline<=67 newly expired -> exp
+  Receipt(msg9,r0,hard,a=1,ts=46) -> real=Ignored[] sim=Ignored[] | hard with fail=hard -> Ignored
+  Receipt(msg9,r0,read,a=5,ts=37) -> real=Duplicate[] sim=Duplicate[] | (kind,attempt) already in seen -> Duplicate, state unchanged
+  Receipt(msg9,r0,sent,a=4,ts=40) -> real=Duplicate[] sim=Duplicate[] | (kind,attempt) already in seen -> Duplicate, state unchanged
+  Receipt(msg9,r0,soft,a=4,ts=38) -> real=Ignored[] sim=Ignored[] | soft with fail=hard -> Ignored
+  Receipt(msg9,r0,soft,a=5,ts=5) -> real=Duplicate[] sim=Duplicate[] | (kind,attempt) already in seen -> Duplicate, state unchanged
+  Receipt(msg9,r0,read,a=1,ts=35) -> real=Duplicate[] sim=Duplicate[] | (kind,attempt) already in seen -> Duplicate, state unchanged
+  Receipt(msg9,r0,sent,a=3,ts=18) -> real=Ignored[] sim=Ignored[] | fail=hard terminal -> progress Ignored
+  Receipt(msg9,r0,delivered,a=1,ts=35) -> real=Duplicate[] sim=Duplicate[] | (kind,attempt) already in seen -> Duplicate, state unchanged
+  Receipt(msg9,r0,delivered,a=1,ts=53) -> real=Duplicate[] sim=Duplicate[] | (kind,attempt) already in seen -> Duplicate, state unchanged
+case 500 seed=500 S=3 rcpts=[r0 r1 r2] deadline=26
+  Receipt(msg499,r0,sent,a=2,ts=65) -> real=Applied[] sim=Applied[] | fail=none: sentA/max logic, r 1->1 Applied
+  Status -> summary=inflight
+  Receipt(msg499,r0,soft,a=5,ts=15) -> real=Applied[] sim=Applied[] | soft recorded; cnt(>=sentA=2)=1 < S=3 Applied, no fail yet
+  Receipt(msg499,r0,delivered,a=3,ts=37) -> real=Applied[] sim=Applied[] | fail=none: sentA/max logic, r 2->2 Applied
+  Receipt(msg499,r2,soft,a=2,ts=66) -> real=Applied[] sim=Applied[] | soft recorded; cnt(>=sentA=0)=1 < S=3 Applied, no fail yet
+  Tick(0) -> real=[][] sim=[][] | deadline<=0 newly expired -> exp
+  Tick(66) -> real=[[msg499 r1] [msg499 r2]][] sim=[[msg499 r1] [msg499 r2]][] | deadline<=66 newly expired -> exp
+  Receipt(msg499,r0,soft,a=3,ts=18) -> real=Stale[] sim=Stale[] | soft while r>=2 -> Stale, not recorded
+  Receipt(msg499,r2,hard,a=1,ts=63) -> real=Applied[] sim=Applied[] | hard while r<2 (fail=exp) -> fail=hard Applied
+  Receipt(msg499,r2,delivered,a=5,ts=69) -> real=Ignored[] sim=Ignored[] | fail=hard terminal -> progress Ignored
+  Status -> summary=partial
+  Tick(64) -> real=[][skew] sim=[][skew] | now before last tick
+  Receipt(msg499,r2,sent,a=2,ts=5) -> real=Ignored[] sim=Ignored[] | fail=hard terminal -> progress Ignored
+  Tick(66) -> real=[][] sim=[][] | deadline<=66 newly expired -> exp
+  Receipt(msg499,r1,hard,a=3,ts=54) -> real=Applied[] sim=Applied[] | hard while r<2 (fail=exp) -> fail=hard Applied
+  Receipt(msg499,r2,sent,a=2,ts=64) -> real=Duplicate[] sim=Duplicate[] | (kind,attempt) already in seen -> Duplicate, state unchanged
+  Receipt(msg499,r1,hard,a=3,ts=32) -> real=Duplicate[] sim=Duplicate[] | (kind,attempt) already in seen -> Duplicate, state unchanged
+  Receipt(msg499,r1,read,a=3,ts=36) -> real=Ignored[] sim=Ignored[] | fail=hard terminal -> progress Ignored
+  Receipt(msg499,r1,hard,a=3,ts=36) -> real=Duplicate[] sim=Duplicate[] | (kind,attempt) already in seen -> Duplicate, state unchanged
+  Receipt(msg499,r2,soft,a=2,ts=10) -> real=Duplicate[] sim=Duplicate[] | (kind,attempt) already in seen -> Duplicate, state unchanged
+  Receipt(msg499,r0,read,a=2,ts=64) -> real=Applied[] sim=Applied[] | fail=none: sentA/max logic, r 3->3 Applied
+  Tick(66) -> real=[][] sim=[][] | deadline<=66 newly expired -> exp
+  Receipt(msg499,r1,soft,a=2,ts=16) -> real=Ignored[] sim=Ignored[] | soft with fail=hard -> Ignored
+  Receipt(msg499,r2,read,a=5,ts=30) -> real=Ignored[] sim=Ignored[] | fail=hard terminal -> progress Ignored
+  Receipt(msg499,r2,sent,a=5,ts=58) -> real=Ignored[] sim=Ignored[] | fail=hard terminal -> progress Ignored
+  Tick(66) -> real=[][] sim=[][] | deadline<=66 newly expired -> exp
+  Receipt(msg499,r2,sent,a=3,ts=64) -> real=Ignored[] sim=Ignored[] | fail=hard terminal -> progress Ignored
+  Receipt(msg499,r2,sent,a=4,ts=65) -> real=Ignored[] sim=Ignored[] | fail=hard terminal -> progress Ignored
+  Receipt(msg499,r0,soft,a=3,ts=14) -> real=Duplicate[] sim=Duplicate[] | (kind,attempt) already in seen -> Duplicate, state unchanged
+  Receipt(msg499,r2,hard,a=1,ts=21) -> real=Duplicate[] sim=Duplicate[] | (kind,attempt) already in seen -> Duplicate, state unchanged
+  Status -> summary=partial
+  Receipt(msg499,r0,hard,a=4,ts=7) -> real=Stale[] sim=Stale[] | hard while r>=2 -> late=true, Stale
+  Receipt(msg499,r0,read,a=4,ts=33) -> real=Stale[] sim=Stale[] | fail=none but r did not increase -> Stale (sentA still advanced if sent)
+  Tick(63) -> real=[][skew] sim=[][skew] | now before last tick
+  Receipt(msg499,r2,soft,a=1,ts=61) -> real=Ignored[] sim=Ignored[] | soft with fail=hard -> Ignored
+  Tick(66) -> real=[][] sim=[][] | deadline<=66 newly expired -> exp
+  Receipt(msg499,r0,soft,a=2,ts=64) -> real=Stale[] sim=Stale[] | soft while r>=2 -> Stale, not recorded
+  Receipt(msg499,r1,read,a=3,ts=40) -> real=Duplicate[] sim=Duplicate[] | (kind,attempt) already in seen -> Duplicate, state unchanged
+  Tick(64) -> real=[][skew] sim=[][skew] | now before last tick
+  Tick(66) -> real=[][] sim=[][] | deadline<=66 newly expired -> exp
+  Receipt(msg499,r2,soft,a=4,ts=33) -> real=Ignored[] sim=Ignored[] | soft with fail=hard -> Ignored
+  Tick(66) -> real=[][] sim=[][] | deadline<=66 newly expired -> exp
+  Receipt(msg499,r0,hard,a=4,ts=43) -> real=Duplicate[] sim=Duplicate[] | (kind,attempt) already in seen -> Duplicate, state unchanged
+  Receipt(msg499,r1,soft,a=1,ts=22) -> real=Ignored[] sim=Ignored[] | soft with fail=hard -> Ignored
+  Receipt(msg499,r1,read,a=2,ts=13) -> real=Ignored[] sim=Ignored[] | fail=hard terminal -> progress Ignored
+  Receipt(msg499,r2,delivered,a=4,ts=45) -> real=Ignored[] sim=Ignored[] | fail=hard terminal -> progress Ignored
+  Receipt(msg499,r0,read,a=2,ts=46) -> real=Duplicate[] sim=Duplicate[] | (kind,attempt) already in seen -> Duplicate, state unchanged
+case 1000 seed=1000 S=2 rcpts=[r0 r1 r2 r3] deadline=0
+  Tick(33) -> real=[[msg999 r0] [msg999 r1] [msg999 r2] [msg999 r3]][] sim=[[msg999 r0] [msg999 r1] [msg999 r2] [msg999 r3]][] | deadline<=33 newly expired -> exp
+  Receipt(msg999,r0,sent,a=2,ts=6) -> real=Ignored[] sim=Ignored[] | exp: revoke needs delivered/read with ts strictly < deadline
+  Receipt(msg999,r3,read,a=2,ts=47) -> real=Ignored[] sim=Ignored[] | exp: revoke needs delivered/read with ts strictly < deadline
+  Receipt(msg999,r1,soft,a=1,ts=67) -> real=Ignored[] sim=Ignored[] | soft with fail=exp -> Ignored
+  Receipt(msg999,r2,delivered,a=4,ts=55) -> real=Ignored[] sim=Ignored[] | exp: revoke needs delivered/read with ts strictly < deadline
+  Receipt(msg999,r0,soft,a=1,ts=8) -> real=Ignored[] sim=Ignored[] | soft with fail=exp -> Ignored
+  Receipt(msg999,r0,soft,a=2,ts=0) -> real=Ignored[] sim=Ignored[] | soft with fail=exp -> Ignored
+  Receipt(msg999,r1,read,a=3,ts=1) -> real=Ignored[] sim=Ignored[] | exp: revoke needs delivered/read with ts strictly < deadline
+  Receipt(msg999,r0,hard,a=2,ts=17) -> real=Applied[] sim=Applied[] | hard while r<2 (fail=exp) -> fail=hard Applied
+  Tick(32) -> real=[][skew] sim=[][skew] | now before last tick
+  Receipt(msg999,r2,delivered,a=4,ts=42) -> real=Duplicate[] sim=Duplicate[] | (kind,attempt) already in seen -> Duplicate, state unchanged
+  Receipt(msg999,r0,delivered,a=5,ts=44) -> real=Ignored[] sim=Ignored[] | fail=hard terminal -> progress Ignored
+  Receipt(msg999,r2,sent,a=2,ts=41) -> real=Ignored[] sim=Ignored[] | exp: revoke needs delivered/read with ts strictly < deadline
+  Status -> summary=failed
+  Receipt(msg999,r3,sent,a=3,ts=46) -> real=Ignored[] sim=Ignored[] | exp: revoke needs delivered/read with ts strictly < deadline
+  Receipt(msg999,r3,soft,a=4,ts=17) -> real=Ignored[] sim=Ignored[] | soft with fail=exp -> Ignored
+  Receipt(msg999,r3,soft,a=4,ts=27) -> real=Duplicate[] sim=Duplicate[] | (kind,attempt) already in seen -> Duplicate, state unchanged
+  Receipt(msg999,r2,read,a=2,ts=23) -> real=Ignored[] sim=Ignored[] | exp: revoke needs delivered/read with ts strictly < deadline
+  Tick(40) -> real=[][] sim=[][] | deadline<=40 newly expired -> exp
+  Tick(39) -> real=[][skew] sim=[][skew] | now before last tick
+  Status -> summary=failed
+  Receipt(msg999,r1,sent,a=4,ts=16) -> real=Ignored[] sim=Ignored[] | exp: revoke needs delivered/read with ts strictly < deadline
+  Receipt(msg999,r0,soft,a=2,ts=23) -> real=Duplicate[] sim=Duplicate[] | (kind,attempt) already in seen -> Duplicate, state unchanged
+  Tick(37) -> real=[][skew] sim=[][skew] | now before last tick
+  Tick(39) -> real=[][skew] sim=[][skew] | now before last tick
+  Receipt(msg999,r1,delivered,a=5,ts=43) -> real=Ignored[] sim=Ignored[] | exp: revoke needs delivered/read with ts strictly < deadline
+  Tick(54) -> real=[][] sim=[][] | deadline<=54 newly expired -> exp
+  Status -> summary=failed
+  Receipt(msg999,r2,soft,a=5,ts=28) -> real=Ignored[] sim=Ignored[] | soft with fail=exp -> Ignored
+  Tick(54) -> real=[][] sim=[][] | deadline<=54 newly expired -> exp
+  Receipt(msg999,r2,soft,a=2,ts=26) -> real=Ignored[] sim=Ignored[] | soft with fail=exp -> Ignored
+  Tick(54) -> real=[][] sim=[][] | deadline<=54 newly expired -> exp
+  Tick(54) -> real=[][] sim=[][] | deadline<=54 newly expired -> exp
+  Receipt(msg999,r0,sent,a=1,ts=68) -> real=Ignored[] sim=Ignored[] | fail=hard terminal -> progress Ignored
+  Receipt(msg999,r1,hard,a=1,ts=3) -> real=Applied[] sim=Applied[] | hard while r<2 (fail=exp) -> fail=hard Applied
+  Receipt(msg999,r3,delivered,a=5,ts=50) -> real=Ignored[] sim=Ignored[] | exp: revoke needs delivered/read with ts strictly < deadline
+  Receipt(msg999,r0,hard,a=3,ts=42) -> real=Ignored[] sim=Ignored[] | hard with fail=hard -> Ignored
+  Receipt(msg999,r3,soft,a=4,ts=8) -> real=Duplicate[] sim=Duplicate[] | (kind,attempt) already in seen -> Duplicate, state unchanged
+  Status -> summary=failed
+  Receipt(msg999,r1,read,a=4,ts=13) -> real=Ignored[] sim=Ignored[] | fail=hard terminal -> progress Ignored
+  Receipt(msg999,r1,delivered,a=1,ts=53) -> real=Ignored[] sim=Ignored[] | fail=hard terminal -> progress Ignored
+  Receipt(msg999,r3,soft,a=1,ts=23) -> real=Ignored[] sim=Ignored[] | soft with fail=exp -> Ignored
+  Receipt(msg999,r1,hard,a=5,ts=5) -> real=Ignored[] sim=Ignored[] | hard with fail=hard -> Ignored
+  Receipt(msg999,r1,sent,a=5,ts=53) -> real=Ignored[] sim=Ignored[] | fail=hard terminal -> progress Ignored
+  Status -> summary=failed
+  Receipt(msg999,r2,soft,a=3,ts=52) -> real=Ignored[] sim=Ignored[] | soft with fail=exp -> Ignored
+  Receipt(msg999,r1,hard,a=4,ts=62) -> real=Ignored[] sim=Ignored[] | hard with fail=hard -> Ignored
+  Receipt(msg999,r2,read,a=2,ts=42) -> real=Duplicate[] sim=Duplicate[] | (kind,attempt) already in seen -> Duplicate, state unchanged
+case 1500 seed=1500 S=2 rcpts=[r0 r1] deadline=28
+  Receipt(msg1499,r0,hard,a=5,ts=63) -> real=Applied[] sim=Applied[] | hard while r<2 (fail=exp) -> fail=hard Applied
+  Tick(53) -> real=[[msg1499 r1]][] sim=[[msg1499 r1]][] | deadline<=53 newly expired -> exp
+  Receipt(msg1499,r0,delivered,a=4,ts=60) -> real=Ignored[] sim=Ignored[] | fail=hard terminal -> progress Ignored
+  Receipt(msg1499,r1,sent,a=1,ts=19) -> real=Ignored[] sim=Ignored[] | exp: revoke needs delivered/read with ts strictly < deadline
+  Tick(53) -> real=[][] sim=[][] | deadline<=53 newly expired -> exp
+  Receipt(msg1499,r0,hard,a=4,ts=62) -> real=Ignored[] sim=Ignored[] | hard with fail=hard -> Ignored
+  Tick(66) -> real=[][] sim=[][] | deadline<=66 newly expired -> exp
+  Receipt(msg1499,r0,read,a=5,ts=61) -> real=Ignored[] sim=Ignored[] | fail=hard terminal -> progress Ignored
+  Receipt(msg1499,r1,read,a=5,ts=65) -> real=Ignored[] sim=Ignored[] | exp: revoke needs delivered/read with ts strictly < deadline
+  Receipt(msg1499,r0,soft,a=5,ts=37) -> real=Ignored[] sim=Ignored[] | soft with fail=hard -> Ignored
+  Receipt(msg1499,r0,read,a=4,ts=68) -> real=Ignored[] sim=Ignored[] | fail=hard terminal -> progress Ignored
+  Receipt(msg1499,r0,sent,a=3,ts=40) -> real=Ignored[] sim=Ignored[] | fail=hard terminal -> progress Ignored
+  Receipt(msg1499,r0,soft,a=4,ts=0) -> real=Ignored[] sim=Ignored[] | soft with fail=hard -> Ignored
+  Receipt(msg1499,r0,delivered,a=5,ts=5) -> real=Ignored[] sim=Ignored[] | fail=hard terminal -> progress Ignored
+  Receipt(msg1499,r1,sent,a=5,ts=33) -> real=Ignored[] sim=Ignored[] | exp: revoke needs delivered/read with ts strictly < deadline
+  Receipt(msg1499,r1,read,a=4,ts=2) -> real=Applied[] sim=Applied[] | exp revoked by read ts=2 < deadline=28 -> r=max -> Applied
+  Receipt(msg1499,r1,sent,a=1,ts=9) -> real=Duplicate[] sim=Duplicate[] | (kind,attempt) already in seen -> Duplicate, state unchanged
+  Receipt(msg1499,r1,sent,a=4,ts=1) -> real=Stale[] sim=Stale[] | fail=none but r did not increase -> Stale (sentA still advanced if sent)
+  Receipt(msg1499,r0,read,a=3,ts=27) -> real=Ignored[] sim=Ignored[] | fail=hard terminal -> progress Ignored
+  Receipt(msg1499,r0,soft,a=5,ts=30) -> real=Duplicate[] sim=Duplicate[] | (kind,attempt) already in seen -> Duplicate, state unchanged
+  Tick(66) -> real=[][] sim=[][] | deadline<=66 newly expired -> exp
+  Receipt(msg1499,r0,sent,a=3,ts=55) -> real=Duplicate[] sim=Duplicate[] | (kind,attempt) already in seen -> Duplicate, state unchanged
+  Receipt(msg1499,r1,sent,a=1,ts=46) -> real=Duplicate[] sim=Duplicate[] | (kind,attempt) already in seen -> Duplicate, state unchanged
+  Tick(63) -> real=[][skew] sim=[][skew] | now before last tick
+  Receipt(msg1499,r1,soft,a=2,ts=10) -> real=Stale[] sim=Stale[] | soft while r>=2 -> Stale, not recorded
+  Receipt(msg1499,r1,sent,a=1,ts=39) -> real=Duplicate[] sim=Duplicate[] | (kind,attempt) already in seen -> Duplicate, state unchanged
+  Receipt(msg1499,r0,soft,a=1,ts=37) -> real=Ignored[] sim=Ignored[] | soft with fail=hard -> Ignored
+  Receipt(msg1499,r1,read,a=4,ts=40) -> real=Duplicate[] sim=Duplicate[] | (kind,attempt) already in seen -> Duplicate, state unchanged
+  Receipt(msg1499,r0,hard,a=4,ts=59) -> real=Duplicate[] sim=Duplicate[] | (kind,attempt) already in seen -> Duplicate, state unchanged
+  Status -> summary=partial
+  Receipt(msg1499,r1,read,a=4,ts=36) -> real=Duplicate[] sim=Duplicate[] | (kind,attempt) already in seen -> Duplicate, state unchanged
+  Receipt(msg1499,r0,hard,a=5,ts=63) -> real=Duplicate[] sim=Duplicate[] | (kind,attempt) already in seen -> Duplicate, state unchanged
+case 2000 seed=2000 S=3 rcpts=[r0 r1 r2] deadline=49
+  Receipt(msg1999,r2,hard,a=3,ts=28) -> real=Applied[] sim=Applied[] | hard while r<2 (fail=exp) -> fail=hard Applied
+  Receipt(msg1999,r0,delivered,a=4,ts=64) -> real=Applied[] sim=Applied[] | fail=none: sentA/max logic, r 2->2 Applied
+  Status -> summary=inflight
+  Receipt(msg1999,r1,soft,a=4,ts=62) -> real=Applied[] sim=Applied[] | soft recorded; cnt(>=sentA=0)=1 < S=3 Applied, no fail yet
+  Receipt(msg1999,r0,hard,a=5,ts=19) -> real=Stale[] sim=Stale[] | hard while r>=2 -> late=true, Stale
+  Receipt(msg1999,r0,sent,a=3,ts=33) -> real=Stale[] sim=Stale[] | fail=none but r did not increase -> Stale (sentA still advanced if sent)
+  Receipt(msg1999,r1,read,a=3,ts=19) -> real=Applied[] sim=Applied[] | fail=none: sentA/max logic, r 3->3 Applied
+  Receipt(msg1999,r2,delivered,a=1,ts=27) -> real=Ignored[] sim=Ignored[] | fail=hard terminal -> progress Ignored
+  Receipt(msg1999,r0,hard,a=5,ts=44) -> real=Duplicate[] sim=Duplicate[] | (kind,attempt) already in seen -> Duplicate, state unchanged
+  Receipt(msg1999,r1,sent,a=5,ts=41) -> real=Stale[] sim=Stale[] | fail=none but r did not increase -> Stale (sentA still advanced if sent)
+  Tick(5) -> real=[][] sim=[][] | deadline<=5 newly expired -> exp
+  Receipt(msg1999,r1,hard,a=1,ts=16) -> real=Stale[] sim=Stale[] | hard while r>=2 -> late=true, Stale
+  Receipt(msg1999,r2,delivered,a=4,ts=3) -> real=Ignored[] sim=Ignored[] | fail=hard terminal -> progress Ignored
+  Receipt(msg1999,r2,delivered,a=5,ts=37) -> real=Ignored[] sim=Ignored[] | fail=hard terminal -> progress Ignored
+  Status -> summary=partial
+  Receipt(msg1999,r1,soft,a=2,ts=24) -> real=Stale[] sim=Stale[] | soft while r>=2 -> Stale, not recorded
+  Status -> summary=partial
+  Receipt(msg1999,r0,delivered,a=5,ts=43) -> real=Stale[] sim=Stale[] | fail=none but r did not increase -> Stale (sentA still advanced if sent)
+  Receipt(msg1999,r0,hard,a=1,ts=7) -> real=Stale[] sim=Stale[] | hard while r>=2 -> late=true, Stale
+  Receipt(msg1999,r0,sent,a=3,ts=23) -> real=Duplicate[] sim=Duplicate[] | (kind,attempt) already in seen -> Duplicate, state unchanged
+  Tick(27) -> real=[][] sim=[][] | deadline<=27 newly expired -> exp
+  Tick(25) -> real=[][skew] sim=[][skew] | now before last tick
+  Receipt(msg1999,r1,read,a=4,ts=3) -> real=Stale[] sim=Stale[] | fail=none but r did not increase -> Stale (sentA still advanced if sent)
+  Receipt(msg1999,r0,read,a=1,ts=50) -> real=Applied[] sim=Applied[] | fail=none: sentA/max logic, r 3->3 Applied
+  Receipt(msg1999,r2,sent,a=1,ts=41) -> real=Ignored[] sim=Ignored[] | fail=hard terminal -> progress Ignored
+  Receipt(msg1999,r0,read,a=5,ts=0) -> real=Stale[] sim=Stale[] | fail=none but r did not increase -> Stale (sentA still advanced if sent)
+  Receipt(msg1999,r0,hard,a=4,ts=51) -> real=Stale[] sim=Stale[] | hard while r>=2 -> late=true, Stale
+  Status -> summary=partial
+  Status -> summary=partial
+  Receipt(msg1999,r0,read,a=2,ts=19) -> real=Stale[] sim=Stale[] | fail=none but r did not increase -> Stale (sentA still advanced if sent)
+  Receipt(msg1999,r1,delivered,a=3,ts=7) -> real=Stale[] sim=Stale[] | fail=none but r did not increase -> Stale (sentA still advanced if sent)
+  Receipt(msg1999,r2,hard,a=4,ts=9) -> real=Ignored[] sim=Ignored[] | hard with fail=hard -> Ignored
+  Receipt(msg1999,r2,read,a=2,ts=65) -> real=Ignored[] sim=Ignored[] | fail=hard terminal -> progress Ignored
+  Receipt(msg1999,r0,hard,a=3,ts=1) -> real=Stale[] sim=Stale[] | hard while r>=2 -> late=true, Stale
+  Tick(37) -> real=[][] sim=[][] | deadline<=37 newly expired -> exp
+  Receipt(msg1999,r0,soft,a=5,ts=7) -> real=Stale[] sim=Stale[] | soft while r>=2 -> Stale, not recorded
+  Receipt(msg1999,r1,hard,a=3,ts=57) -> real=Stale[] sim=Stale[] | hard while r>=2 -> late=true, Stale
+  Receipt(msg1999,r1,sent,a=3,ts=0) -> real=Stale[] sim=Stale[] | fail=none but r did not increase -> Stale (sentA still advanced if sent)
+  Tick(37) -> real=[][] sim=[][] | deadline<=37 newly expired -> exp
