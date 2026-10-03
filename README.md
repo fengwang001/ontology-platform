@@ -44,3 +44,16 @@ go tool cover -html=coverage.out
 gofmt -l .
 go vet ./...
 ```
+
+## 时间依赖路网最早到达查询（`timetable` 包）
+
+`timetable/` 实现边耗时随出发时刻分段变化、可封闭、可随时间通告的有向
+路网：任意等待下的最早到达、紧边路线（先边数少、再边号字典序小）、
+历史版本查询与 `Popped` 搜索规模度量。语义、到达函数推导、紧边取法与
+时钟/版本规则见 `timetable/DESIGN.md`。
+
+```bash
+go test ./timetable -race -v
+go test ./timetable -run TestRandomDifferential -v   # 2000 组朴素对照
+go test ./timetable -run TestGridPopped -v           # 300x300 网格规模
+```
