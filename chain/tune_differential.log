@@ -1,0 +1,302 @@
+# tune differential seed=424242 cases=300
+case=0 input={T=[2 30 4] phi=[1 4 1] w=[1 30 4] prod=120} before=67 after=66 changed=true expectPhases=[1 0 0] verdict=PASS
+case=1 input={T=[26 40 13] phi=[18 33 6] w=[26 14 13] prod=520} before=117 after=116 changed=true expectPhases=[18 0 5] verdict=PASS
+case=2 input={T=[11 3] phi=[10 2] w=[11 1] prod=3} before=24 after=24 changed=false expectPhases=[10 2] verdict=PASS
+case=3 input={T=[5 28 25] phi=[1 1 19] w=[2 28 6] prod=700} before=88 after=87 changed=true expectPhases=[1 0 3] verdict=PASS
+case=4 input={T=[3 37] phi=[2 13] w=[3 24] prod=37} before=65 after=65 changed=false expectPhases=[2 13] verdict=PASS
+case=5 input={T=[36 25 1 27] phi=[31 15 0 14] w=[36 25 1 27] prod=675} before=171 after=166 changed=true expectPhases=[31 0 0 0] verdict=PASS
+case=6 input={T=[7 2 12] phi=[1 0 1] w=[3 2 12] prod=24} before=35 after=34 changed=true expectPhases=[1 0 0] verdict=PASS
+case=7 input={T=[12 19 1 24] phi=[9 16 0 12] w=[11 19 1 24] prod=456} before=98 after=96 changed=true expectPhases=[9 0 0 10] verdict=PASS
+case=8 input={T=[24 16] phi=[22 5] w=[16 16] prod=16} before=70 after=63 changed=true expectPhases=[22 6] verdict=PASS
+case=9 input={T=[20 8] phi=[4 2] w=[20 1] prod=8} before=46 after=44 changed=true expectPhases=[4 0] verdict=PASS
+case=10 input={T=[2 26 9] phi=[1 19 5] w=[2 26 9] prod=234} before=70 after=70 changed=false expectPhases=[1 19 5] verdict=PASS
+case=11 input={T=[24 7 25] phi=[16 3 4] w=[24 1 25] prod=175} before=103 after=103 changed=false expectPhases=[16 3 4] verdict=PASS
+case=12 input={T=[6 18 16] phi=[1 10 5] w=[6 13 16] prod=288} before=69 after=66 changed=true expectPhases=[1 1 0] verdict=PASS
+case=13 input={T=[2 8 7 10] phi=[1 5 0 8] w=[2 8 7 10] prod=560} before=48 after=48 changed=false expectPhases=[1 5 0 8] verdict=PASS
+case=14 input={T=[5 5 9 9] phi=[3 1 3 7] w=[5 3 9 9] prod=405} before=45 after=38 changed=true expectPhases=[3 3 0 0] verdict=PASS
+case=15 input={T=[6 2 13 36] phi=[5 0 0 35] w=[6 1 13 36] prod=936} before=107 after=103 changed=true expectPhases=[5 1 0 1] verdict=PASS
+case=16 input={T=[35 13] phi=[31 12] w=[35 13] prod=13} before=94 after=94 changed=false expectPhases=[31 12] verdict=PASS
+case=17 input={T=[8 40 1] phi=[1 2 0] w=[8 40 1] prod=40} before=89 after=88 changed=true expectPhases=[1 1 0] verdict=PASS
+case=18 input={T=[17 20 3 5] phi=[4 8 0 3] w=[9 10 2 5] prod=300} before=64 after=63 changed=true expectPhases=[4 0 0 4] verdict=PASS
+case=19 input={T=[30 4 10 1 2] phi=[16 1 6 0 0] w=[30 4 10 1 2] prod=80} before=83 after=78 changed=true expectPhases=[16 0 2 0 1] verdict=PASS
+case=20 input={T=[8 13] phi=[3 2] w=[5 13] prod=13} before=37 after=37 changed=false expectPhases=[3 2] verdict=PASS
+case=21 input={T=[23 7] phi=[0 4] w=[23 7] prod=7} before=58 after=58 changed=false expectPhases=[0 4] verdict=PASS
+case=22 input={T=[16 12 15] phi=[5 0 8] w=[8 12 15] prod=180} before=75 after=70 changed=true expectPhases=[5 1 1] verdict=PASS
+case=23 input={T=[2 25] phi=[0 3] w=[2 20] prod=25} before=47 after=47 changed=false expectPhases=[0 3] verdict=PASS
+case=24 input={T=[5 14 25] phi=[1 7 9] w=[5 14 25] prod=350} before=82 after=81 changed=true expectPhases=[1 0 3] verdict=PASS
+case=25 input={T=[36 30] phi=[4 2] w=[36 30] prod=30} before=129 after=125 changed=true expectPhases=[4 4] verdict=PASS
+case=26 input={T=[17 3 3 15 1 7] phi=[12 2 1 4 0 0] w=[13 3 3 15 1 5] prod=945} before=78 after=76 changed=true expectPhases=[12 0 0 0 0 0] verdict=PASS
+case=27 input={T=[16 8 23] phi=[10 4 10] w=[16 1 3] prod=184} before=59 after=57 changed=true expectPhases=[10 2 0] verdict=PASS
+case=28 input={T=[16 6] phi=[6 2] w=[3 2] prod=6} before=25 after=24 changed=true expectPhases=[6 1] verdict=PASS
+case=29 input={T=[2 20 10] phi=[0 6 3] w=[2 20 4] prod=200} before=52 after=45 changed=true expectPhases=[0 0 0] verdict=PASS
+case=30 input={T=[15 2 16 20] phi=[7 0 0 0] w=[15 2 11 20] prod=640} before=92 after=89 changed=true expectPhases=[7 0 0 7] verdict=PASS
+case=31 input={T=[5 33] phi=[2 27] w=[5 28] prod=33} before=69 after=69 changed=false expectPhases=[2 27] verdict=PASS
+case=32 input={T=[26 3] phi=[22 2] w=[26 3] prod=3} before=56 after=56 changed=false expectPhases=[22 2] verdict=PASS
+case=33 input={T=[25 8] phi=[4 6] w=[24 8] prod=8} before=63 after=63 changed=false expectPhases=[4 6] verdict=PASS
+case=34 input={T=[30 21] phi=[25 15] w=[30 21] prod=21} before=100 after=98 changed=true expectPhases=[25 1] verdict=PASS
+case=35 input={T=[36 12 6 6] phi=[0 0 1 3] w=[36 10 1 6] prod=432} before=92 after=88 changed=true expectPhases=[0 0 4 5] verdict=PASS
+case=36 input={T=[27 30 20] phi=[14 17 1] w=[27 30 20] prod=600} before=144 after=140 changed=true expectPhases=[14 2 2] verdict=PASS
+case=37 input={T=[3 20 2 15] phi=[1 14 1 8] w=[3 20 2 15] prod=600} before=72 after=69 changed=true expectPhases=[1 0 0 2] verdict=PASS
+case=38 input={T=[1 2 30] phi=[0 1 10] w=[1 2 30] prod=60} before=63 after=62 changed=true expectPhases=[0 0 0] verdict=PASS
+case=39 input={T=[18 5 24] phi=[0 2 17] w=[18 5 22] prod=120} before=86 after=84 changed=true expectPhases=[0 0 3] verdict=PASS
+case=40 input={T=[7 6 11 12] phi=[0 4 2 3] w=[7 3 11 4] prod=792} before=57 after=52 changed=true expectPhases=[0 0 0 0] verdict=PASS
+case=41 input={T=[7 25] phi=[5 23] w=[7 25] prod=25} before=62 after=62 changed=false expectPhases=[5 23] verdict=PASS
+case=42 input={T=[5 35] phi=[0 34] w=[5 21] prod=35} before=64 after=60 changed=true expectPhases=[0 0] verdict=PASS
+case=43 input={T=[21 9] phi=[12 5] w=[8 2] prod=9} before=36 after=36 changed=false expectPhases=[12 5] verdict=PASS
+case=44 input={T=[30 24 4] phi=[4 9 0] w=[30 11 4] prod=96} before=97 after=92 changed=true expectPhases=[4 4 3] verdict=PASS
+case=45 input={T=[37 5 8] phi=[31 4 0] w=[37 5 8] prod=40} before=97 after=97 changed=false expectPhases=[31 4 0] verdict=PASS
+case=46 input={T=[39 38] phi=[9 20] w=[39 11] prod=38} before=125 after=125 changed=false expectPhases=[9 20] verdict=PASS
+case=47 input={T=[20 18 2 15] phi=[19 2 1 3] w=[20 18 2 9] prod=540} before=97 after=90 changed=true expectPhases=[19 1 1 6] verdict=PASS
+case=48 input={T=[30 7] phi=[4 6] w=[8 7] prod=7} before=50 after=50 changed=false expectPhases=[4 6] verdict=PASS
+case=49 input={T=[28 20 28] phi=[3 18 3] w=[28 20 28] prod=560} before=139 after=119 changed=true expectPhases=[3 3 11] verdict=PASS
+case=50 input={T=[8 12] phi=[2 8] w=[7 12] prod=12} before=37 after=34 changed=true expectPhases=[2 1] verdict=PASS
+case=51 input={T=[23 7] phi=[1 1] w=[23 7] prod=7} before=58 after=58 changed=false expectPhases=[1 1] verdict=PASS
+case=52 input={T=[20 15 19] phi=[13 5 2] w=[20 13 19] prod=285} before=101 after=99 changed=true expectPhases=[13 3 0] verdict=PASS
+case=53 input={T=[5 5 6] phi=[1 0 2] w=[5 5 6] prod=30} before=29 after=25 changed=true expectPhases=[1 1 0] verdict=PASS
+case=54 input={T=[34 1 10] phi=[22 0 3] w=[3 1 10] prod=10} before=56 after=55 changed=true expectPhases=[22 0 0] verdict=PASS
+case=55 input={T=[24 29] phi=[12 26] w=[24 29] prod=29} before=104 after=104 changed=false expectPhases=[12 26] verdict=PASS
+case=56 input={T=[35 5 12 10] phi=[24 4 7 1] w=[22 4 12 9] prod=600} before=100 after=96 changed=true expectPhases=[24 1 0 2] verdict=PASS
+case=57 input={T=[11 1 10] phi=[1 0 6] w=[11 1 5] prod=10} before=36 after=36 changed=false expectPhases=[1 0 6] verdict=PASS
+case=58 input={T=[39 19] phi=[11 8] w=[24 19] prod=19} before=99 after=99 changed=false expectPhases=[11 8] verdict=PASS
+case=59 input={T=[35 1 20] phi=[31 0 3] w=[35 1 5] prod=20} before=91 after=90 changed=true expectPhases=[31 0 2] verdict=PASS
+case=60 input={T=[17 20] phi=[1 18] w=[17 17] prod=20} before=69 after=69 changed=false expectPhases=[1 18] verdict=PASS
+case=61 input={T=[13 30 8] phi=[7 25 3] w=[1 30 8] prod=240} before=86 after=86 changed=false expectPhases=[7 25 3] verdict=PASS
+case=62 input={T=[10 1 12] phi=[7 0 11] w=[10 1 12] prod=12} before=43 after=42 changed=true expectPhases=[7 0 0] verdict=PASS
+case=63 input={T=[2 8 1 2 28] phi=[0 7 0 1 25] w=[2 7 1 2 28] prod=448} before=72 after=71 changed=true expectPhases=[0 0 0 0 2] verdict=PASS
+case=64 input={T=[17 12] phi=[10 6] w=[9 12] prod=12} before=48 after=48 changed=false expectPhases=[10 6] verdict=PASS
+case=65 input={T=[4 30] phi=[1 28] w=[4 30] prod=30} before=66 after=65 changed=true expectPhases=[1 1] verdict=PASS
+case=66 input={T=[39 10] phi=[25 1] w=[3 10] prod=10} before=60 after=60 changed=false expectPhases=[25 1] verdict=PASS
+case=67 input={T=[18 25] phi=[14 22] w=[8 25] prod=25} before=74 after=74 changed=false expectPhases=[14 22] verdict=PASS
+case=68 input={T=[1 6 3] phi=[0 4 1] w=[1 6 3] prod=18} before=15 after=15 changed=false expectPhases=[0 4 1] verdict=PASS
+case=69 input={T=[32 27 15 2] phi=[19 16 0 1] w=[32 27 3 2] prod=810} before=135 after=133 changed=true expectPhases=[19 0 0 1] verdict=PASS
+case=70 input={T=[30 33 25] phi=[4 2 2] w=[30 33 25] prod=825} before=172 after=167 changed=true expectPhases=[4 1 2] verdict=PASS
+case=71 input={T=[15 11] phi=[11 8] w=[15 11] prod=11} before=50 after=50 changed=false expectPhases=[11 8] verdict=PASS
+case=72 input={T=[33 10] phi=[31 2] w=[7 5] prod=10} before=53 after=53 changed=false expectPhases=[31 2] verdict=PASS
+case=73 input={T=[10 31 13] phi=[1 13 1] w=[10 31 13] prod=403} before=105 after=105 changed=false expectPhases=[1 13 1] verdict=PASS
+case=74 input={T=[28 9 3 4] phi=[5 6 0 2] w=[28 5 3 4] prod=108} before=76 after=75 changed=true expectPhases=[5 0 2 1] verdict=PASS
+case=75 input={T=[19 34 1 10] phi=[0 27 0 1] w=[18 34 1 4] prod=340} before=117 after=116 changed=true expectPhases=[0 0 0 1] verdict=PASS
+case=76 input={T=[14 6 13 4 2] phi=[3 4 5 2 1] w=[3 6 7 4 1] prod=624} before=54 after=52 changed=true expectPhases=[3 0 0 1 1] verdict=PASS
+case=77 input={T=[25 17] phi=[10 1] w=[25 17] prod=17} before=82 after=82 changed=false expectPhases=[10 1] verdict=PASS
+case=78 input={T=[5 9 4] phi=[0 8 0] w=[3 9 2] prod=36} before=29 after=29 changed=false expectPhases=[0 8 0] verdict=PASS
+case=79 input={T=[31 16] phi=[21 10] w=[19 16] prod=16} before=80 after=80 changed=false expectPhases=[21 10] verdict=PASS
+case=80 input={T=[5 10] phi=[4 4] w=[3 10] prod=10} before=24 after=22 changed=true expectPhases=[4 2] verdict=PASS
+case=81 input={T=[20 35] phi=[15 29] w=[5 28] prod=35} before=86 after=82 changed=true expectPhases=[15 0] verdict=PASS
+case=82 input={T=[21 2 15] phi=[2 1 12] w=[21 2 15] prod=30} before=72 after=71 changed=true expectPhases=[2 0 2] verdict=PASS
+case=83 input={T=[24 30] phi=[4 27] w=[10 30] prod=30} before=88 after=87 changed=true expectPhases=[4 2] verdict=PASS
+case=84 input={T=[3 31] phi=[0 23] w=[3 10] prod=31} before=45 after=45 changed=false expectPhases=[0 23] verdict=PASS
+case=85 input={T=[2 26 17 1] phi=[1 18 4 0] w=[2 26 17 1] prod=442} before=88 after=87 changed=true expectPhases=[1 1 0 0] verdict=PASS
+case=86 input={T=[7 35 15] phi=[5 12 10] w=[7 35 14] prod=525} before=103 after=100 changed=true expectPhases=[5 5 0] verdict=PASS
+case=87 input={T=[12 30 5] phi=[9 1 3] w=[8 30 5] prod=150} before=82 after=78 changed=true expectPhases=[9 5 0] verdict=PASS
+case=88 input={T=[3 17] phi=[2 14] w=[3 12] prod=17} before=33 after=33 changed=false expectPhases=[2 14] verdict=PASS
+case=89 input={T=[15 9 2 2] phi=[0 5 1 1] w=[12 3 1 1] prod=36} before=41 after=38 changed=true expectPhases=[0 0 0 1] verdict=PASS
+case=90 input={T=[20 11 20] phi=[7 7 16] w=[6 8 20] prod=220} before=68 after=63 changed=true expectPhases=[7 0 11] verdict=PASS
+case=91 input={T=[20 5 24] phi=[1 1 8] w=[20 5 24] prod=120} before=90 after=88 changed=true expectPhases=[1 1 2] verdict=PASS
+case=92 input={T=[27 30 5] phi=[12 27 3] w=[27 30 5] prod=150} before=116 after=115 changed=true expectPhases=[12 0 0] verdict=PASS
+case=93 input={T=[2 13] phi=[0 2] w=[2 6] prod=13} before=21 after=21 changed=false expectPhases=[0 2] verdict=PASS
+case=94 input={T=[15 4 6 4] phi=[5 2 2 0] w=[5 4 6 4] prod=96} before=39 after=39 changed=false expectPhases=[5 2 2 0] verdict=PASS
+case=95 input={T=[7 14 1 32] phi=[3 13 0 15] w=[7 14 1 32] prod=448} before=101 after=97 changed=true expectPhases=[3 3 0 0] verdict=PASS
+case=96 input={T=[8 16 37] phi=[0 10 28] w=[8 5 37] prod=592} before=103 after=101 changed=true expectPhases=[0 0 0] verdict=PASS
+case=97 input={T=[5 34] phi=[0 21] w=[5 34] prod=34} before=76 after=76 changed=false expectPhases=[0 21] verdict=PASS
+case=98 input={T=[18 8 8] phi=[5 4 2] w=[18 8 1] prod=64} before=57 after=50 changed=true expectPhases=[5 1 1] verdict=PASS
+case=99 input={T=[12 4 27 4] phi=[3 1 3 0] w=[8 4 27 4] prod=432} before=84 after=78 changed=true expectPhases=[3 3 0 2] verdict=PASS
+case=100 input={T=[9 12] phi=[4 0] w=[9 4] prod=12} before=32 after=30 changed=true expectPhases=[4 1] verdict=PASS
+case=101 input={T=[17 2] phi=[9 1] w=[17 2] prod=2} before=36 after=36 changed=false expectPhases=[9 1] verdict=PASS
+case=102 input={T=[9 31 1] phi=[2 6 0] w=[9 31 1] prod=31} before=79 after=79 changed=false expectPhases=[2 6 0] verdict=PASS
+case=103 input={T=[15 3 14 4] phi=[8 1 4 2] w=[15 2 14 4] prod=168} before=66 after=64 changed=true expectPhases=[8 2 0 0] verdict=PASS
+case=104 input={T=[39 5 12] phi=[16 2 6] w=[32 4 12] prod=60} before=100 after=99 changed=true expectPhases=[16 0 2] verdict=PASS
+case=105 input={T=[13 6 1 29] phi=[9 4 0 22] w=[5 6 1 8] prod=174} before=65 after=65 changed=false expectPhases=[9 4 0 22] verdict=PASS
+case=106 input={T=[31 1 24 4 6] phi=[2 0 18 3 2] w=[31 1 2 1 5] prod=576} before=98 after=93 changed=true expectPhases=[2 0 0 2 3] verdict=PASS
+case=107 input={T=[30 5 1 2 23] phi=[6 0 0 0 2] w=[30 5 1 2 23] prod=230} before=116 after=112 changed=true expectPhases=[6 1 0 0 0] verdict=PASS
+case=108 input={T=[5 29 20] phi=[0 28 14] w=[5 12 13] prod=580} before=81 after=77 changed=true expectPhases=[0 0 0] verdict=PASS
+case=109 input={T=[8 20] phi=[3 2] w=[8 20] prod=20} before=54 after=51 changed=true expectPhases=[3 3] verdict=PASS
+case=110 input={T=[32 17 3 6] phi=[1 6 2 1] w=[32 13 3 6] prod=306} before=107 after=105 changed=true expectPhases=[1 0 0 3] verdict=PASS
+case=111 input={T=[4 5 4 38] phi=[0 0 2 30] w=[1 5 4 38] prod=760} before=91 after=91 changed=false expectPhases=[0 0 2 30] verdict=PASS
+case=112 input={T=[12 2 11] phi=[9 1 2] w=[11 2 11] prod=22} before=46 after=45 changed=true expectPhases=[9 0 0] verdict=PASS
+case=113 input={T=[13 8 12] phi=[1 7 9] w=[4 8 12] prod=96} before=53 after=51 changed=true expectPhases=[1 0 0] verdict=PASS
+case=114 input={T=[16 29 20] phi=[0 6 8] w=[16 26 20] prod=580} before=123 after=121 changed=true expectPhases=[0 0 2] verdict=PASS
+case=115 input={T=[13 18 21] phi=[12 1 11] w=[12 13 21] prod=378} before=93 after=93 changed=false expectPhases=[12 1 11] verdict=PASS
+case=116 input={T=[27 26 4] phi=[14 6 0] w=[5 4 2] prod=104} before=64 after=64 changed=false expectPhases=[14 6 0] verdict=PASS
+case=117 input={T=[15 33] phi=[0 19] w=[15 29] prod=33} before=89 after=88 changed=true expectPhases=[0 0] verdict=PASS
+case=118 input={T=[16 20] phi=[10 14] w=[16 20] prod=20} before=67 after=67 changed=false expectPhases=[10 14] verdict=PASS
+case=119 input={T=[7 2 20 3] phi=[1 0 0 2] w=[7 2 20 3] prod=120} before=59 after=59 changed=false expectPhases=[1 0 0 2] verdict=PASS
+case=120 input={T=[40 10 2 1 6] phi=[21 7 0 0 5] w=[40 10 2 1 6] prod=120} before=109 after=102 changed=true expectPhases=[21 1 1 0 0] verdict=PASS
+case=121 input={T=[1 7 16 4] phi=[0 5 11 1] w=[1 1 11 4] prod=448} before=41 after=38 changed=true expectPhases=[0 0 0 3] verdict=PASS
+case=122 input={T=[28 25 16] phi=[2 22 11] w=[21 25 16] prod=400} before=128 after=125 changed=true expectPhases=[2 0 0] verdict=PASS
+case=123 input={T=[8 24 2] phi=[4 16 0] w=[8 24 2] prod=48} before=61 after=57 changed=true expectPhases=[4 4 0] verdict=PASS
+case=124 input={T=[12 16 7] phi=[6 12 0] w=[12 14 7] prod=112} before=64 after=62 changed=true expectPhases=[6 2 0] verdict=PASS
+case=125 input={T=[28 16] phi=[17 9] w=[28 16] prod=16} before=83 after=83 changed=false expectPhases=[17 9] verdict=PASS
+case=126 input={T=[25 1 20 33] phi=[13 0 13 23] w=[25 1 13 33] prod=660} before=147 after=143 changed=true expectPhases=[13 0 4 0] verdict=PASS
+case=127 input={T=[8 1 21] phi=[7 0 5] w=[8 1 20] prod=21} before=56 after=56 changed=false expectPhases=[7 0 5] verdict=PASS
+case=128 input={T=[16 29] phi=[14 20] w=[16 8] prod=29} before=67 after=67 changed=false expectPhases=[14 20] verdict=PASS
+case=129 input={T=[15 12] phi=[6 10] w=[1 8] prod=12} before=32 after=32 changed=false expectPhases=[6 10] verdict=PASS
+case=130 input={T=[22 33] phi=[13 6] w=[2 3] prod=33} before=50 after=48 changed=true expectPhases=[13 4] verdict=PASS
+case=131 input={T=[22 3 20] phi=[13 0 11] w=[9 1 20] prod=60} before=71 after=71 changed=false expectPhases=[13 0 11] verdict=PASS
+case=132 input={T=[37 10 8 4] phi=[24 0 4 0] w=[37 10 8 1] prod=320} before=107 after=107 changed=false expectPhases=[24 0 4 0] verdict=PASS
+case=133 input={T=[30 28 30] phi=[29 4 12] w=[30 28 30] prod=840} before=162 after=143 changed=true expectPhases=[29 1 23] verdict=PASS
+case=134 input={T=[6 23] phi=[3 13] w=[6 23] prod=23} before=56 after=56 changed=false expectPhases=[3 13] verdict=PASS
+case=135 input={T=[31 1 18] phi=[12 0 3] w=[20 1 18] prod=18} before=86 after=86 changed=false expectPhases=[12 0 3] verdict=PASS
+case=136 input={T=[1 39 16 1] phi=[0 29 9 0] w=[1 32 16 1] prod=624} before=103 after=103 changed=false expectPhases=[0 29 9 0] verdict=PASS
+case=137 input={T=[7 9 10 1 4] phi=[0 6 8 0 3] w=[7 1 10 1 4] prod=360} before=48 after=48 changed=false expectPhases=[0 6 8 0 3] verdict=PASS
+case=138 input={T=[15 20 18] phi=[1 13 2] w=[15 20 18] prod=360} before=99 after=94 changed=true expectPhases=[1 1 3] verdict=PASS
+case=139 input={T=[21 30 5] phi=[15 2 3] w=[5 30 5] prod=150} before=88 after=87 changed=true expectPhases=[15 2 2] verdict=PASS
+case=140 input={T=[22 25 1] phi=[14 10 0] w=[22 25 1] prod=25} before=93 after=93 changed=false expectPhases=[14 10 0] verdict=PASS
+case=141 input={T=[13 35 15] phi=[1 19 12] w=[13 4 9] prod=525} before=86 after=82 changed=true expectPhases=[1 0 4] verdict=PASS
+case=142 input={T=[6 11] phi=[1 6] w=[6 11] prod=11} before=32 after=32 changed=false expectPhases=[1 6] verdict=PASS
+case=143 input={T=[9 6] phi=[1 2] w=[4 6] prod=6} before=21 after=21 changed=false expectPhases=[1 2] verdict=PASS
+case=144 input={T=[9 35] phi=[3 11] w=[9 9] prod=35} before=60 after=60 changed=false expectPhases=[3 11] verdict=PASS
+case=145 input={T=[18 5 3] phi=[12 1 2] w=[17 4 3] prod=15} before=46 after=45 changed=true expectPhases=[12 0 1] verdict=PASS
+case=146 input={T=[10 30] phi=[7 0] w=[10 14] prod=30} before=56 after=53 changed=true expectPhases=[7 7] verdict=PASS
+case=147 input={T=[15 25 8] phi=[10 20 7] w=[15 25 4] prod=200} before=85 after=85 changed=false expectPhases=[10 20 7] verdict=PASS
+case=148 input={T=[2 4 10 2 3] phi=[1 2 5 1 1] w=[2 4 3 2 1] prod=240} before=28 after=25 changed=true expectPhases=[1 1 1 0 0] verdict=PASS
+case=149 input={T=[6 4 30] phi=[0 0 24] w=[6 4 30] prod=120} before=71 after=71 changed=false expectPhases=[0 0 24] verdict=PASS
+case=150 input={T=[20 20 25] phi=[12 8 4] w=[6 5 25] prod=500} before=86 after=75 changed=true expectPhases=[12 18 3] verdict=PASS
+case=151 input={T=[20 24 7] phi=[17 12 0] w=[20 24 7] prod=168} before=99 after=96 changed=true expectPhases=[17 1 0] verdict=PASS
+case=152 input={T=[10 34] phi=[0 5] w=[2 14] prod=34} before=58 after=57 changed=true expectPhases=[0 0] verdict=PASS
+case=153 input={T=[15 2] phi=[9 0] w=[13 2] prod=2} before=30 after=30 changed=false expectPhases=[9 0] verdict=PASS
+case=154 input={T=[16 38] phi=[8 29] w=[2 19] prod=38} before=73 after=72 changed=true expectPhases=[8 0] verdict=PASS
+case=155 input={T=[20 8 33] phi=[12 7 17] w=[20 8 26] prod=264} before=112 after=109 changed=true expectPhases=[12 0 0] verdict=PASS
+case=156 input={T=[7 27 30] phi=[4 26 22] w=[3 27 30] prod=810} before=121 after=119 changed=true expectPhases=[4 0 0] verdict=PASS
+case=157 input={T=[22 12] phi=[19 3] w=[22 12] prod=12} before=65 after=65 changed=false expectPhases=[19 3] verdict=PASS
+case=158 input={T=[28 6] phi=[26 4] w=[28 6] prod=6} before=65 after=65 changed=false expectPhases=[26 4] verdict=PASS
+case=159 input={T=[9 24 40] phi=[4 19 34] w=[9 21 40] prod=960} before=133 after=131 changed=true expectPhases=[4 1 6] verdict=PASS
+case=160 input={T=[6 1 30 32] phi=[5 0 1 26] w=[2 1 30 32] prod=960} before=130 after=124 changed=true expectPhases=[5 0 2 0] verdict=PASS
+case=161 input={T=[19 34] phi=[15 17] w=[13 21] prod=34} before=85 after=85 changed=false expectPhases=[15 17] verdict=PASS
+case=162 input={T=[11 9 3 27] phi=[4 7 1 0] w=[11 9 3 27] prod=729} before=94 after=86 changed=true expectPhases=[4 0 0 3] verdict=PASS
+case=163 input={T=[1 32 2 2] phi=[0 18 1 0] w=[1 32 2 1] prod=128} before=69 after=67 changed=true expectPhases=[0 0 0 0] verdict=PASS
+case=164 input={T=[25 6 8 8] phi=[1 3 3 0] w=[25 1 3 8] prod=384} before=75 after=72 changed=true expectPhases=[1 0 1 4] verdict=PASS
+case=165 input={T=[22 25] phi=[20 12] w=[22 14] prod=25} before=81 after=81 changed=false expectPhases=[20 12] verdict=PASS
+case=166 input={T=[15 4 1 10 5 1] phi=[4 2 0 3 0 0] w=[14 4 1 10 5 1] prod=200} before=61 after=56 changed=true expectPhases=[4 0 0 5 0 0] verdict=PASS
+case=167 input={T=[3 15] phi=[2 6] w=[3 15] prod=15} before=33 after=32 changed=true expectPhases=[2 2] verdict=PASS
+case=168 input={T=[13 2 18] phi=[4 1 17] w=[13 1 7] prod=36} before=51 after=50 changed=true expectPhases=[4 0 1] verdict=PASS
+case=169 input={T=[32 12 1 30] phi=[25 2 0 22] w=[32 9 1 16] prod=360} before=126 after=121 changed=true expectPhases=[25 1 0 5] verdict=PASS
+case=170 input={T=[2 1 1] phi=[0 0 0] w=[2 1 1] prod=1} before=5 after=5 changed=false expectPhases=[0 0 0] verdict=PASS
+case=171 input={T=[14 4 30] phi=[11 2 10] w=[7 2 17] prod=120} before=69 after=69 changed=false expectPhases=[11 2 10] verdict=PASS
+case=172 input={T=[10 37] phi=[8 26] w=[1 37] prod=37} before=83 after=83 changed=false expectPhases=[8 26] verdict=PASS
+case=173 input={T=[1 30] phi=[0 4] w=[1 30] prod=30} before=60 after=60 changed=false expectPhases=[0 4] verdict=PASS
+case=174 input={T=[25 15] phi=[20 13] w=[25 15] prod=15} before=77 after=74 changed=true expectPhases=[20 0] verdict=PASS
+case=175 input={T=[13 38] phi=[10 37] w=[6 38] prod=38} before=93 after=93 changed=false expectPhases=[10 37] verdict=PASS
+case=176 input={T=[38 18 4 9] phi=[21 7 0 1] w=[38 18 4 5] prod=648} before=126 after=120 changed=true expectPhases=[21 1 1 7] verdict=PASS
+case=177 input={T=[34 20] phi=[33 1] w=[34 12] prod=20} before=97 after=97 changed=false expectPhases=[33 1] verdict=PASS
+case=178 input={T=[25 16] phi=[22 8] w=[25 16] prod=16} before=80 after=80 changed=false expectPhases=[22 8] verdict=PASS
+case=179 input={T=[1 10] phi=[0 1] w=[1 10] prod=10} before=20 after=20 changed=false expectPhases=[0 1] verdict=PASS
+case=180 input={T=[2 3 12 6] phi=[0 0 11 2] w=[2 3 6 6] prod=216} before=33 after=28 changed=true expectPhases=[0 0 3 3] verdict=PASS
+case=181 input={T=[10 27] phi=[9 17] w=[10 27] prod=27} before=72 after=72 changed=false expectPhases=[9 17] verdict=PASS
+case=182 input={T=[10 15 19] phi=[6 10 3] w=[6 15 19] prod=285} before=80 after=77 changed=true expectPhases=[6 2 0] verdict=PASS
+case=183 input={T=[9 31] phi=[8 13] w=[9 31] prod=31} before=78 after=78 changed=false expectPhases=[8 13] verdict=PASS
+case=184 input={T=[14 28 8] phi=[7 26 5] w=[5 9 8] prod=224} before=55 after=53 changed=true expectPhases=[7 12 1] verdict=PASS
+case=185 input={T=[4 30 3 2] phi=[3 2 1 1] w=[1 2 3 2] prod=180} before=39 after=39 changed=false expectPhases=[3 2 1 1] verdict=PASS
+case=186 input={T=[25 6 2] phi=[6 1 0] w=[25 3 2] prod=12} before=59 after=59 changed=false expectPhases=[6 1 0] verdict=PASS
+case=187 input={T=[11 9] phi=[6 1] w=[11 9] prod=9} before=38 after=38 changed=false expectPhases=[6 1] verdict=PASS
+case=188 input={T=[2 20 24] phi=[0 8 5] w=[2 20 8] prod=480} before=70 after=69 changed=true expectPhases=[0 0 0] verdict=PASS
+case=189 input={T=[3 35 18] phi=[1 5 1] w=[3 35 14] prod=630} before=103 after=103 changed=false expectPhases=[1 5 1] verdict=PASS
+case=190 input={T=[36 16] phi=[22 3] w=[36 16] prod=16} before=100 after=99 changed=true expectPhases=[22 2] verdict=PASS
+case=191 input={T=[7 7 13 1] phi=[2 0 5 0] w=[1 7 13 1] prod=91} before=44 after=40 changed=true expectPhases=[2 3 0 0] verdict=PASS
+case=192 input={T=[5 20 8] phi=[2 6 3] w=[5 15 8] prod=160} before=57 after=51 changed=true expectPhases=[2 2 1] verdict=PASS
+case=193 input={T=[21 1] phi=[15 0] w=[14 1] prod=1} before=35 after=35 changed=false expectPhases=[15 0] verdict=PASS
+case=194 input={T=[39 10 9] phi=[12 1 4] w=[1 10 7] prod=90} before=73 after=71 changed=true expectPhases=[12 0 2] verdict=PASS
+case=195 input={T=[18 30 25] phi=[9 18 4] w=[10 30 25] prod=750} before=132 after=126 changed=true expectPhases=[9 1 1] verdict=PASS
+case=196 input={T=[18 16] phi=[10 10] w=[18 16] prod=16} before=65 after=65 changed=false expectPhases=[10 10] verdict=PASS
+case=197 input={T=[6 25] phi=[4 24] w=[6 25] prod=25} before=60 after=60 changed=false expectPhases=[4 24] verdict=PASS
+case=198 input={T=[6 3 1] phi=[5 2 0] w=[6 2 1] prod=3} before=14 after=14 changed=false expectPhases=[5 2 0] verdict=PASS
+case=199 input={T=[8 2 20] phi=[7 1 15] w=[8 2 20] prod=40} before=55 after=53 changed=true expectPhases=[7 1 1] verdict=PASS
+case=200 input={T=[12 15 3 10] phi=[6 6 0 2] w=[12 15 3 10] prod=450} before=71 after=65 changed=true expectPhases=[6 0 0 8] verdict=PASS
+case=201 input={T=[2 10] phi=[0 3] w=[2 8] prod=10} before=20 after=19 changed=true expectPhases=[0 0] verdict=PASS
+case=202 input={T=[24 3] phi=[9 1] w=[23 3] prod=3} before=51 after=49 changed=true expectPhases=[9 2] verdict=PASS
+case=203 input={T=[12 34 2] phi=[8 19 0] w=[10 34 1] prod=68} before=90 after=88 changed=true expectPhases=[8 0 0] verdict=PASS
+case=204 input={T=[12 30 4 2] phi=[0 26 1 1] w=[12 30 2 1] prod=240} before=83 after=80 changed=true expectPhases=[0 0 2 0] verdict=PASS
+case=205 input={T=[4 25 17] phi=[3 14 5] w=[4 25 17] prod=425} before=89 after=89 changed=false expectPhases=[3 14 5] verdict=PASS
+case=206 input={T=[4 10] phi=[0 2] w=[3 10] prod=10} before=25 after=24 changed=true expectPhases=[0 1] verdict=PASS
+case=207 input={T=[35 37 10] phi=[28 5 7] w=[35 37 10] prod=370} before=158 after=157 changed=true expectPhases=[28 0 1] verdict=PASS
+case=208 input={T=[4 33 6 5] phi=[0 20 1 1] w=[1 33 6 5] prod=990} before=89 after=86 changed=true expectPhases=[0 0 0 0] verdict=PASS
+case=209 input={T=[3 7 9 4] phi=[1 0 0 1] w=[1 5 9 4] prod=252} before=38 after=36 changed=true expectPhases=[1 0 1 0] verdict=PASS
+case=210 input={T=[6 27] phi=[4 7] w=[6 27] prod=27} before=62 after=62 changed=false expectPhases=[4 7] verdict=PASS
+case=211 input={T=[26 1] phi=[15 0] w=[26 1] prod=1} before=52 after=52 changed=false expectPhases=[15 0] verdict=PASS
+case=212 input={T=[24 2] phi=[7 1] w=[24 2] prod=2} before=49 after=49 changed=false expectPhases=[7 1] verdict=PASS
+case=213 input={T=[21 21 31] phi=[3 1 8] w=[21 16 31] prod=651} before=137 after=118 changed=true expectPhases=[3 3 0] verdict=PASS
+case=214 input={T=[18 27 33] phi=[17 2 14] w=[18 27 16] prod=891} before=129 after=126 changed=true expectPhases=[17 8 2] verdict=PASS
+case=215 input={T=[12 1] phi=[9 0] w=[12 1] prod=1} before=24 after=24 changed=false expectPhases=[9 0] verdict=PASS
+case=216 input={T=[9 7] phi=[5 5] w=[3 2] prod=7} before=19 after=19 changed=false expectPhases=[5 5] verdict=PASS
+case=217 input={T=[9 2 6 3 12] phi=[7 1 3 2 2] w=[3 2 6 3 12] prod=432} before=45 after=43 changed=true expectPhases=[7 0 0 0 3] verdict=PASS
+case=218 input={T=[1 20 25] phi=[0 11 17] w=[1 20 25] prod=500} before=86 after=85 changed=true expectPhases=[0 0 0] verdict=PASS
+case=219 input={T=[12 10 1] phi=[7 1 0] w=[11 10 1] prod=10} before=42 after=41 changed=true expectPhases=[7 0 0] verdict=PASS
+case=220 input={T=[4 40] phi=[1 18] w=[4 40] prod=40} before=84 after=83 changed=true expectPhases=[1 1] verdict=PASS
+case=221 input={T=[24 15] phi=[3 2] w=[24 15] prod=15} before=76 after=74 changed=true expectPhases=[3 0] verdict=PASS
+case=222 input={T=[20 7 9] phi=[19 3 7] w=[20 5 9] prod=63} before=67 after=67 changed=false expectPhases=[19 3 7] verdict=PASS
+case=223 input={T=[4 11 14] phi=[3 7 13] w=[1 11 14] prod=154} before=51 after=51 changed=false expectPhases=[3 7 13] verdict=PASS
+case=224 input={T=[20 1 10 2] phi=[15 0 8 0] w=[20 1 10 2] prod=20} before=54 after=52 changed=true expectPhases=[15 0 6 0] verdict=PASS
+case=225 input={T=[19 14 38] phi=[15 2 18] w=[14 13 38] prod=532} before=116 after=114 changed=true expectPhases=[15 0 35] verdict=PASS
+case=226 input={T=[30 8 5 5] phi=[27 1 0 0] w=[30 2 5 5] prod=200} before=77 after=77 changed=false expectPhases=[27 1 0 0] verdict=PASS
+case=227 input={T=[28 16] phi=[16 2] w=[28 16] prod=16} before=85 after=83 changed=true expectPhases=[16 0] verdict=PASS
+case=228 input={T=[10 1] phi=[5 0] w=[5 1] prod=1} before=15 after=15 changed=false expectPhases=[5 0] verdict=PASS
+case=229 input={T=[24 1 28] phi=[7 0 3] w=[24 1 28] prod=28} before=103 after=100 changed=true expectPhases=[7 0 0] verdict=PASS
+case=230 input={T=[8 8 22] phi=[2 5 21] w=[8 8 11] prod=176} before=57 after=54 changed=true expectPhases=[2 2 0] verdict=PASS
+case=231 input={T=[4 24] phi=[0 8] w=[4 13] prod=24} before=40 after=40 changed=false expectPhases=[0 8] verdict=PASS
+case=232 input={T=[4 9 13 1] phi=[0 0 5 0] w=[2 9 13 1] prod=117} before=48 after=48 changed=false expectPhases=[0 0 5 0] verdict=PASS
+case=233 input={T=[23 25] phi=[3 13] w=[23 21] prod=25} before=90 after=90 changed=false expectPhases=[3 13] verdict=PASS
+case=234 input={T=[39 12 24] phi=[22 4 22] w=[39 12 24] prod=288} before=140 after=134 changed=true expectPhases=[22 1 1] verdict=PASS
+case=235 input={T=[8 24] phi=[3 3] w=[8 24] prod=24} before=55 after=55 changed=false expectPhases=[3 3] verdict=PASS
+case=236 input={T=[21 2 35] phi=[6 0 25] w=[21 2 35] prod=70} before=109 after=107 changed=true expectPhases=[6 0 2] verdict=PASS
+case=237 input={T=[10 1 30 13] phi=[1 0 7 10] w=[10 1 30 13] prod=390} before=100 after=95 changed=true expectPhases=[1 0 2 0] verdict=PASS
+case=238 input={T=[38 3] phi=[35 2] w=[38 3] prod=3} before=80 after=80 changed=false expectPhases=[35 2] verdict=PASS
+case=239 input={T=[28 24 20] phi=[3 9 15] w=[24 24 20] prod=480} before=135 after=131 changed=true expectPhases=[3 3 3] verdict=PASS
+case=240 input={T=[29 8 1 20] phi=[9 6 0 6] w=[29 8 1 5] prod=160} before=97 after=94 changed=true expectPhases=[9 0 0 1] verdict=PASS
+case=241 input={T=[12 17] phi=[0 14] w=[12 8] prod=17} before=47 after=47 changed=false expectPhases=[0 14] verdict=PASS
+case=242 input={T=[12 22 12] phi=[2 5 10] w=[12 22 3] prod=264} before=70 after=68 changed=true expectPhases=[2 0 8] verdict=PASS
+case=243 input={T=[16 8 20] phi=[4 4 17] w=[16 8 20] prod=160} before=76 after=75 changed=true expectPhases=[4 4 0] verdict=PASS
+case=244 input={T=[1 20 6] phi=[0 1 4] w=[1 20 4] prod=120} before=49 after=48 changed=true expectPhases=[0 0 0] verdict=PASS
+case=245 input={T=[8 4 2] phi=[3 1 0] w=[2 2 1] prod=8} before=13 after=12 changed=true expectPhases=[3 1 1] verdict=PASS
+case=246 input={T=[2 35] phi=[0 10] w=[2 35] prod=35} before=72 after=72 changed=false expectPhases=[0 10] verdict=PASS
+case=247 input={T=[8 20 28] phi=[0 2 18] w=[8 20 28] prod=560} before=105 after=103 changed=true expectPhases=[0 0 0] verdict=PASS
+case=248 input={T=[5 2 2 8 15] phi=[0 1 0 3 10] w=[2 1 2 8 2] prod=480} before=41 after=36 changed=true expectPhases=[0 0 1 1 0] verdict=PASS
+case=249 input={T=[10 15 2 8] phi=[6 6 0 0] w=[4 1 1 8] prod=240} before=41 after=39 changed=true expectPhases=[6 0 1 0] verdict=PASS
+case=250 input={T=[28 27] phi=[24 5] w=[22 27] prod=27} before=102 after=102 changed=false expectPhases=[24 5] verdict=PASS
+case=251 input={T=[8 40 22] phi=[1 23 9] w=[8 9 22] prod=880} before=105 after=98 changed=true expectPhases=[1 1 0] verdict=PASS
+case=252 input={T=[30 31] phi=[18 11] w=[5 31] prod=31} before=95 after=95 changed=false expectPhases=[18 11] verdict=PASS
+case=253 input={T=[8 8 32 3] phi=[7 2 20 1] w=[8 1 32 3] prod=768} before=81 after=77 changed=true expectPhases=[7 7 0 0] verdict=PASS
+case=254 input={T=[6 11] phi=[4 3] w=[2 11] prod=11} before=28 after=28 changed=false expectPhases=[4 3] verdict=PASS
+case=255 input={T=[28 6 21] phi=[21 3 11] w=[28 6 3] prod=126} before=83 after=78 changed=true expectPhases=[21 1 13] verdict=PASS
+case=256 input={T=[38 20 30] phi=[28 9 9] w=[32 20 18] prod=600} before=146 after=145 changed=true expectPhases=[28 0 0] verdict=PASS
+case=257 input={T=[3 15] phi=[1 10] w=[3 15] prod=15} before=32 after=32 changed=false expectPhases=[1 10] verdict=PASS
+case=258 input={T=[2 1] phi=[1 0] w=[1 1] prod=1} before=3 after=3 changed=false expectPhases=[1 0] verdict=PASS
+case=259 input={T=[13 22] phi=[6 1] w=[13 22] prod=22} before=68 after=68 changed=false expectPhases=[6 1] verdict=PASS
+case=260 input={T=[7 22 8] phi=[3 16 0] w=[7 13 8] prod=176} before=62 after=61 changed=true expectPhases=[3 0 1] verdict=PASS
+case=261 input={T=[26 3 12] phi=[20 0 3] w=[26 3 12] prod=36} before=76 after=76 changed=false expectPhases=[20 0 3] verdict=PASS
+case=262 input={T=[6 18 24] phi=[0 2 18] w=[6 18 24] prod=432} before=89 after=83 changed=true expectPhases=[0 0 0] verdict=PASS
+case=263 input={T=[9 5] phi=[8 2] w=[9 5] prod=5} before=26 after=26 changed=false expectPhases=[8 2] verdict=PASS
+case=264 input={T=[2 1 4 11] phi=[0 0 1 8] w=[1 1 3 11] prod=44} before=30 after=29 changed=true expectPhases=[0 0 0 0] verdict=PASS
+case=265 input={T=[16 9] phi=[5 6] w=[16 9] prod=9} before=48 after=48 changed=false expectPhases=[5 6] verdict=PASS
+case=266 input={T=[30 16] phi=[23 0] w=[28 11] prod=16} before=83 after=82 changed=true expectPhases=[23 1] verdict=PASS
+case=267 input={T=[35 5 24 3] phi=[13 0 13 1] w=[20 5 24 3] prod=360} before=111 after=109 changed=true expectPhases=[13 3 0 0] verdict=PASS
+case=268 input={T=[21 30] phi=[20 19] w=[21 19] prod=30} before=89 after=87 changed=true expectPhases=[20 2] verdict=PASS
+case=269 input={T=[16 20 1 1 3] phi=[8 17 0 0 0] w=[16 20 1 1 2] prod=60} before=74 after=73 changed=true expectPhases=[8 0 0 0 0] verdict=PASS
+case=270 input={T=[20 15 2 27] phi=[19 4 1 13] w=[20 15 1 16] prod=810} before=107 after=105 changed=true expectPhases=[19 4 0 2] verdict=PASS
+case=271 input={T=[38 5 26] phi=[32 1 0] w=[38 5 11] prod=130} before=120 after=119 changed=true expectPhases=[32 0 1] verdict=PASS
+case=272 input={T=[21 13 12] phi=[5 9 10] w=[12 13 4] prod=156} before=71 after=70 changed=true expectPhases=[5 0 0] verdict=PASS
+case=273 input={T=[40 21] phi=[10 10] w=[26 21] prod=21} before=106 after=106 changed=false expectPhases=[10 10] verdict=PASS
+case=274 input={T=[10 11 22] phi=[9 9 17] w=[6 1 18] prod=242} before=61 after=54 changed=true expectPhases=[9 0 12] verdict=PASS
+case=275 input={T=[29 12] phi=[22 2] w=[29 12] prod=12} before=80 after=80 changed=false expectPhases=[22 2] verdict=PASS
+case=276 input={T=[3 5] phi=[2 1] w=[1 5] prod=5} before=12 after=12 changed=false expectPhases=[2 1] verdict=PASS
+case=277 input={T=[13 2 12 3] phi=[11 0 1 2] w=[13 2 12 3] prod=72} before=55 after=53 changed=true expectPhases=[11 0 0 0] verdict=PASS
+case=278 input={T=[6 30] phi=[1 13] w=[6 30] prod=30} before=65 after=65 changed=false expectPhases=[1 13] verdict=PASS
+case=279 input={T=[12 7] phi=[3 0] w=[12 7] prod=7} before=36 after=36 changed=false expectPhases=[3 0] verdict=PASS
+case=280 input={T=[39 11 4] phi=[32 7 3] w=[39 11 4] prod=44} before=105 after=105 changed=false expectPhases=[32 7 3] verdict=PASS
+case=281 input={T=[18 7] phi=[1 2] w=[18 4] prod=7} before=45 after=45 changed=false expectPhases=[1 2] verdict=PASS
+case=282 input={T=[21 5 10] phi=[12 4 4] w=[21 1 10] prod=50} before=65 after=61 changed=true expectPhases=[12 0 1] verdict=PASS
+case=283 input={T=[24 1 23 10 1] phi=[9 0 17 1 0] w=[24 1 23 10 1] prod=230} before=112 after=112 changed=false expectPhases=[9 0 17 1 0] verdict=PASS
+case=284 input={T=[15 2 4 24] phi=[13 0 3 1] w=[15 2 4 24] prod=192} before=83 after=80 changed=true expectPhases=[13 0 0 4] verdict=PASS
+case=285 input={T=[5 20 36] phi=[4 15 32] w=[5 7 27] prod=720} before=93 after=90 changed=true expectPhases=[4 4 3] verdict=PASS
+case=286 input={T=[38 22] phi=[5 19] w=[38 3] prod=22} before=98 after=98 changed=false expectPhases=[5 19] verdict=PASS
+case=287 input={T=[25 40] phi=[13 26] w=[25 16] prod=40} before=103 after=100 changed=true expectPhases=[13 3] verdict=PASS
+case=288 input={T=[1 15 28] phi=[0 8 4] w=[1 15 16] prod=420} before=73 after=73 changed=false expectPhases=[0 8 4] verdict=PASS
+case=289 input={T=[21 4 13] phi=[2 3 5] w=[21 2 13] prod=52} before=71 after=71 changed=false expectPhases=[2 3 5] verdict=PASS
+case=290 input={T=[13 6 28] phi=[0 1 21] w=[13 6 25] prod=168} before=87 after=87 changed=false expectPhases=[0 1 21] verdict=PASS
+case=291 input={T=[20 4 4] phi=[4 0 3] w=[20 4 4] prod=16} before=50 after=47 changed=true expectPhases=[4 0 0] verdict=PASS
+case=292 input={T=[21 9 8] phi=[3 1 0] w=[21 9 8] prod=72} before=72 after=71 changed=true expectPhases=[3 0 0] verdict=PASS
+case=293 input={T=[10 7] phi=[3 1] w=[10 4] prod=7} before=29 after=29 changed=false expectPhases=[3 1] verdict=PASS
+case=294 input={T=[33 4] phi=[13 1] w=[33 1] prod=4} before=69 after=69 changed=false expectPhases=[13 1] verdict=PASS
+case=295 input={T=[21 34] phi=[13 13] w=[15 34] prod=34} before=102 after=102 changed=false expectPhases=[13 13] verdict=PASS
+case=296 input={T=[14 1 20] phi=[2 0 18] w=[14 1 20] prod=20} before=67 after=66 changed=true expectPhases=[2 0 1] verdict=PASS
+case=297 input={T=[6 3 1 3 10] phi=[2 0 0 1 3] w=[1 3 1 2 2] prod=90} before=22 after=22 changed=false expectPhases=[2 0 0 1 3] verdict=PASS
+case=298 input={T=[7 2 2 5 19] phi=[5 1 0 2 6] w=[3 2 2 5 18] prod=380} before=60 after=59 changed=true expectPhases=[5 0 0 0 0] verdict=PASS
+case=299 input={T=[29 8] phi=[25 0] w=[29 8] prod=8} before=72 after=72 changed=false expectPhases=[25 0] verdict=PASS
+# summary: 300/300 passed
