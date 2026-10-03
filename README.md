@@ -2,45 +2,57 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
-## 环境要求
+## 移动操作日志重放器
 
-- Go 1.26+（`go version` 确认）
+根包提供 `New(replicas)` 创建 `*Replayer`。副本名集合必须非空，副本名不能为空且互不相同。
 
-## 运行
+- 固定节点：`0` 是根，`1` 是回收站，二者永不移动；用户节点编号从 `2` 开始。
+- 移动操作：`Op{TS, Rep, Node, Parent, Name}`，要求 `TS >= 1`、`Node >= 2`、`Parent >= 0`、`Name` 非空且不含 `/`。
+- 全序键：按 `(TS, Rep)` 升序，时间戳相同则按副本名字节序比较；键相同就是同一操作。
+- 当前树：在已折叠基线树之上，按键升序重放尚未折叠日志。
+- 跳过规则：目标父节点不存在，或从父节点自身开始沿父链向上会到达被移动节点，则跳过该操作；跳过操作仍保留在日志中。
+- 生效语义：未被跳过的操作为生效；节点不存在时由首个生效操作创建，后续生效操作原子更新父和名。
+
+### Apply 与撤销重做
+
+`Apply(op)` 按键插入日志。实现等价于先撤销所有键更大的操作，在包含新操作的前缀上重放，再按键升序重做后续操作。每个重做步骤都会重新判定是否跳过，因此先前被跳过的操作可能转为生效，反之亦然。
+
+返回值中的 `Effective` 表示新操作是否生效；`Changed` 仅列出本次插入后生效状态翻转的其他操作键，并按键升序返回。非导出计数器 `redone` 每次恰好增加日志中键大于新操作的条目数。
+
+拒绝顺序固定为：
+
+1. 参数非法；
+2. 副本未知，返回 `ErrUnknownRep`；
+3. `TS <= Stable()`，返回 `ErrStale`；
+4. 键已存在，返回 `ErrDuplicate`。
+
+### 稳定水位与折叠
+
+`Ack(rep, t)` 声明副本 `rep` 已收到全部 `TS <= t` 的操作。未知副本先返回 `ErrUnknownRep`；同一副本回退到更小水位返回 `ErrAckRegress`。
+
+稳定水位是所有副本 Ack 的最小值，初值为 `0`。水位前进时，日志中 `TS <= stable` 的操作按键升序固化进基线树并从日志移除；这些操作之后不可撤销，也不会再出现在 `Changed` 中。`Ack` 返回本次新折叠的操作数。
+
+### 查询
+
+- `Parent(node)` 返回 `(parent, name, exists)`；根和回收站不返回业务名。
+- `InTrash(node)` 沿祖先链判断是否止于回收站 `1`。
+- `Log()` 按键升序返回所有尚未折叠的键和生效标记。
+- `Stable()` 返回当前稳定水位。
+
+所有读写都由内部读写锁串行化，等价于某个合法的原子调用串行顺序；因为最终状态由日志的全序唯一决定，任意到达次序都会收敛到同一棵树和同一组操作生效标记。
+
+## 本地验证
+
+需要 Go 1.26+：
 
 ```bash
-# 拉取依赖
-go mod tidy
-
-# 直接运行
-go run ./cmd/server
-
-# 编译后运行
-go build -o bin/server ./cmd/server
-./bin/server
-```
-
-## 测试
-
-```bash
-# 全量测试
 go test ./...
-
-# 带竞态检测与详细输出
-go test -race -v ./...
-
-# 单个包 / 单个用例
-go test ./ontology
-go test -run TestObjectType ./ontology
-
-# 覆盖率
-go test -coverprofile=coverage.out ./...
-go tool cover -html=coverage.out
-```
-
-## 代码检查
-
-```bash
+go test -race ./...
+go test -run TestRandomArrivalMatchesNaiveReplay -v ./...
 gofmt -l .
 go vet ./...
 ```
+
+随机测试固定种子，包含 2000 组随机操作和两种乱序到达次序，并与“每次从空基线按全序整体重放”的朴素实现对照。使用 `-v` 时会打印每组输入、两种到达次序、逐次返回值、`redone` 和跳过判定依据。
+
+如果 `go` 不在默认 `PATH` 中，可直接使用 `/usr/local/go/bin/go`；若默认构建缓存只读，可设置 `GOCACHE=/tmp/go-build`。
