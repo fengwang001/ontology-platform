@@ -2,6 +2,10 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 组件
+
+- [`numalock`](numalock/README.md)：NUMA 感知的相位公平读写组队锁（读者成批、写者按节点组队、本地传递上限、降级/升级、可撤销、可精确重放）。
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
