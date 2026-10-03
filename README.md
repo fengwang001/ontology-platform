@@ -2,6 +2,11 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 包
+
+- `repair`：纠删码条带延迟修复调度器（只模拟调度，不做编码运算），见
+  [repair/README.md](repair/README.md)。
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
