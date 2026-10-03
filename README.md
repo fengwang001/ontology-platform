@@ -2,6 +2,11 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 组件
+
+- `rta/`：带释放抖动与阻塞项的固定优先级响应时间分析器（Audsley
+  优先级分配、增量接纳、并发安全），详见 `rta/README.md`。
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
