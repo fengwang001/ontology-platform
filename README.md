@@ -2,6 +2,11 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 子包
+
+- [`regex`](regex/README.md)：带本地步数上限、纪元全局预算与封禁升级的回溯正则执行器，
+  指令语义、计步规则、预算与封禁规则、拒绝次序详见其文档。
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
