@@ -2,6 +2,10 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 包
+
+- `tlb`：带 ASID 世代回绕与惰性整表刷新的多 CPU 软件 TLB 模型，见 [tlb/README.md](tlb/README.md)。
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
