@@ -2,6 +2,11 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 模块
+
+- `kms/`：带惰性自动轮换、禁用与计划删除窗口的 KMS 密钥生命周期管理器，
+  详见 [kms/README.md](kms/README.md)。
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
