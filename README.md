@@ -44,3 +44,9 @@ go tool cover -html=coverage.out
 gofmt -l .
 go vet ./...
 ```
+
+## 包说明
+
+- `pagetable`：三级基数页表映射器（512 虚拟页，1/8/64 页叶子，劈分继承
+  A/D、整表合并、空表即时回收、表页配额峰值校验、并发安全）。详见
+  [pagetable/README.md](pagetable/README.md)。
