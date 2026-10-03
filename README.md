@@ -2,6 +2,11 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 子系统
+
+- `futex/`：带值校验、优先级队列、位掩码唤醒、重排队与复合唤醒的
+  futex 等待队列子系统，详见 `futex/README.md`。
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
