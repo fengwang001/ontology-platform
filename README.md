@@ -44,3 +44,9 @@ go tool cover -html=coverage.out
 gofmt -l .
 go vet ./...
 ```
+
+## 组件
+
+- `flexray/`：FlexRay 式总线通信周期的静态段/动态段仲裁器。
+  处理次序、`k`/`i` 前进规则、未用时隙回收与本地验证方法见
+  [flexray/README.md](flexray/README.md)。
