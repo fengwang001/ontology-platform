@@ -2,6 +2,10 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 包
+
+- `ecrepair`：纠删码条带延迟修复调度器（只模拟调度，不做编码运算），详见 [ecrepair/README.md](ecrepair/README.md)。
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
