@@ -2,6 +2,11 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 包
+
+- `resolver`：允许重叠实例的类型类实例解析器与带增量失效的解析缓存，
+  见 [resolver/README.md](resolver/README.md)。
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
