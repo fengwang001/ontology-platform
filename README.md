@@ -2,6 +2,11 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 包
+
+- `syncookie`：带半开队列溢出切换的 SYN Cookie 握手验证器，详见
+  [syncookie/README.md](syncookie/README.md)。
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
