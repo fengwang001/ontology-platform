@@ -2,6 +2,10 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 包
+
+- `cbs`：常带宽服务器带宽账本与零松弛回收器，见 [cbs/README.md](cbs/README.md)。
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
