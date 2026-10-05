@@ -2,6 +2,10 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 包
+
+- `cpm`：带搭接时距、约束与基线的增量关键路径与时差维护器，见 [cpm/README.md](cpm/README.md)。
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
