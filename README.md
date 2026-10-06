@@ -44,3 +44,11 @@ go tool cover -html=coverage.out
 gofmt -l .
 go vet ./...
 ```
+
+## 合乘服务
+
+- 入口：`NewService`、`AddVehicle`、`SubmitOrder`、`UpdatePosition`、`CancelOrder`、`GetOrder`。
+- 下单无车可并入时返回 `ErrNoVehicleAvailable`，同时订单进入等待队列。
+- `SliceLogger.Print()` 可输出每条操作的输入、输出、错误和判定原因。
+- `NaiveModel` 独立保存事件并从零重放，供 `TestRandomReplayAgainstNaive` 对照。
+- 查询订单只读取内存 map；车辆不保留完成订单，复杂度不随历史订单数增长。
