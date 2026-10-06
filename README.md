@@ -2,6 +2,16 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 在途库存调拨系统
+
+仓库间库存调拨（创建冻结 → 发出 → 分批收货 → 差异登记 → 关闭 → 事后找回）
+的在途管理实现位于：
+
+- 设计说明（模块划分、守恒模型、并发协议、被放弃方案）：[`DESIGN.md`](DESIGN.md)
+- 使用文档与 API：[`README_TRANSFER.md`](README_TRANSFER.md)
+- 实现：`internal/clock`、`internal/inventory`、`internal/transfer`
+- 独立朴素参考模型：`internal/naive`（随机差分测试对照）
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
