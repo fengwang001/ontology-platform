@@ -44,3 +44,10 @@ go tool cover -html=coverage.out
 gofmt -l .
 go vet ./...
 ```
+
+## 接触者追踪子系统
+
+- 设计与取舍：[docs/DESIGN.md](docs/DESIGN.md)
+- API 使用：[docs/API.md](docs/API.md)
+- 核心包：`contacttracing/`；独立朴素模型：`naivemodel/`；随机差分测试：`contacttracing/difftest/`
+- 运行：`go test ./...`（本机 Go 位于 `/usr/local/go/bin`，如缓存目录只读可 `export GOCACHE=/tmp/gocache`）
