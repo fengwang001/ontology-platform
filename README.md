@@ -2,6 +2,13 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 包
+
+- `ontology/exports`：模块包导出映射（exports map）解析器。给定导出映射表与导入
+  请求（子路径 + 活动条件集合），解析出内部目标或可区分的错误；支持并发解析与
+  整表原子替换，单次解析开销与键总数无关。设计说明见
+  [exports/DESIGN.md](exports/DESIGN.md)。
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
