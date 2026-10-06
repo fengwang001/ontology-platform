@@ -2,6 +2,18 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 路径锁服务（pathlock）
+
+`pathlock/` 提供仓库级大文件路径锁：推送前对规范化路径加锁，支持创建、
+前缀分页查询、持有者释放、管理员强制释放（带审计），以及推送时对一批
+路径的全有或全无持锁核验与「校验并顺带释放」。祖先/后代方向对他人排他、
+对本人放行；所有操作可并发且结果可串行化。设计取舍见 `pathlock/DESIGN.md`。
+
+```bash
+go test -race -v ./pathlock
+go test -bench=BenchmarkAcquire -run=^$ ./pathlock
+```
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
