@@ -2,6 +2,12 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 组件
+
+- `quota/`：多租户命名空间的资源配额准入控制器。提供默认值补全、
+  作用域判定、多配额多资源的全有或全无准入、原位调整的增量核算、
+  配额 CRUD 与一致性自检。设计说明见 `docs/quota-admission.md`。
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
