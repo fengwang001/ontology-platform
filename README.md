@@ -44,3 +44,13 @@ go tool cover -html=coverage.out
 gofmt -l .
 go vet ./...
 ```
+
+## 奖学金评定引擎
+
+`scholarship/` 包实现奖学金评定排序与名额分配引擎（资格筛选、多级排序、
+分等级分院系名额分配与回流、复议重评、已确认钉住）。设计说明见
+[scholarship/DESIGN.md](scholarship/DESIGN.md)，测试：
+
+```bash
+go test -race -v ./scholarship/
+```
