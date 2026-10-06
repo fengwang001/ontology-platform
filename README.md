@@ -2,6 +2,21 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 子包：planningpoker
+
+团队估点投票会话服务（隐藏投票 / 惰性到期 / 自动揭示 / 轮次上限 /
+收敛与分歧判定 / 末轮强制取值）。
+
+- 设计说明：`planningpoker/DESIGN.md`
+- 包文档：`planningpoker/doc.go`
+- 独立朴素对照模型与 1500 组随机差分测试：`planningpoker/oracle_test.go`、
+  `planningpoker/diff_test.go`
+
+```bash
+go test -run TestDifferentialRandom -v ./planningpoker
+go test -bench . -run '^$' ./planningpoker
+```
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
