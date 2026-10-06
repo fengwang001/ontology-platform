@@ -44,3 +44,15 @@ go tool cover -html=coverage.out
 gofmt -l .
 go vet ./...
 ```
+
+## 履约时效承诺与超时赔付（`fulfillment` 包）
+
+订单被接受时冻结承诺送达时刻，送达后按延误时长分档赔付，
+并把延误归因到商家、骑手、平台或用户。设计取舍见
+[fulfillment/DESIGN.md](fulfillment/DESIGN.md)。
+
+```bash
+go test ./fulfillment/          # 定向覆盖测试
+go test -race ./fulfillment/    # 并发正确性
+go test -v -run TestRandomizedDifferential ./fulfillment/  # 朴素模型对拍日志
+```
