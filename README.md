@@ -44,3 +44,10 @@ go tool cover -html=coverage.out
 gofmt -l .
 go vet ./...
 ```
+
+## freight：承运商运价合同运费计算与结算
+
+- 实现：`freight/`（合同管理、计价引擎、结算、多承运商询价）
+- 设计说明（关键取舍、被放弃的方案、验证方法）：`docs/freight-design.md`
+- 测试：`go test ./... -race`；随机对照日志 `go test ./freight/ -run TestRandomOps -v`
+- 复杂度基准：`go test ./freight/ -run xxx -bench .`
