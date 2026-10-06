@@ -2,6 +2,19 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 行归属追溯服务（lineage 包）
+
+面向提交图的行级归属追溯：判定任一提交中任一文件的每一行「由哪个提交、
+以什么路径首次引入」，支持可版本化的忽略名单与全并发载入/查询。
+设计取舍见 [DESIGN.md](DESIGN.md)。
+
+```go
+s := lineage.NewService()
+_ = s.LoadCommit(lineage.Commit{ID: "c1", Files: map[string]string{"f": "a\nb\n"}})
+v, _ := s.NewIgnoreVersion(nil)
+attrs, err := s.Blame("c1", "f", v) // 每行的 (提交, 路径, 行号, 被忽略仍归属)
+```
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
