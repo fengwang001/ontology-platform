@@ -2,6 +2,12 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 包
+
+- `logkv`：只追加日志结构键值引擎（启动恢复、撕裂尾部截断、提示信息、
+  读取自愈、段合并与崩溃清理）。见 [logkv/README.md](logkv/README.md)
+  与 [logkv/DESIGN.md](logkv/DESIGN.md)。
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
