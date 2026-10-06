@@ -44,3 +44,14 @@ go tool cover -html=coverage.out
 gofmt -l .
 go vet ./...
 ```
+
+## 理赔反欺诈工作流（`claims` 包）
+
+指标规则库评分、阈值分流（自动通过/单人复核/双人复核）、复核分配
+（FIFO、利益冲突回避、级别与同人校验）、双人一致性判定与仲裁、
+空位时限自动通过与撤回终态。设计取舍见 `claims/DESIGN.md`。
+
+```bash
+go test ./claims/ -race -v                      # 单测 + 朴素模型差分对照
+go test ./claims -bench RequestAssign -benchmem -run '^$'  # 分配性能证明
+```
