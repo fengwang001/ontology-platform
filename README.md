@@ -44,3 +44,18 @@ go tool cover -html=coverage.out
 gofmt -l .
 go vet ./...
 ```
+
+## 变压器容量预约系统
+
+实现在 `transformer/` 包，设计说明见 `docs/DESIGN.md`。
+
+```bash
+# 定向边界测试
+go test ./transformer/ -v
+
+# 与朴素模型的随机操作序列对拍（逐条打印输入/输出/判定依据）
+go test ./transformer/ -run TestDifferentialRandom -v
+
+# 竞态检测
+go test -race ./transformer/
+```
