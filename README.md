@@ -44,3 +44,14 @@ go tool cover -html=coverage.out
 gofmt -l .
 go vet ./...
 ```
+
+## 分代回收模型（`gengc` 包）
+
+`gengc/` 实现年轻区/年老区分代内存回收：对象在年轻区分配，熬过阈值次年轻区
+回收后晋升；写屏障按对象粒度登记「年老→年轻」引用，年轻区回收只扫描年轻区；
+年老区回收仅显式触发、全堆可达性扫描。
+
+- 设计说明（关键取舍、放弃方案、复杂度证明、验证方法）：`gengc/DESIGN.md`
+- 定向用例：`go test ./gengc/ -race -v`
+- 与朴素全扫描模型的随机差分（逐条输入/输出/判定日志）：
+  `go test ./gengc/ -run TestRandomDifferential -v`
