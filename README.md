@@ -2,6 +2,19 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 骑手考核与申诉系统
+
+实现位于 `rider/` 包：固定周期扣分定级、根因簇连带撤销、申诉窗口与已结算周期回溯补偿。
+设计取舍见 `rider/DESIGN.md`；测试含独立全量重算朴素模型与随机差分对照：
+
+```bash
+# 全量（含竞态检测）
+go test -race ./...
+
+# 查看差分测试逐步输入/输出/判定依据
+go test -run TestDifferential -v ./rider
+```
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
