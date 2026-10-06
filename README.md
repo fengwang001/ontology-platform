@@ -2,6 +2,12 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 营业时段与临时歇业系统
+
+根包 `shophours` 实现商家周营业时段版本化、临时歇业、强制停业、即时单/预约单准入与
+订单取消编排。设计取舍见 `DESIGN.md`，API 说明见 `DOC.md`；测试含独立朴素逐秒模型的
+随机差分对照（`go test -run TestRandomDifferential -v` 打印每步输入、输出与判定依据）。
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
