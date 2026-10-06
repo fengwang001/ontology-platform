@@ -44,3 +44,13 @@ go tool cover -html=coverage.out
 gofmt -l .
 go vet ./...
 ```
+
+## mesh 子包：流量路由配置发布与请求分流
+
+服务网格路由模块位于 `mesh/`，提供有序规则首命中匹配、权重分桶、策略逐字段继承、
+发布期遮蔽拒绝与乐观版本原子发布。设计取舍、并发论证与本地验证方法见 `mesh/DESIGN.md`。
+
+```bash
+go test -race -v ./mesh
+go test -run=NONE -bench=. -benchtime=200000x ./mesh
+```
