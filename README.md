@@ -2,6 +2,15 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 成绩复核与改分审计引擎
+
+根包 `gradeaudit` 实现成绩版本链、复核申请、教师提案、审批、学期锁定、锁定后特殊通道、历史时点查询和只追加审计账本。
+
+- 设计取舍见 `DESIGN.md`
+- API 用法见 `API.md`
+- 确定性边界用例与朴素模型随机对照在 `engine_test.go`、`model_test.go`
+- 快照查询复杂度验证微基准在 `benchmark_test.go`
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
@@ -36,6 +45,14 @@ go test -run TestObjectType ./ontology
 # 覆盖率
 go test -coverprofile=coverage.out ./...
 go tool cover -html=coverage.out
+```
+
+当前环境若 Go 未在 PATH 中，可使用：
+
+```bash
+GOCACHE=/tmp/go-build PATH=/usr/local/go/bin:$PATH go test ./...
+GOCACHE=/tmp/go-build PATH=/usr/local/go/bin:$PATH go test -race ./...
+GOCACHE=/tmp/go-build PATH=/usr/local/go/bin:$PATH go vet ./...
 ```
 
 ## 代码检查
