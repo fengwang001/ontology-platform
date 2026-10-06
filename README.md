@@ -2,6 +2,12 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 包
+
+- `enrollment`：选课容量与课程关系约束引擎（容量、先修、共修、互斥、
+  学分上限、时间冲突；批量全有或全无、级联退课、原子换课）。
+  设计说明见 [enrollment/DESIGN.md](enrollment/DESIGN.md)。
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
