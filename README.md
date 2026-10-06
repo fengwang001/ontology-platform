@@ -38,6 +38,14 @@ go test -coverprofile=coverage.out ./...
 go tool cover -html=coverage.out
 ```
 
+## 拒付案件与商户资金扣回
+
+- 实现：`chargeback/`（入口 `chargeback.New(Config)`）
+- 设计说明（取舍、被放弃方案、复杂度论证）：`chargeback/DESIGN.md`
+- 独立朴素参考模型：`chargeback/naive/`
+- 随机差分对照（打印输入/输出/判定依据）：
+  `go test -run TestDifferentialRandom ./chargeback/`，加 `-diffverbose` 查看逐步日志
+
 ## 代码检查
 
 ```bash
