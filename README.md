@@ -44,3 +44,10 @@ go tool cover -html=coverage.out
 gofmt -l .
 go vet ./...
 ```
+
+## 模块
+
+- `swcoord/`：服务工作线程式注册与版本更新协调器（作用域最长前缀匹配、
+  installing/waiting/active/redundant 版本生命周期、客户端控制、更新检查限频、
+  按版本缓存清单应答）。设计取舍见 `swcoord/DESIGN.md`，测试：
+  `go test -race -v ./swcoord/`，性能基准：`go test ./swcoord/ -run xxx -bench .`。
