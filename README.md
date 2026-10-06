@@ -2,6 +2,18 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 行李中转与超重计费
+
+根包实现联程行李直挂判定、提取点切分与计件/计重费用计算，设计取舍见
+[DESIGN.md](DESIGN.md)。
+
+- 规则用例与拒绝次序：`go test -v ./...`
+- 朴素模型随机差分（打印每步输入/输出/判定依据）：
+  `go test -run TestRandomDifferential -v ./...`
+- 并发可串行化：`go test -race ./...`
+- 性能证据（不随机场数/历史记录数增长）：
+  `go test -bench=BenchmarkCheckInScaling -run=^$ .`
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
