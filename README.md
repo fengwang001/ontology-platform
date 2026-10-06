@@ -2,6 +2,12 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 组件
+
+- `allocation/`：高校教师授课任务分配与学期工作量核算服务
+  （任务指派、时段冲突、待确认/惰性超时、批量原子指派、中途换人、
+  学期欠额/超额与抵扣结转、幂等冻结）。设计与取舍见 [`docs/DESIGN.md`](docs/DESIGN.md)。
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
