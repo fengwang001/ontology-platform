@@ -44,3 +44,20 @@ go tool cover -html=coverage.out
 gofmt -l .
 go vet ./...
 ```
+
+## 岗位编制与录用通知服务
+
+实现位于 `staffing/`，独立朴素模型与随机/并发对照测试位于 `staffingtest/`：
+
+- 设计与取舍：`docs/DESIGN.md`
+- API 文档：`docs/API.md`
+- 逐步判定日志样例：`docs/diff-sample.log`
+
+```bash
+export PATH=$PATH:/usr/local/go/bin GOCACHE=/tmp/gocache
+
+go test -race -count=1 ./...
+STAFFING_LOG=$PWD/docs/diff-sample.log \
+  go test -run TestNaiveDifferential -count=1 ./staffingtest
+go test -run=NONE -bench=BenchmarkIssueWithHistory -benchtime=2000x ./staffing
+```
