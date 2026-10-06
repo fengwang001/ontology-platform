@@ -2,6 +2,15 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 住院护理给药时间表
+
+实现位于 `medschedule/`：
+
+- 设计与取舍、被放弃方案、性能论证：`docs/DESIGN.md`
+- API 与边界语义、错误码：`docs/API.md`
+- 独立朴素模型 + 1500 组随机差分（逐步日志 `medschedule/diff_trace.log`）
+- 短/长历史两档性能对照（`TestCostIndependentOfHistory`）
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
