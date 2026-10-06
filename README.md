@@ -44,3 +44,40 @@ go tool cover -html=coverage.out
 gofmt -l .
 go vet ./...
 ```
+
+## 抑制指令处理器
+
+核心实现位于 `suppress` 包，提供线程安全的诊断与指令登记、可重复判定和一致快照：
+
+```go
+processor := suppress.NewProcessor(totalLines, []string{"A", "B"}, true)
+if err := processor.RegisterDiagnostic(suppress.Diagnostic{Line: 3, Column: 2, Rule: "A"}); err != nil {
+	return err
+}
+if err := processor.RegisterDirective(suppress.Directive{
+	Line:   3,
+	Kind:   suppress.KindLine,
+	Tags:   []string{suppress.AllRules},
+	Reason: "false positive after triage",
+}); err != nil {
+	return err
+}
+report := processor.Decide()
+```
+
+指令种类：
+
+- `KindLine`：作用于所在行。
+- `KindNextLine`：作用于下一行；末行报“无目标行”。
+- `KindDisable` / `KindEnable`：按标签独立配对的半开区间。
+- `KindFile`：对整个文件生效，不受所在位置影响。
+
+判定结果包含保留诊断、被抑制诊断及其归属 `(指令行号, 标签)`，以及标签级和指令级问题。设计、复杂度证明和放弃方案见 `suppress/DESIGN.md`。
+
+专项验证：
+
+```bash
+GOCACHE=/tmp/go-build-ontology go test ./suppress -v
+GOCACHE=/tmp/go-build-ontology go test -race ./suppress
+GOCACHE=/tmp/go-build-ontology go test -bench BenchmarkDecide ./suppress
+```
