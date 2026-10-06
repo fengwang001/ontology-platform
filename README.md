@@ -38,6 +38,18 @@ go test -coverprofile=coverage.out ./...
 go tool cover -html=coverage.out
 ```
 
+## 请求分帧判定器
+
+增量 HTTP/1.x 请求头、定长消息体和分块消息体判定位于 `framer` 包。设计说明、走私歧义取舍、复杂度证明和验证命令见 `docs/framer.md`。
+
+```go
+decoder := framer.NewDecoder(framer.Limits{
+    MaxHeaderBytes: 1 << 20,
+    MaxBodyBytes:   16 << 20,
+})
+events := decoder.Push(incomingBytes)
+```
+
 ## 代码检查
 
 ```bash
