@@ -33,6 +33,11 @@ go test -race -v ./...
 go test ./ontology
 go test -run TestObjectType ./ontology
 
+# 只追加日志键值引擎（恢复 / 提示 / 自愈 / 合并）
+go test ./kvlog/
+go test -race ./kvlog/
+# 设计说明、取舍与本地验证：见 kvlog/DESIGN.md
+
 # 覆盖率
 go test -coverprofile=coverage.out ./...
 go tool cover -html=coverage.out
