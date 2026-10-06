@@ -44,3 +44,15 @@ go tool cover -html=coverage.out
 gofmt -l .
 go vet ./...
 ```
+
+## 需求响应邀约与履约考核（dr 包）
+
+`dr/` 实现需求响应邀约与履约考核系统：运营方发布削减事件并邀约参与者，
+参与者承诺削减量并在事件窗口内履约，系统按历史用电推定基线（资格日均值 +
+同日校正）、考核履约率并结算报酬与违约金。设计取舍见 `DESIGN.md`。
+
+```bash
+go test ./dr/          # 边界测试 + 朴素模型随机对照
+go test -race ./dr/    # 并发安全
+go test ./dr/ -run TestRandomDifferential -v  # 每条操作的输入/输出/判定日志
+```
