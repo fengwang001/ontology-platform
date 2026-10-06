@@ -44,3 +44,9 @@ go tool cover -html=coverage.out
 gofmt -l .
 go vet ./...
 ```
+
+## 可增长协程栈子系统（`stackmgr/`）
+
+- 设计说明：`stackmgr/DESIGN.md`（关键取舍、被放弃方案、本地验证）。
+- 测试：`go test ./stackmgr/ -v -run TestDifferential` 查看与朴素模型
+  逐条对照的输入/实际输出/判定依据日志；`go test -race ./...` 验证并发配额。
