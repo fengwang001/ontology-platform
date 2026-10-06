@@ -44,3 +44,14 @@ go tool cover -html=coverage.out
 gofmt -l .
 go vet ./...
 ```
+
+## 服务器名称证书选择器
+
+`certselector` 包实现基于 SNI 主机名、客户端支持的密钥类型与当前时间的证书
+选择，支持集合热更新、精确/通配/默认三类来源标记、无匹配/过期/密钥不支持
+三类失败区分。选择开销不随证书总数线性增长（精确名哈希表 + 通配名反向标签
+trie），并通过 1200 步随机操作序列与独立朴素模型对照验证。
+
+- 设计与取舍：`certselector/DESIGN.md`
+- 运行测试：`go test -race ./certselector/`
+- 逐步判定日志：`CERTSELECTOR_LOG=/tmp/diff.log go test -run TestRandomDifferential -v ./certselector/`
