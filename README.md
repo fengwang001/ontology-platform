@@ -2,6 +2,14 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 级联删除控制器
+
+- 设计说明：[DESIGN.md](DESIGN.md)
+- 调用方文档：[API.md](API.md)
+- 核心包：根包 `cascade`，入口为 `cascade.NewController()`。
+- 删除策略：`Background`、`Foreground`、`Orphan`。
+- 所有公开操作同步收敛到稳定状态；并发调用由控制器内部互斥锁串行化。
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
@@ -43,4 +51,13 @@ go tool cover -html=coverage.out
 ```bash
 gofmt -l .
 go vet ./...
+```
+
+当前容器若默认 Go 缓存目录不可写，可使用：
+
+```bash
+GOCACHE=/tmp/ontology-gocache /usr/local/go/bin/go test -race -v ./...
+GOCACHE=/tmp/ontology-gocache /usr/local/go/bin/go vet ./...
+GOCACHE=/tmp/ontology-gocache /usr/local/go/bin/go test -run TestRandomDifferentialAgainstNaiveModel -v ./...
+GOCACHE=/tmp/ontology-gocache /usr/local/go/bin/go test -run TestOperationCostIsLocal -v ./...
 ```
