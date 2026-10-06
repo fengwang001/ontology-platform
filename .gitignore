@@ -1,0 +1,5 @@
+# 随机对照测试生成的逐步日志（可由 DIFF_LOG 指定其它路径）
+differential.log
+
+# 本地构建产物
+/bin/
