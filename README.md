@@ -23,6 +23,10 @@ go build -o bin/server ./cmd/server
 ## 测试
 
 ```bash
+# 如 shell 未找到 Go：
+export PATH=/usr/local/go/bin:$PATH
+export GOCACHE=/tmp/ontology-go-cache
+
 # 全量测试
 go test ./...
 
@@ -44,3 +48,7 @@ go tool cover -html=coverage.out
 gofmt -l .
 go vet ./...
 ```
+
+## 室内质控模块
+
+实现位于 `qc/`，设计与复杂度证明见 `DESIGN.md`，API 说明见 `docs/QC.md`。
