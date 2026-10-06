@@ -44,3 +44,15 @@ go tool cover -html=coverage.out
 gofmt -l .
 go vet ./...
 ```
+
+## 资源加载调度器（`loader/`）
+
+浏览器风格的资源加载调度器：请求登记、每源/全局连接配额、最高档优先级抢占、
+预加载缓存（四条件命中、TTL 浪费报告）与完成通知五部分协作。设计说明见
+`docs/loader-design.md`，验证：
+
+```bash
+go test ./loader -v        # 场景测试，日志含输入/输出/判定依据
+go test -race ./loader     # 并发不变量
+go test ./loader -bench .  # 选择/缓存命中开销与规模无关
+```
