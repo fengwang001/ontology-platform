@@ -2,6 +2,16 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 航班候补席位
+
+候补登记、释放兑现、确认期限、过期回流、容量调整和航班取消实现在根包 `ontology`：
+
+- 入口：`NewSystem`、`Register`、`Withdraw`、`ChangePriority`、`Confirm`
+- 释放：`CancelConfirmed`、`AdjustCapacity`
+- 查询：`Snapshot`
+- 设计取舍与性能论证：`DESIGN.md`
+- 随机朴素模型对照与逐步日志：`naive_test.go`
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
