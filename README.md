@@ -44,3 +44,8 @@ go tool cover -html=coverage.out
 gofmt -l .
 go vet ./...
 ```
+
+## 模块
+
+- `exam/`：题库版本管理与试卷组卷约束引擎（题目版本/生命周期、互斥组传递闭包、
+  组卷判定、发布冻结与单题替换）。设计说明见 `exam/DESIGN.md`。
