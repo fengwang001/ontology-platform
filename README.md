@@ -2,6 +2,12 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 重复保险理赔分摊子系统
+
+- 设计说明：[`docs/CLAIM_DESIGN.md`](docs/CLAIM_DESIGN.md)
+- API 与本地验证：[`docs/CLAIM_USAGE.md`](docs/CLAIM_USAGE.md)
+- 生产实现：`internal/claim`；独立朴素参考模型：`internal/naive`
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
