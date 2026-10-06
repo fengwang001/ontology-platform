@@ -44,3 +44,19 @@ go tool cover -html=coverage.out
 gofmt -l .
 go vet ./...
 ```
+
+## 骑手考核与申诉系统（`riderassess`）
+
+按周期记录扣分事件、定级与权益限制、根因簇连带撤销、申诉与回溯补偿。
+模块与取舍见 `riderassess/DESIGN.md`。
+
+```bash
+# 规范覆盖 + 40 种子随机差分（逐步打印输入/输出/判定依据）
+go test -v -run TestRandomDifferential ./riderassess
+
+# 竞态检测
+go test -race ./riderassess
+
+# 登记复杂度基准（不相交簇，ns/op 近似常数）
+go test -bench BenchmarkRegisterDisjointClusters ./riderassess
+```
