@@ -2,6 +2,12 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 包
+
+- `pretty`：行宽适配排版引擎（代码格式化器核心）。把不可变文档树按给定
+  行宽渲染成文本，支持组判定、缩进/对齐、条件文本、命名片段与并发渲染。
+  设计说明见 [pretty/DESIGN.md](pretty/DESIGN.md)。
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
