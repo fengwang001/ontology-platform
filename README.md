@@ -38,6 +38,22 @@ go test -coverprofile=coverage.out ./...
 go tool cover -html=coverage.out
 ```
 
+本仓库内核位于 `bcontext/`（详见 `DESIGN.md`）。在受限环境下若 GOCACHE
+不可写，可指定临时缓存：
+
+```bash
+export PATH=$PATH:/usr/local/go/bin GOCACHE=/tmp/gocache
+
+# 场景矩阵 + 朴素模型随机差分 + 并发（竞态检测）
+go test -race -v ./...
+
+# 复杂度验证：Isolated 与深度无关，FeatureAllowed 随深度线性
+go test -bench . -benchtime 1000x -run '^$' ./...
+
+go vet ./...
+gofmt -l .
+```
+
 ## 代码检查
 
 ```bash
