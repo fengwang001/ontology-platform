@@ -44,3 +44,10 @@ go tool cover -html=coverage.out
 gofmt -l .
 go vet ./...
 ```
+
+## 包说明
+
+- `ecscache`：支持客户端子网（ECS）扩展的递归解析缓存。按应答声明的
+  适用范围分别缓存多份结果，按客户端地址选择适用条目，并合并同源前
+  缀的并发上游查询；时钟与上游解析器由调用方注入。设计说明见
+  [docs/ecscache-design.md](docs/ecscache-design.md)。
