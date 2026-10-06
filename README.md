@@ -1,46 +1,42 @@
-# ontology-platform
+# 分区停车场预约服务
 
-本体服务平台（对标 Palantir Foundry Ontology）。
+这是一个无外部依赖的 Go 包，提供预约、候补、核销、超时改派、取消、离场、费用和任意时刻车位归属查询。
 
-## 环境要求
+## 模型入口
 
-- Go 1.26+（`go version` 确认）
+- `NewLot`：创建停车场。
+- `AddZone`：添加分区、费率、提前量、宽限量和车位列表。
+- `Reserve`：在有具体车位时立即预约。
+- `RegisterWaitlist`：登记候补；若当下已有匹配车位会立即转预约。
+- `CheckIn`：窗口内核销；遇超时占位时按规则改派。
+- `Cancel`、`Depart`：未核销取消与已核销离场。
+- `SpotOwner`：查询某分区某车位在某一秒的归属者。
+- `Fee`：查询预约费用明细。
 
-## 运行
+时间使用非负整数秒，预约区间为左闭右开；编号小于 10 的示例测试车位是普通位，编号大于等于 10 的是充电位。
+
+## 本地验证
+
+当前环境 Go 位于 `/usr/local/go/bin/go`，且默认构建缓存不可写，可用：
 
 ```bash
-# 拉取依赖
-go mod tidy
-
-# 直接运行
-go run ./cmd/server
-
-# 编译后运行
-go build -o bin/server ./cmd/server
-./bin/server
+GOCACHE=/tmp/go-cache /usr/local/go/bin/go test ./...
+GOCACHE=/tmp/go-cache /usr/local/go/bin/go test -race ./...
+GOCACHE=/tmp/go-cache /usr/local/go/bin/go vet ./...
+/usr/local/go/bin/gofmt -w *.go
 ```
 
-## 测试
+若本机已正确配置 `PATH` 与可写的 `GOCACHE`，可直接运行：
 
 ```bash
-# 全量测试
 go test ./...
-
-# 带竞态检测与详细输出
-go test -race -v ./...
-
-# 单个包 / 单个用例
-go test ./ontology
-go test -run TestObjectType ./ontology
-
-# 覆盖率
-go test -coverprofile=coverage.out ./...
-go tool cover -html=coverage.out
-```
-
-## 代码检查
-
-```bash
-gofmt -l .
+go test -race ./...
 go vet ./...
 ```
+
+## 测试与可复现性
+
+- `boundary_test.go` 覆盖题目列出的首尾相接、窗口端点、同刻失效候补、超时取整、改派、候补跳过和重复核销。
+- `differential_test.go` 内置独立逐秒朴素模型，随机 30 个种子对照状态、费用和秒级归属。
+- 差分测试使用 `go test -v -run TestRandomDifferentialModel` 可打印每条操作的输入、输出及判定依据。
+- 设计取舍和复杂度证明见 `DESIGN.md`。
