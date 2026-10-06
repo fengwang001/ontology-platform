@@ -2,6 +2,11 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 模块
+
+- `remittance/`：跨境汇款的报价锁汇、限额占用与合规审核系统。
+  设计说明见 [DESIGN.md](DESIGN.md)。
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
