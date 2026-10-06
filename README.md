@@ -2,6 +2,11 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 模块
+
+- `sorting/`：快递中转场集袋分拣系统（集袋、自动/手动封袋、出场、拆袋核对）。
+  设计说明见 [docs/sorting-design.md](docs/sorting-design.md)。
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
