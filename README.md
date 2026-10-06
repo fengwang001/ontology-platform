@@ -2,6 +2,11 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 子系统
+
+- `kitchen/`：商家出餐节奏与压单控制系统（制作队列与开工推定、压单状态与准入、
+  订单生命周期与并发协调）。设计说明见 `docs/design.md`，测试见 `kitchen/` 内测试文件。
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
