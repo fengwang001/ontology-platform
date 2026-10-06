@@ -44,3 +44,27 @@ go tool cover -html=coverage.out
 gofmt -l .
 go vet ./...
 ```
+
+## 登机口分配系统（`gate` 包）
+
+- `gate/model.go`：领域类型、统一拒绝次序、四级优先级、左闭右开区间规则。
+- `gate/tree.go`：每登机口一棵增广 treap（子树 `maxEnd` 剪枝）。
+- `gate/system.go`：互斥锁串行化的正式实现：`Assign` / `Delay` / `OccupantAt` / `Snapshot`。
+- `gate/naive.go`：线性扫描的独立朴素模型，仅供随机对拍。
+- `cmd/gatesim`：确定性演示脚本。
+
+详见 `DESIGN.md`。
+
+```bash
+# 规则测试 + 随机/对抗对拍
+go test ./gate/ -v
+
+# 竞态检测
+go test -race ./gate/
+
+# 只看对拍每步输入、输出与判定理由
+go test ./gate/ -run TestRandomDifferential -v
+
+# 演示
+go run ./cmd/gatesim
+```
