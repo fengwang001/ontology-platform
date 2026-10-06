@@ -44,3 +44,15 @@ go tool cover -html=coverage.out
 gofmt -l .
 go vet ./...
 ```
+
+## 包级变量初始化次序求解（initorder）
+
+`initorder` 包提供初始化次序求解会话：按源码次序登记变量初始化单元
+与函数声明，`Solve` 给出唯一确定的初始化次序与每个单元的传递依赖
+（判定依据），错误分为参数非法、重复声明、未声明引用、初始化环四类。
+设计与验证方法见 [initorder/DESIGN.md](initorder/DESIGN.md)。
+
+```bash
+go test -race -v ./initorder/   # 含朴素模型差分与并发测试
+go test ./initorder/ -run XXX -bench .  # 开销基准
+```
