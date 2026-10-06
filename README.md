@@ -2,6 +2,12 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 模块
+
+- `underwriting`：人身险投保单核保决策引擎（投保单登记、核保规则库、
+  决策裁定与复核）。设计取舍见 [DESIGN.md](DESIGN.md)，用法示例见
+  `underwriting/engine_test.go`。
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
