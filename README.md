@@ -2,6 +2,13 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+本仓库当前交付为 `ontology` 包：健康险等待期与既往症除外判定引擎，
+设计见 [DESIGN.md](DESIGN.md)。核心类型：`NewEngine()` 返回引擎，
+入口为 `AddCode`（维护编码目录）、`RegisterPolicy`（登记保单/续保）、
+`SubmitClaim`（逐诊断理赔判定），错误为 `ErrCodeDuplicate`、
+`ErrParentNotFound`、`ErrInvalidParam`、`ErrOverlap`、`ErrClaimExists`、
+`ErrNotInsured`、`ErrInsuredNotFound`、`ErrCodeNotFound`。
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
