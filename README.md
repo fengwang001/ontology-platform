@@ -2,6 +2,12 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 包
+
+- `ftl`：闪存转换层服务——逻辑页映射、顺序编程、按水位触发的垃圾
+  回收、受害块选取、静态磨损均衡、块寿命耗尽退役与写放大统计。
+  设计说明见 [docs/ftl-design.md](docs/ftl-design.md)。
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
