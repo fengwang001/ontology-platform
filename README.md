@@ -44,3 +44,8 @@ go tool cover -html=coverage.out
 gofmt -l .
 go vet ./...
 ```
+
+## 子系统
+
+- `aml/`：反洗钱现金存款结构化拆分检测与报告（设计说明见 `aml/DESIGN.md`，
+  用法见 `aml/README.md`）。
