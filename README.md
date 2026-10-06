@@ -2,6 +2,29 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 证书选择器
+
+服务器名称证书选择器位于 `certselector` 包，支持证书热更新、精确/通配 SAN 匹配、默认证书回退和按密钥类型、失效时刻、证书 ID 的确定性排序。
+
+```go
+selector := certselector.New()
+err := selector.Add(certselector.Certificate{
+    ID:        "edge-ec",
+    Names:     []string{"*.example.com"},
+    KeyType:   certselector.KeyTypeEC,
+    NotBefore: 1,
+    NotAfter:  3600,
+})
+
+selection, err := selector.Select(certselector.SelectInput{
+    Name:     "api.example.com",
+    KeyTypes: map[certselector.KeyType]bool{certselector.KeyTypeEC: true},
+    Now:      60,
+})
+```
+
+选择来源由 `Selection.Source` 区分：`MatchExact`、`MatchWildcard`、`MatchDefault`。完整规则、复杂度和方案取舍见 `docs/certselector-design.md`。
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
