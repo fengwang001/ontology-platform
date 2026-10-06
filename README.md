@@ -44,3 +44,10 @@ go tool cover -html=coverage.out
 gofmt -l .
 go vet ./...
 ```
+
+## 商家配送范围围栏与动态收缩（fencing）
+
+`fencing/` 实现商家配送范围围栏与动态收缩系统：环距分层基础范围、平台/商家
+收缩等级叠加、订单生命周期与在途免疫、只读预检查询、线性一致并发。
+设计取舍见 `DESIGN.md`；验证：`go test -race ./fencing`，
+性能证明：`go test -bench=. -run=^$ ./fencing`。
