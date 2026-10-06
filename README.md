@@ -2,6 +2,22 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 影像检查预约与对比剂准入系统（`imaging` 包）
+
+`imaging/` 实现 CT / 磁共振预约与对比剂准入：设备时段与清洁、每日重复质控、
+肾功能结果时效、植入物场强兼容、留观位容量、签到复核与改约/取消。
+
+- 设计与取舍、被放弃方案、复杂度证明：[`imaging/DESIGN.md`](imaging/DESIGN.md)
+- 入口类型与 API：`imaging/imaging.go`；错误枚举：`imaging/errors.go`
+- 独立朴素参考模型与差分：`imaging/naive*.go`、`imaging/diff_*_test.go`
+- 快速验证：
+
+```bash
+go test ./...                                   # 全量测试
+DIFF_LOG=1 go test ./imaging -run TestDifferential1500 -v   # 1800 步随机差分日志
+go test ./imaging -run '^$' -bench 'Benchmark.*History' -benchmem  # 两档规模对照
+```
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
