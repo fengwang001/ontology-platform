@@ -2,6 +2,17 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 共享单车电子围栏服务
+
+`bikefence/` 包提供运营区/禁停区/奖励区三类围栏的还车判定、容量与计费、
+奖励每日限次、跨围栏调度任务的生成/认领/超时/完成，以及 R 树空间索引与
+朴素逐围栏模型的随机对照。设计取舍见 `bikefence/DESIGN.md`：
+
+```bash
+go test ./bikefence/ -count=1      # 全量场景 + 4000 条随机对照
+go test -race ./bikefence/         # 并发线性化验证
+```
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
