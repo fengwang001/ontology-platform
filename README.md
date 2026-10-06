@@ -44,3 +44,21 @@ go tool cover -html=coverage.out
 gofmt -l .
 go vet ./...
 ```
+
+## subtype 包
+
+`subtype` 实现支持递归命名类型的结构化子类型判定：
+
+```go
+reg := subtype.NewRegistry()
+_ = reg.Register("List", subtype.Obj(
+    subtype.Prop{Name: "head", Type: subtype.Int()},
+    subtype.Prop{Name: "tail", Type: subtype.Ref("List"), Optional: true},
+))
+ok, err := reg.IsSubtype(subtype.Ref("List"), subtype.Top())
+```
+
+支持基本类型、顶/底类型、对象（可选/只读属性）、函数（参数逆变）、
+联合与命名引用；递归取最大解（共归纳语义）；登记与判定并发安全；
+错误区分参数非法、重复定义、未定义引用与无保护循环。
+设计取舍与验证方法见 [DESIGN.md](DESIGN.md)。
