@@ -2,6 +2,12 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 模块
+
+- `mirror`：多成员镜像块卷服务——成员故障、世代仲裁、脏区记录、
+  部分/全量重同步与权威成员选取。设计说明见 `docs/DESIGN.md`。
+- `naive`：独立编写的朴素逐块模型，用于与 `mirror` 做随机操作序列对照。
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
