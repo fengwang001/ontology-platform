@@ -2,6 +2,15 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 渲染树布局失效与重排内核（`layout` 包）
+
+由盒树维护、脏标记传播、布局边界判定、重排执行与度量查询五个协作模块组成，
+支持固定值/内容决定两种宽高模式、内边距、布局隔离、插入/移除/移动与最小子树重排。
+
+- 设计与取舍：`layout/DESIGN.md`
+- 独立全量重算朴素模型（测试 oracle）：`layout/naive.go`
+- 测试：`go test -race -v ./layout`
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
