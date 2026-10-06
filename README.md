@@ -44,3 +44,12 @@ go tool cover -html=coverage.out
 gofmt -l .
 go vet ./...
 ```
+
+## 引用更新事务处理器（refstore）
+
+`refstore` 包实现代码托管服务端的引用更新事务处理器：对一批
+「引用名、期望旧值、新值、是否强制」的更新指令做全有或全无的裁决，
+逐条给出可区分的拒绝原因，成功后追加序号严格递增的审计记录。
+
+- 设计说明：[DESIGN.md](DESIGN.md)
+- 运行测试：`go test ./refstore/ -v -race`
