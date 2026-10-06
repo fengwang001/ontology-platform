@@ -38,6 +38,19 @@ go test -coverprofile=coverage.out ./...
 go tool cover -html=coverage.out
 ```
 
+## kitchen：商家出餐节奏与压单控制
+
+`kitchen/` 是一个与主服务独立的 Go 包，实现并行制作上限、即时/预约单开工
+推定、压单滞回状态机、爆单拒单、商家暂停与可复现的开工次序。
+
+- 设计与取舍：见 `kitchen/DESIGN.md`
+- 对外 API：`New(Config)`、`Admit`、`Complete`、`Cancel`、`Pause`、
+  `Resume`、`Tick`、`PressureEvents`、`Order`、`Counters`
+- 错误用 `errors.As` 取 `*kitchen.Error`，按 `Code`（参数非法 / 时钟回退 /
+  订单不存在或已存在 / 未开工 / 已开工 / 已完成 / 商家暂停 / 预约过近 / 爆单）区分
+- 随机对照：`go test -run TestDifferentialAgainstNaive ./kitchen/`
+  （独立逐秒朴素模型；`KITCHEN_DIFF_VERBOSE=1` 打印每步输入、输出与判定依据）
+
 ## 代码检查
 
 ```bash
