@@ -2,6 +2,11 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 模块
+
+- `billing/`：物业费账单服务——账单生成与到期、宽限与滞纳金累计（封顶、分数结转）、
+  部分缴款冲抵与预付、争议与裁定、滞纳金减免、三阶段催缴。设计取舍见 [DESIGN.md](DESIGN.md)。
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
