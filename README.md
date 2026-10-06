@@ -44,3 +44,9 @@ go tool cover -html=coverage.out
 gofmt -l .
 go vet ./...
 ```
+
+## 修订表达式解析服务
+
+实现位于 `revision/` 包：修订表达式（完整标识/前缀缩写/引用短名/相对导航）
+的解析、消歧、类型裁决与最短唯一缩写。说明见 `revision/DESIGN.md` 与
+`revision/README.md`，测试入口 `go test -race ./revision/`。
