@@ -44,3 +44,16 @@ go tool cover -html=coverage.out
 gofmt -l .
 go vet ./...
 ```
+
+## 家庭医疗保单多层限额账引擎（limitbook）
+
+`limitbook` 包实现保单与成员登记、保单年度划分、限额批改、理赔扣减与冲正，
+在项目年度、个人年度、家庭共享年度与个人终身四层限额约束下给出唯一且可复现的赔付额。
+
+```bash
+go test ./limitbook/ -v          # 单元测试 + 朴素模型随机对照（打印判定依据）
+go test -race ./limitbook/       # 并发正确性
+go test -bench=BenchmarkSettle ./limitbook/  # 结算性能不随历史增长
+```
+
+设计取舍与验证方法见 [limitbook/DESIGN.md](limitbook/DESIGN.md)。
