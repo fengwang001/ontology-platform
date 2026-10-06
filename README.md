@@ -44,3 +44,14 @@ go tool cover -html=coverage.out
 gofmt -l .
 go vet ./...
 ```
+
+## 稀疏检出规则引擎（`sparse` 包）
+
+给定提交的完整文件树与有序包含/排除规则（精确路径、目录前缀、本层通配），
+判定哪些路径物化到工作区，并在提交或规则集变化时原子地计算
+「新增物化 / 撤销物化 / 保持不变」三类集合，尊重本地修改（受阻整体拒绝，
+可强制丢弃）。设计取舍与验证方法见 `docs/sparse-checkout-design.md`。
+
+```bash
+go test -race -v ./sparse/
+```
