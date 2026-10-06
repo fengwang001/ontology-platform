@@ -1,0 +1,5 @@
+Borrow u0 v0 @0                -> ok=true  err=ok                 reason="borrowed due=10"
+Reserve u1 @1                  -> ok=true  err=ok                 reason="queued pos=1"
+Seal v0 while lent             -> ok=true  err=ok                 reason="sealed"
+Return u0 v0 @5                -> ok=true  err=ok                 reason="returned on time"
+Borrow sealed                  -> ok=false err=state_not_allowed  reason="volume sealed"

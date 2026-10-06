@@ -1,0 +1,4 @@
+Borrow @10                     -> ok=true  err=ok                 reason="borrowed due=20"
+Rollback attempt @9            -> ok=false err=clock_rollback     reason="now=9 < last_now=10"
+Borrow lent v0 @11             -> ok=false err=volume_already_lent reason="volume lent or held"
+Borrow v1 @10 proves clock still 10 -> ok=true  err=ok                 reason="borrowed due=20"

@@ -1,0 +1,4 @@
+Borrow u0 v0 @0 due10          -> ok=true  err=ok                 reason="borrowed due=10"
+Renew @4 (window not open)     -> ok=false err=renew_not_allowed  reason="renew window closed: now=4 window=[5,10]"
+Renew @5 (window start exact)  -> ok=true  err=ok                 reason="renewed due=20"
+Renew 2nd @8 (limit)           -> ok=false err=renew_not_allowed  reason="renew window closed: now=8 window=[15,20]"

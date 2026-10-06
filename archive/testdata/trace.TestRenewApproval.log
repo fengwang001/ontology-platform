@@ -1,0 +1,4 @@
+Borrow u0 v2 @0 due10          -> ok=true  err=ok                 reason="borrowed due=10"
+Renew confidential no approver -> ok=false err=invalid_param      reason="approver required for classified volume"
+Renew self-approver            -> ok=false err=invalid_param      reason="approver must not be borrower"
+Renew approved by boss         -> ok=true  err=ok                 reason="renewed due=20"

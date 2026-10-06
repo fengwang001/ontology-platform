@@ -1,0 +1,8 @@
+Borrow u0 v2 @0                -> ok=true  err=ok                 reason="borrowed due=10"
+Reserve u1 (head)              -> ok=true  err=ok                 reason="queued pos=1"
+Reserve u0 (second)            -> ok=true  err=ok                 reason="queued pos=2"
+u1 downgraded to internal; head should be skipped but keep position
+Return @2                      -> ok=true  err=ok                 reason="returned on time"
+Restore u1                     -> ok=true  err=ok                 reason="classification set"
+Pickup u0 @3                   -> ok=true  err=ok                 reason="picked up due=13"
+Return u0 @4                   -> ok=true  err=ok                 reason="returned on time"

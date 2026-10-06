@@ -1,0 +1,14 @@
+Borrow u0 v0 @0                -> ok=true  err=ok                 reason="borrowed due=10"
+Return @10 (last day)          -> ok=true  err=ok                 reason="returned on time"
+Borrow u0 v1 @10               -> ok=true  err=ok                 reason="borrowed due=20"
+Return @21 (one day late)      -> ok=true  err=ok                 reason="returned overdue=1"
+snapshot:
+now=21
+V v0 class=public status=in_library sealPending=false queue=[]
+V v1 class=internal status=in_library sealPending=false queue=[]
+V v2 class=confidential status=in_library sealPending=false queue=[]
+V v3 class=topsecret status=in_library sealPending=false queue=[]
+U u0 max=topsecret status=active overdue=1 lastReturn=21 loans=0
+U u1 max=topsecret status=active overdue=0 lastReturn=0 loans=0
+U u2 max=internal status=active overdue=0 lastReturn=0 loans=0
+

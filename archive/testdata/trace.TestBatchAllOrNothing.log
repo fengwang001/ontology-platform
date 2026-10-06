@@ -1,0 +1,5 @@
+Borrow u0 v0 @0                -> ok=true  err=ok                 reason="borrowed due=10"
+Batch[v1 ok,v0 lent] -> ok=false err=volume_already_lent idx=1
+Batch duplicate -> err=invalid_param idx=-1
+Batch[v2 clearance,v0 lent] -> err=clearance_insufficient idx=0
+Batch[v1,v3] @2 -> ok=true idx=-1 borrowed 2 volumes

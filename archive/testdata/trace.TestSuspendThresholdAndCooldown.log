@@ -1,0 +1,7 @@
+Borrow v0 @0                   -> ok=true  err=ok                 reason="borrowed due=10"
+Borrow v1 @0                   -> ok=true  err=ok                 reason="borrowed due=10"
+Return v0 @12 overdue2         -> ok=true  err=ok                 reason="returned overdue=2"
+Return v1 @13 overdue3 total5  -> ok=true  err=ok                 reason="returned overdue=3"
+Borrow while suspended         -> ok=false err=user_suspended     reason="user suspended"
+Advance @15 (2 days, not enough) -> ok=true  err=ok                 reason="advanced to 15"
+Advance @16 (exact 3 days)     -> ok=true  err=ok                 reason="advanced to 16"

@@ -1,0 +1,5 @@
+Borrow u0 v0 @0                -> ok=true  err=ok                 reason="borrowed due=10"
+Reserve u1 @0                  -> ok=true  err=ok                 reason="queued pos=1"
+Reserve u0 @1                  -> ok=true  err=ok                 reason="queued pos=2"
+Return @2 -> u1 hold till 5    -> ok=true  err=ok                 reason="returned on time"
+Advance @6 (u1 forfeits)       -> ok=true  err=ok                 reason="advanced to 6"

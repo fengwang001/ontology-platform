@@ -1,0 +1,5 @@
+Borrow u0 v0 @0                -> ok=true  err=ok                 reason="borrowed due=10"
+Reserve u1 @1                  -> ok=true  err=ok                 reason="queued pos=1"
+Renew with queue               -> ok=false err=active_reservation reason="active reservation exists"
+Cancel u1 reservation @5       -> ok=true  err=ok                 reason="reservation cancelled"
+Renew @5 after cancel          -> ok=true  err=ok                 reason="renewed due=20"
