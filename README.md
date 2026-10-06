@@ -38,6 +38,19 @@ go test -coverprofile=coverage.out ./...
 go tool cover -html=coverage.out
 ```
 
+## 发言权控制服务（floorcontrol）
+
+`floorcontrol/` 是一个带限时发言权、举手排队、强制静音与主持人移交的
+会议室控制模块，支持并发调用且结果可重放。设计与取舍见
+`floorcontrol/DESIGN.md`。
+
+```bash
+# 随机差分（1500 组，对照独立朴素模型）+ 竞态 + 复杂度基准
+go test ./floorcontrol/... -count=1 -v
+go test -race ./floorcontrol/...
+go test -bench BenchmarkQueueOps ./floorcontrol/
+```
+
 ## 代码检查
 
 ```bash
