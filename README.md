@@ -2,6 +2,19 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 子模块
+
+- `cedu/`：执业资格继续教育学分周期核算服务。
+  设计说明见 `cedu/DESIGN.md`；包级 API 见 `cedu/doc.go`。
+
+  ```bash
+  # 含逐步输入/输出/判定依据的随机对照日志
+  go test ./cedu/ -run TestDifferentialRandom -v
+  # 竞态检测、复杂度基准
+  go test -race ./cedu/
+  go test -bench=BenchmarkStatusFixedCost -run=^$ ./cedu/
+  ```
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
