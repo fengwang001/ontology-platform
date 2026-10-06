@@ -2,6 +2,11 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 模块
+
+- `reins/` 财产险再保险分出引擎：成数、溢额、事故超赔三层叠加，
+  支持赔款晚报插入重算与撤销，设计说明见 `reins/DESIGN.md`。
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
