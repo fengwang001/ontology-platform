@@ -1,0 +1,13 @@
+goos: linux
+goarch: arm64
+pkg: ontology/internal/whiteboard
+BenchmarkRank/N=1000-20            	  100000	        94.85 ns/op
+BenchmarkRank/N=100000-20          	  100000	       155.2 ns/op
+BenchmarkSingleReorder/N=1000-20   	  100000	       777.3 ns/op
+BenchmarkSingleReorder/N=100000-20 	  100000	       923.4 ns/op
+BenchmarkLockUnlock/N=1000-20      	  100000	       260.5 ns/op
+BenchmarkLockUnlock/N=100000-20    	  100000	       304.4 ns/op
+BenchmarkLockUnlockManyLocks/N=1000-20         	  100000	       132.4 ns/op
+BenchmarkLockUnlockManyLocks/N=100000-20       	  100000	       100.1 ns/op
+PASS
+ok  	ontology/internal/whiteboard	0.821s
