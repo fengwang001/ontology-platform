@@ -38,6 +38,12 @@ go test -coverprofile=coverage.out ./...
 go tool cover -html=coverage.out
 ```
 
+## 组件
+
+- `framing/`：反向代理入口的 HTTP/1.x 请求分帧判定器（防请求走私），
+  含设计说明 `framing/DESIGN.md`、用法示例 `framing/README.md`，以及对
+  独立朴素模型的差分测试、切分等价、并发与零分配验证。
+
 ## 代码检查
 
 ```bash

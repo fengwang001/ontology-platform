@@ -1,0 +1,101 @@
+# differential log: 1200 iterations, cfg={MaxHeaderBytes:64 MaxBodyBytes:8}
+iter 0
+  input : "GET /x 1.1\r\nTransfer-Encoding: gzip\r\ntransfer-encoding: chunked\r\n\r\nI^PGET abc HTTP/2.0\r\ncontent-length: 9\r\nContent-Length: 12\r\n\r\n*h+(~N1jX /a/\x00?q=1 HTTP/1.1\r\nContent-Length: abc\r\nContent-Length: \r\n\r\nu%xIj*"
+  why   : [reject@64 header_too_large]
+  output: [{3    0 0 header_too_large}]
+iter 1
+  input : "GET / HTTP/2.0\r\ncontent-length: 15\r\ncontent-length: 8\r\n\r\nBUKvX /a/b?q=1 HTTP/1.1\r\nTransfer-Encoding: gzip\r\nTransfer-Encoding: chunked, gzip\r\n\r\naW[2Bum;K{#|.^<P\x8d\xb6PM\x8f\xb0\xb0\xd6(6\xabUrp\xa8o\xe8%%#r"
+  why   : [reject@57 syntax]
+  output: [{3    0 0 syntax}]
+iter 2
+  input : "\x00OST /a/b?q=1 HTTP/2.0\r\n\r\n\r\n&k{g &6$POST abc HTTP/1.0\r\n\r\n\r\nkaL~>doW uguyszGET\r\nContent-Length: abc\r\nTransfer-Encoding: chunked, gzip\r\n\r\nglcJo)e]"
+  why   : [reject@0 zero_byte]
+  output: [{3    0 0 zero_byte}]
+iter 3
+  input : ""
+  why   : []
+  output: []
+iter 4
+  input : ""
+  why   : []
+  output: []
+iter 5
+  input : "POST / 1.1\r\nContent-Length: abc\r\nTransfer-Encoding: gzip\r\n\r\n-cU4EcH"
+  why   : [reject@60 length_and_transfer_encoding]
+  output: [{3    0 0 length_and_transfer_encoding}]
+iter 6
+  input : "X /x 1.2\r\nContent-Length: abc\r\nContent-Length: abc\r\n\r\nFAsFx2}POST /x 1.2\r\nContent-LengtG\xc3\xd83\x96f\x18,\xc0\xfd\xda\xceR"
+  why   : [reject@54 syntax]
+  output: [{3    0 0 syntax}]
+iter 7
+  input : "GET / HTTP/2.0\r\ncontent-length: 6\r\ncontent-length: 7\r\n\r\ne)EYWp8WM#GET\r\nContent-Length: \r\ntransfer-encodi\x00g: chunked\r\n\r\nZPOST /x HTTP/1.1\r\n: v\r\n\r\n:\t\xa1\x8e\xf5tm\xc6:\xe3\x7f\xab\xb0A\x8d3\xd1\xee"
+  why   : [reject@56 syntax]
+  output: [{3    0 0 syntax}]
+iter 8
+  input : "\x15h\xe3"
+  why   : []
+  output: []
+iter 9
+  input : ""
+  why   : []
+  output: []
+iter 10
+  input : "GET /a/b?q=1 1.2\r\ntransfer-encoding: chunked\r\n\r\nOk7*:X / HTTP/2.0\r\nContent-Length: 12\r\ncontent-length: 3\r\n folded\r\n\r\nX!wW"
+  why   : [reject@48 syntax]
+  output: [{3    0 0 syntax}]
+iter 11
+  input : "\xaa_\x10Yk\n\xa0\xe8:Z\xd3O\xdcc\xc2"
+  why   : [reject@5 bare_lf]
+  output: [{3    0 0 bare_lf}]
+iter 12
+  input : "X /a/b?q=1 1.1\r\n\r\n\r\nEXtIGET /x HTTP/1.\x00\r\ntransfer-encoding: chunked\r\ntransfer-encoding: chunked\r\n\r\nF4kS^kV#$ZDClPOST /x HTTP/1.1\r\nTransfer-Encoding: chunked, gzip\r\n\r\nob-sJz#j@&"
+  why   : [header@0 mode=0 end(no-body) reject@38 zero_byte]
+  output: [{0 X /a/b?q=1 1.1 0 0 none} {2    0 0 none} {3    0 0 zero_byte}]
+iter 13
+  input : "GET /x HTTP/1.0\r\ncontent-length: 14\r\nTransfer-Encoding: gzip\r\n\r\n@p@Cm<S;^5&g+}"
+  why   : [reject@64 length_and_transfer_encoding]
+  output: [{3    0 0 length_and_transfer_encoding}]
+iter 14
+  input : "POST /x HTTP/1.1\r\nBad : v\r\n\r\n:zFeNI\"$6x"
+  why   : [reject@29 syntax]
+  output: [{3    0 0 syntax}]
+iter 15
+  input : "GET / HTTP/1.1\r\ncontent-length: 10\r\nTransfer-Encoding: chunked, gzip\r\n\r\n:Knx.[km1{;GET abc HTTP/1.0\r\ncontent-length: 8\r\nTransfer-Encoding: chunked, gzip\r\n\r\n?'GET abc HTTP/1.0\r\ncontent-length: 15\r\nTransfer-Encoding: chunked, gzip\r\n\r\n5/0$K28!S,"
+  why   : [reject@64 header_too_large]
+  output: [{3    0 0 header_too_large}]
+iter 16
+  input : "GET /a/b?q=1 HTTP/1.0\r\ncontent-length: 5\r\ntransfer-encoding: chunked\r\n\r\nDAFF[>POST /"
+  why   : [reject@64 header_too_large]
+  output: [{3    0 0 header_too_large}]
+iter 17
+  input : "\xcbH\b^\"n\xc0\\\x05\xb8L6\x9e-\xb7\xe2\xf7\xd2[ӵL?"
+  why   : []
+  output: []
+iter 18
+  input : "POST /x HTTP/1.0\r\ntransfer-encoding: chunked\r\n\r\n6\\]POST /a/b?q=1 1.2\r\nBad : v\r\n\r\n5O{hL`a0Dqj+kE5)X abc 1.2\r\ncontent-length: 12\r\ntransfer-encoding: chunked\r\n\r\n#]f[[I@4<m"
+  why   : [header@0 mode=2 reject@49 chunk_format_invalid]
+  output: [{0 POST /x 1.0 2 0 none} {3    0 0 chunk_format_invalid}]
+iter 19
+  input : "GET /a/b?q=1 HTTP/1.0\r\nTransfer-Encoding: chunked, gzip\r\n\r\n#mT+fcPOST abc 1.2\r\nContent-Length: 12\r\nContent-Length: \r\n\r\n&]tCa$J5O03y# uO"
+  why   : [reject@59 transfer_encoding_unsupported]
+  output: [{3    0 0 transfer_encoding_unsupported}]
+iter 20
+  input : "PU"
+  why   : []
+  output: []
+iter 21
+  input : "GET /a/b?q=1 1.1\r\ntransfer-encoding: chunked\r\nTransfer-Encoding: gzip\r\nX-Ok: v\r\n\r\nB{e}*PA%Jc/JjGET /x HTTP/1.0\r\ntransfer-encoding: chunked\r\n: v\r\n\r\n1\r\nw\r\n1z\r\n(zϪ\x985\xd3O"
+  why   : [reject@64 header_too_large]
+  output: [{3    0 0 header_too_large}]
+iter 22
+  input : "POST /x HTTP/1.1\r\ntransfer-encoding: chunked\r\nTransfer-Encoding: chunked, gzip\r\nX-Ok: v\r\n\r\nJ%pPOST /x HTTP/1.0\r\nContent-Length: 12\r\nTransfer-Encoding: gzip\r\n\r\n5TF|I"
+  why   : [reject@64 header_too_large]
+  output: [{3    0 0 header_too_large}]
+iter 23
+  input : "X / 1.1\r\nTransfer-Encoding: chunked, gzip\r\ntransfer-encoding: chunked\r\n\r\nT0"
+  why   : [reject@64 header_too_large]
+  output: [{3    0 0 header_too_large}]
+iter 24
+  input : "POST /x junk HTTP/1.1\r\nTransfer-Encoding: gzip\r\n: v\r\n\r\n1\r\ng\r\n10000000000000000\r\nPOST /x HTTP/2.0\r\ntransfer-encoding: chunked\r\n\r\njge/!"
+  why   : [reject@55 syntax]
+  output: [{3    0 0 syntax}]
