@@ -44,3 +44,10 @@ go tool cover -html=coverage.out
 gofmt -l .
 go vet ./...
 ```
+
+## 边界检查消除子系统（`bce` 包）
+
+输入带控制流的中间代码（`bce.Program`），每个下标访问附带一次边界检查；
+`bce.Analyze` 依据四类可证明事实（常量下标、常量数组长度、路径比较条件、
+已通过检查）判定移除/保留，并为每个保留检查给出确定性的无法证明原因与事实来源。
+设计与验证方法见 [bce/DESIGN.md](bce/DESIGN.md)，测试见 `bce/bce_test.go`。
