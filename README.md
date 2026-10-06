@@ -2,6 +2,18 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 微电网储能调度控制器（`microgrid` 包，根包）
+
+管理单台储能的荷电、充放功率限制、关键负荷备用、并网/孤岛模式、
+时隙计划提交与后缀撤销、执行偏差重验与维护锁定。全部电量为整数，
+公开方法互斥串行化，可确定性重放。
+
+- 设计取舍与复杂度论证：`DESIGN.md`
+- 入口：`microgrid.New(params, initialSOC)`，操作见 `controller.go`
+- 边界测试：`controller_test.go`
+- 朴素模型随机对照与逐条日志：`naive_test.go`
+- 性能基准（登记开销随后续计划数增长）：`benchmark_test.go`
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
