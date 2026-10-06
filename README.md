@@ -2,6 +2,12 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 子模块
+
+- `bus/`：公交线路车辆排班与串车调整服务（发车间隔控制、扣车 / 跳站 /
+  备车插入、司机工时约束、可复现重放与朴素模型随机对照）。见 `bus/README.md`
+  与 `bus/DESIGN.md`。
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
