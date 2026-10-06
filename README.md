@@ -44,3 +44,19 @@ go tool cover -html=coverage.out
 gofmt -l .
 go vet ./...
 ```
+
+## 行政许可并联审批服务（`permit` 包）
+
+事件溯源 + 纯函数惰性派生实现的并联审批办理服务：工作日时限、补正暂停/恢复、
+超时默认通过、一环节不通过的整件终止、申请人撤回，以及任意历史时刻的精确可复现查询。
+
+- 设计与取舍、被放弃方案、本地验证：`docs/permit-design.md`
+- API 说明：`permit/doc.go`
+- 关键测试：`permit/edge_test.go`（边界）、`permit/diff_test.go`（与独立朴素模型随机对照）、
+  `permit/bench_test.go`（开销不随在办许可总数增长）
+
+```bash
+go test ./permit/ -race -v
+go test ./permit/ -run TestRandomDifferential -v   # 逐步输入/输出/判定依据日志
+go test ./permit/ -bench BenchmarkProgressScaling  # 复杂度验证
+```
