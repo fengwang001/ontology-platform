@@ -44,3 +44,23 @@ go tool cover -html=coverage.out
 gofmt -l .
 go vet ./...
 ```
+
+## 光伏余电上网月度结算引擎（`settlement` 包）
+
+位于 `settlement/`，设计与取舍见 `settlement/DESIGN.md`（≤40 行）。
+
+```go
+eng := settlement.NewEngine(3600, time.Date(2026,1,1,0,0,0,0,time.UTC))
+eng.RegisterProsumer("p1")
+eng.SetParams("p1", "2026-01", settlement.Params{ContractPowerW: 5000, MonthlyCreditableW: 1_000_000, CreditValidMonths: 2})
+eng.SetPrices("p1", "2026-01", settlement.Prices{ImportPricePerWh: 10, SurplusPricePerWh: 4})
+eng.RegisterReading("p1", settlement.Reading{Start: tsUTC, ImportWh: 30, ExportWh: 70})
+res, err := eng.CloseMonth("p1", "2026-01")      // 封账
+res, err = eng.Query("p1", "2026-02")            // 未封账月试算，不改额度余额
+```
+
+- 错误：`errors.Is(err, settlement.ErrInvalid|ErrClosed|ErrOrder|ErrMissing)`，拒绝次序固定。
+- 测试与验证：
+  - `go test -race ./settlement`：全部边界用例 + 朴素模型随机差分（固定种子可复现）。
+  - `SETTLE_LOG=1 go test ./settlement -run TestRandomDifferential -v`：打印每条输入、双方输出与判定依据。
+  - `go test ./settlement -run TestCloseScaling -v`：封账开销不随已封账月数增长的实测证据。
