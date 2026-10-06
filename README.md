@@ -2,6 +2,10 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 内联决策子系统
+
+编译器优化阶段的内联决策子系统位于 `inline` 包，设计说明见 `DESIGN.md`。
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
