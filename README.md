@@ -44,3 +44,13 @@ go tool cover -html=coverage.out
 gofmt -l .
 go vet ./...
 ```
+
+## cors 包：跨源预检判定与预检结果缓存内核
+
+`cors/` 实现跨源请求的五部分协作内核：请求分类、预检必要性判定、
+预检结果缓存、响应校验与凭据模式处理。设计取舍见 `cors/DESIGN.md`。
+
+```bash
+go test -race -v ./cors/                 # 单测 + 朴素模型随机差分对照（日志含输入/输出/判定依据）
+go test -run xxx -bench . ./cors/        # 性能证明：分类与缓存命中均为 O(1)
+```
