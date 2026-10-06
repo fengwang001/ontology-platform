@@ -1,46 +1,38 @@
-# ontology-platform
+# incremental
 
-本体服务平台（对标 Palantir Foundry Ontology）。
+声明级增量类型检查调度子系统。检查器通过 `Checker` 接口注入；调度器负责登记声明、记录检查期间实际读取的签名、维护版本化缓存与依赖图，并决定每次编辑后哪些签名/实现必须重检。
 
-## 环境要求
+## 模块
 
-- Go 1.26+（`go version` 确认）
+- `types.go`：编辑、声明、签名/实现结果、版本 Basis、统计与检查上下文。
+- `registry.go`：声明与版本化签名/实现结果缓存。
+- `graph.go`：签名依赖、实现依赖、反向邻居、SCC 与拓扑调度。
+- `scheduler.go`：互斥调度、失效传播、早停、删除墓碑、实现重检。
+- `naive.go`：每次编辑后全量重检的朴素模型，仅作语义对照。
 
-## 运行
+## 关键语义
+
+- 实现读签名只登记实现依赖；签名读签名登记签名依赖。
+- 签名编辑传播签名依赖，不沿实现依赖向外传播。
+- 签名重检结果与上一实际签名相同即早停，不升版本并截断传播。
+- 相互签名引用的稳定 SCC 原子试算；任一新结果报错则整组使用统一错误态。
+- 删除是带版本的“不存在”墓碑；重新添加会使旧 Basis 失效或允许沿用。
+- 缓存结果带版本化 Basis；任一依赖版本或存在性不一致即拒绝沿用。
+- 调度中提交编辑返回 `ErrSchedulerBusy`；无变化编辑无版本和缓存副作用。
+
+## 复杂度证据
+
+- 初始失效定位：读取直接签名/实现反向邻居，复杂度为直接依赖数。
+- 签名传播：在本轮反向闭包和 SCC 缩点 DAG 内工作，不扫描无关节点。
+- 结果沿用：只检查该结果 Basis 中的直接依赖数量。
+- 并发：单一互斥锁串行化编辑与调度，查询在同一锁下读取一致快照。
+
+## 验证
 
 ```bash
-# 拉取依赖
-go mod tidy
-
-# 直接运行
-go run ./cmd/server
-
-# 编译后运行
-go build -o bin/server ./cmd/server
-./bin/server
-```
-
-## 测试
-
-```bash
-# 全量测试
 go test ./...
-
-# 带竞态检测与详细输出
-go test -race -v ./...
-
-# 单个包 / 单个用例
-go test ./ontology
-go test -run TestObjectType ./ontology
-
-# 覆盖率
-go test -coverprofile=coverage.out ./...
-go tool cover -html=coverage.out
-```
-
-## 代码检查
-
-```bash
-gofmt -l .
 go vet ./...
+go test -race ./...
 ```
+
+设计取舍见 [DESIGN.md](DESIGN.md)。
