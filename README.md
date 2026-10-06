@@ -44,3 +44,18 @@ go tool cover -html=coverage.out
 gofmt -l .
 go vet ./...
 ```
+
+## 专业技术职称评审会务服务
+
+评审会务（评委抽取与回避、分轮表决、中途回避替补、公示异议、
+终局生效）实现于 `review/` 包，完整设计、关键取舍、被放弃方案与
+需求逐条验证方法见 `docs/design.md`。
+
+```bash
+export GOCACHE=/tmp/go-cache        # 如默认构建缓存目录只读
+go test -race -count=1 ./...
+go test -cover ./...
+
+# 朴素模型随机差分的逐行日志（输入 / 两侧输出 / 判定依据）
+REVIEW_DIFF_LOG=1 go test ./review/ -run TestDifferential -v
+```
