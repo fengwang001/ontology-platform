@@ -44,3 +44,26 @@ go tool cover -html=coverage.out
 gofmt -l .
 go vet ./...
 ```
+
+## 物业费账单服务（`billing/`）
+
+滞纳金累计、分级催缴与缴款冲抵服务。设计说明见 `docs/design.md`。
+
+```go
+cfg := billing.Config{
+    GraceDays: 3,
+    RateNum: 1, RateDen: 10,   // 每日按未付本金的 10% 累计滞纳金
+    CapNum: 1, CapDen: 2,      // 滞纳金上限为本金的 50%
+    Thresholds: [3]int{5, 10, 15}, // 三个催缴阶段的逾期天数阈值
+}
+svc, _ := billing.NewService(cfg)
+svc.GenerateBill(now, "household-1", "bill-1", 1000, dueDay)
+res, _ := svc.Pay(now, "household-1", 500)            // 部分缴款，自动冲抵
+svc.Dispute(now, "household-1", "bill-1")             // 争议：停计、冻结、跳过
+svc.ResolveDispute(now, "household-1", "bill-1", 800) // 裁定：维持或调减本金
+svc.Waive(now, "household-1", "bill-1", 20)           // 减免已产生的滞纳金
+due, _ := svc.TotalDue(now, "household-1")            // 应付总额（只扫未关账账单）
+```
+
+错误按固定次序只报第一个：参数非法 → 时钟回退 → 住户或账单不存在 →
+状态不允许 → 金额越界；被拒绝的操作不改变任何状态（含时钟）。
