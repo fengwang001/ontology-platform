@@ -2,6 +2,25 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 团队看板服务
+
+核心实现位于 `kanban` 包。入口为 `kanban.NewService`，支持看板创建、卡片创建、乐观版本移动、重开、改负责人、依赖增删、列上限调整和快照查询。
+
+```go
+service := kanban.NewServiceWithLogger(logger)
+err := service.CreateBoard("release", kanban.BoardConfig{
+    Columns: []kanban.Column{
+        {Name: "todo"},
+        {Name: "dev", Limit: 3},
+        {Name: "review", Limit: 2},
+        {Name: "done"},
+    },
+    AssigneeLimit: 5,
+})
+```
+
+非完成列 `Limit=0` 表示不限；完成列不设上限。所有错误均为包内 `kanban.Err...` 常量，可用 `errors.Is` 判断。详细取舍和验证方式见 `DESIGN.md`。
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
