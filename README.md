@@ -2,6 +2,10 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 持久卷绑定控制器
+
+持久卷与卷声明绑定控制器位于 `pvbinding/`，设计说明、接口规则与本地验证命令见 `pvbinding/README.md`。
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
