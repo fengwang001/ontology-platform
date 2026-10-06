@@ -44,3 +44,9 @@ go tool cover -html=coverage.out
 gofmt -l .
 go vet ./...
 ```
+
+## 模块
+
+- `baggage/`：联程行李中转与超重计费（额度归属、直挂判定、分段计费、
+  统一拒绝次序、并发安全）。设计说明见 `baggage/DESIGN.md`，
+  测试：`go test -race ./baggage/`。
