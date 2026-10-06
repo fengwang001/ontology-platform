@@ -2,6 +2,16 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## PDB 驱逐裁决服务
+
+`pdb` 包实现面向节点排空的 Pod 中断预算（PDB）驱逐裁决：单个驱逐、整批
+排空、驱逐确认/取消与宽限到期自动回补。详见 [`pdb/DESIGN.md`](pdb/DESIGN.md)。
+
+```bash
+# 随机差分（索引实现 vs 独立朴素参考模型）、复杂度结构证明、竞态
+go test -race -v ./pdb
+```
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）

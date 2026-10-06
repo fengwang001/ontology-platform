@@ -1,0 +1,2 @@
+[0001] evict at t=9 after state at t=10 => DENY(ClockRollback: clock moved backwards: now=1970-01-12T21:46:49+08:00 last=1970-01-12T21:46:50+08:00)
+[0002] evict at t=10 == last accepted time => ALLOW

@@ -1,0 +1,2 @@
+[0001] batch [r1,r2,r3,u] needs 3 allowance of 2 => DENY(Insufficient: batch allowance exhausted: need 3 allowed 2)
+[0002] batch [r1,r2(consume 2),u(gate at batch-start ready=4>=2)] => ALLOW

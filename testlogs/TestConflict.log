@@ -1,0 +1,2 @@
+[0001] evict pod matched by b1,b2 => DENY(ConfigConflict: pod matched by 2 budgets)
+[0002] after b2 stops matching, evict => ALLOW

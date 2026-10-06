@@ -1,0 +1,5 @@
+[0001] empty uid with rollback time => InvalidArgument (not ClockRollback)
+[0002] missing pod at rolled-back time => ClockRollback (not PodNotFound)
+[0003] missing pod => PodNotFound (not phase/conflict/allowance)
+[0004] terminal pod matching 2 budgets => NotEvictablePhase (before Conflict)
+[0005] evicting pod that newly matches 2 budgets => AlreadyEvicting (before Conflict)

@@ -1,0 +1,4 @@
+[0001] noise=1:     eviction touched 1 candidate budgets; budget query touched 1 pods
+[0002] noise=100:   eviction touched 1 candidate budgets; budget query touched 1 pods
+[0003] noise=500:   eviction touched 1 candidate budgets; budget query touched 1 pods
+[0004] PROOF: probe counts constant across 1/100/500 noise objects => single eviction and budget query are independent of unrelated pods/budgets

@@ -1,0 +1,7 @@
+[0001] evict p at t=2 deadline=12 => ALLOW, ready=false
+[0002] re-evict at t=3 => AlreadyEvicting
+[0003] redundant readiness upsert while evicting => AlreadyEvicting
+[0004] t=11: evicting=true ready=0
+[0005] t=12 == deadline: evicting=false ready=1
+[0006] cancel t=21: evicting=false ready=true
+[0007] confirm t=31 removes pod

@@ -1,0 +1,5 @@
+[0001] evict p at t=2 under minAv=0 => ALLOW (in flight)
+[0002] evict q after required 5 > current ready 1 => DENY(Insufficient: no disruption allowance: ready 1 required 5)
+[0003] in-flight eviction of p confirms unaffected by budget tightening
+[0004] evict q after budget relaxed => ALLOW
+[0005] both-set / 101% / negative values => InvalidArgument

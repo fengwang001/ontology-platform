@@ -1,0 +1,4 @@
+[0001] batch [a,b] need 2 allowance 1 => DENY(Insufficient: batch allowance exhausted: need 2 allowed 1)
+[0002] batch [a(ready),u(unready)] => ALLOW; ready drops to 2, u does not consume
+[0003] batch with duplicate b => DENY(InvalidArgument: duplicate pod in batch)
+[0004] batch with empty-namespace ref at index 1 => InvalidArgument

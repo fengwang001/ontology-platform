@@ -1,0 +1,4 @@
+[0001] evict unready u1 ready=2>=1 => ALLOW
+[0002] evict unready u1 ready=1>=1 => ALLOW
+[0003] evict unready u1 ready=0<1 => DENY(Insufficient: ready 0 below required 1)
+[0004] after r1 eviction expires at 116, evict u1 at t=117 => ALLOW

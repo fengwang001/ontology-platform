@@ -1,0 +1,3 @@
+[0001] status with terminal pod: expected=1 ready=1
+[0002] evict Succeeded => DENY(NotEvictablePhase: pod phase 2 cannot be evicted)
+[0003] after ok -> Failed: expected=0
