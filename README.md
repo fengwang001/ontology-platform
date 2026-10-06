@@ -2,6 +2,17 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 死代码裁剪分析器（`dce/`）
+
+模块打包器的死代码裁剪分析器位于 `dce/`：给定模块图、入口集合与副作用声明，
+求被引入模块、必须保留的声明及原因（入口导出 / 被引用 / 副作用），并区分
+缺失导出、歧义导出、重导出循环等错误。
+
+- 设计说明（关键取舍、被放弃方案、复杂度论证、本地验证）：`docs/DCE_DESIGN.md`
+- 端到端示例：`go run ./dce/cmd/example`
+- 随机差分（独立朴素迭代模型，400 张随机图，含日志落盘）：
+  `DCE_DIFF_LOG=/tmp/diff.log go test -run TestRandomDifferential -v ./dce/dce_test`
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
