@@ -44,3 +44,16 @@ go tool cover -html=coverage.out
 gofmt -l .
 go vet ./...
 ```
+
+## 信用卡账户引擎（creditcard 包）
+
+`ontology/creditcard` 实现信用卡账户的出账、计息、还款分配与滞纳金：
+三类余额（取现/分期/购物）独立计息、购物类免息资格判定、最低还款额、
+到期判定、还款即时分配与溢缴款。设计取舍与验证方法见
+[creditcard/DESIGN.md](creditcard/DESIGN.md)。
+
+```bash
+go test ./creditcard/                # 单元 + 朴素模型随机对照
+go test -race ./creditcard/          # 并发
+go test -run xxx -bench . ./creditcard/
+```
