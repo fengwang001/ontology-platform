@@ -2,6 +2,13 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 组件
+
+- `reconcile/`：多副本快照对账与和解组件。将各副本独立产出的快照归并为唯一确定的
+  和解结果：以最早逻辑位点为基准、按副本自带可比较标识（Priority）裁决冲突、
+  隔离损坏副本、标识并列时判定对象不可和解。设计与取舍详见
+  [reconcile/DESIGN.md](reconcile/DESIGN.md)。
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
