@@ -2,6 +2,14 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 组件
+
+- `ontology/`：本体链接图与 `HasCycle` 环检测器——仅在调用者当前存在性/遍历
+  权限过滤后的可见子图上判定环（自环、双向往返环计入），结果与证据与遍历
+  起始对象、访问顺序、创建历史无关，并发下满足快照一致语义。设计与取舍见
+  `ontology/DESIGN.md`，随机对照的逐次调用日志见
+  `ontology/testdata/has_cycle_calls.csv`。
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
