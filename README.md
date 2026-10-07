@@ -2,6 +2,12 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 组件
+
+- `scheduler/`：事件驱动的多路径传输连接发送侧调度器（子流选路、
+  子流/连接级确认、失效重新注入、连接级接收窗口）。设计取舍与验证
+  方法见 `scheduler/DESIGN.md`。
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
