@@ -2,6 +2,10 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 子系统
+
+- 链接级联删除与孤儿对象清理：见 `cascade/`（实现、`cascade/README.md` 测试说明、`cascade/DESIGN.md` 设计取舍与终止性/顺序无关性证明）。
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
