@@ -2,6 +2,11 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 包
+
+- `sw/`：服务 Worker 注册与版本更新协调器（注册作用域匹配、版本生命周期、客户端控制、
+  更新检查与缓存清单）。见 [sw/README.md](sw/README.md) 与 [sw/DESIGN.md](sw/DESIGN.md)。
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
