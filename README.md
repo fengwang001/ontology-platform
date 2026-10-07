@@ -6,18 +6,18 @@
 
 - Go 1.26+（`go version` 确认）
 
-## 运行
+## 结构
+
+- `ontology/`：单继承对象类型体系与属性取值规则的可见性判定机制
+  （遮蔽与穿透、声明时收窄校验、密封类型、删除保护、实例读写、
+  线性化并发语义与查找审计）。
+- `docs/DESIGN.md`：设计说明（关键取舍、被放弃的方案、本地验证方法）。
+
+## 构建
 
 ```bash
-# 拉取依赖
-go mod tidy
-
-# 直接运行
-go run ./cmd/server
-
-# 编译后运行
-go build -o bin/server ./cmd/server
-./bin/server
+go build ./...
+go vet ./...
 ```
 
 ## 测试
@@ -31,11 +31,7 @@ go test -race -v ./...
 
 # 单个包 / 单个用例
 go test ./ontology
-go test -run TestObjectType ./ontology
-
-# 覆盖率
-go test -coverprofile=coverage.out ./...
-go tool cover -html=coverage.out
+go test -run TestLookup ./ontology
 ```
 
 ## 代码检查
