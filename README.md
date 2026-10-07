@@ -2,6 +2,13 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 组件
+
+- `ontology/`：权限沿链接类型图传播与覆盖网关。设计说明见
+  `ontology/design.md`，使用说明见 `ontology/README.md`。
+- `cmd/server/`：脚本化端到端演示（传播、深度耗尽、覆盖阻断、环路拒绝与
+  判定日志）。
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
