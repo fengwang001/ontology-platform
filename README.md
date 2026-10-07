@@ -44,3 +44,21 @@ go tool cover -html=coverage.out
 gofmt -l .
 go vet ./...
 ```
+
+## 批量导入校验钩子可见性子系统
+
+实现位于 `ontology/` 包，设计细节见 `ontology/DESIGN.md`。
+
+- 批内可见性严格按输入列表顺序（前缀语义，既非开始前快照也非结束后最终态）。
+- 支持 `ALL_OR_NOTHING` 与 `BEST_EFFORT` 两种整体语义，以及仅在全有全无语义下
+  提交前触发一次的批次级后置钩子。
+- 错误按「参数非法 → 前置钩子 → 后置钩子」归一化，三类可区分。
+- 单次可见性解析为 O(1) 哈希探测，不随批次长度增长（`AccessCounters` 可验证）。
+- 跨批次以快照 + 版本检测 + 冲突重放保证可串行化与重放确定性。
+
+验证：
+
+```bash
+go test -race -v ./ontology/
+go test -run TestRandomDifferential -count=5 ./ontology/  # 2000 组随机差分对照朴素模型
+```
