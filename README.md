@@ -44,3 +44,17 @@ go tool cover -html=coverage.out
 gofmt -l .
 go vet ./...
 ```
+
+## 容量受限转发表管理器(fib 包)
+
+`fib/` 实现容量受限的转发表管理器:控制面维护全量路由,数据面
+维护逐地址语义完全一致、条目数最少的聚合转发表,更新超出容量
+上限时整体拒绝(批量全有或全无)。
+
+```bash
+go test ./fib/          # 单元测试 + 1200 组随机序列对照朴素模型
+go test ./fib/ -race    # 并发一致性(竞态检测)
+```
+
+设计说明(关键取舍、被放弃的方案、验证方法)见
+[docs/fib-design.md](docs/fib-design.md)。
