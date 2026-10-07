@@ -2,6 +2,17 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+当前已交付：**链接基数约束 × 属性级权限联合仲裁子系统**（根包 `ontology`），
+由基数账本（`ledger.go`）、权限继承与覆盖解析（`permissions.go`）、
+联合仲裁与错误归一化（`arbiter.go`）三模块组成，另含一个全量重遍历的
+朴素对照模型（`naive.go`）用于随机差分测试。设计取舍与需求对应见
+[DESIGN.md](DESIGN.md)。
+
+```bash
+go run ./cmd/server   # 仲裁链路演示
+go test -race ./...
+```
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
