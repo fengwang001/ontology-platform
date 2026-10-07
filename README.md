@@ -2,6 +2,12 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 模块
+
+- `qc/`：临床检验室内质控失控判定与报告拦截系统（五条质控规则判定、
+  失控报告拦截与追溯复核、恢复与有效期判定）。设计说明见
+  [qc/DESIGN.md](qc/DESIGN.md)。
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
