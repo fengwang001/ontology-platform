@@ -44,3 +44,19 @@ go tool cover -html=coverage.out
 gofmt -l .
 go vet ./...
 ```
+
+## 级联删除控制器（`cascade` 包）
+
+带属主引用与终结器的对象级联删除控制器，支持后台 / 前台 / 孤立三种
+删除策略、多属主依赖者、终结器阻塞与前台删除传播。所有改变状态的
+操作在返回前都把级联收敛到唯一稳定状态，复杂度只随实际影响面增长。
+
+- 设计说明（关键取舍、被放弃方案、规则形式化）：`cascade/DESIGN.md`
+- 独立朴素参考模型：`cascade/internal/testutil/naive`
+- 随机差分、并发、性能与场景测试：`cascade/*_test.go`
+
+```bash
+go test ./cascade -v
+go test -race ./cascade
+go test ./cascade -run TestComplexity -v
+```
