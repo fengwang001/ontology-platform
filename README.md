@@ -44,3 +44,23 @@ go tool cover -html=coverage.out
 gofmt -l .
 go vet ./...
 ```
+
+## 对象生命周期状态机子系统
+
+`lifecycle` 包实现到期迁移的**惰性结算**状态机（不依赖后台扫描），`naive` 包是独立
+实现的朴素周期扫描参考模型，二者通过随机对拍保持一致。
+
+- 设计说明（关键取舍、被放弃方案、本地验证方法）：`docs/lifecycle-design.md`
+- 核心实现：`lifecycle/`
+- 参考模型：`naive/`
+- 脚本化演示（打印每次结算输入、推进环节、判定依据）：
+
+```bash
+go run ./cmd/lifecycle-demo
+```
+
+随机对拍与开销证明测试：
+
+```bash
+go test -race -v ./...
+```
