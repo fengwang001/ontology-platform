@@ -44,3 +44,17 @@ go tool cover -html=coverage.out
 gofmt -l .
 go vet ./...
 ```
+
+## 时间属性权限校验子系统
+
+`temporalauth/` 为带时间类属性的对象提供属性级查看权限校验，统一处理录入时区、
+对象所属地区默认时区（支持版本迁移）与查询者所在时区三者的归一化，并覆盖夏令时
+gap/overlap、半开时间窗口、错误优先级、信息不泄露、并发线性一致以及单次判定
+O(log n) 复杂度。设计与取舍见 `temporalauth/DESIGN.md`。
+
+```bash
+go test ./temporalauth
+go test -race ./temporalauth
+go test ./temporalauth -run TestRandomizedCrossCheck -v
+go test ./temporalauth -run XXX -bench BenchmarkViewVsRegionVersions
+```
