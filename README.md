@@ -2,6 +2,13 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 组件
+
+- `compat/`：快照格式兼容性校验组件。在某一版本格式的消费方读取另一版本
+  格式产出的快照时，依据对象类型结构变化（属性增删改与必填性变化）判定
+  快照对该消费方可读、需降级或必须拒绝。设计说明见
+  [docs/snapshot-compat-design.md](docs/snapshot-compat-design.md)。
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
