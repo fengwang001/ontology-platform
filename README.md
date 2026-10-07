@@ -44,3 +44,16 @@ go tool cover -html=coverage.out
 gofmt -l .
 go vet ./...
 ```
+
+## 核心子系统
+
+`ontology` 包实现“带基数约束的链接更新 + 乐观提交 + 有限重试”：
+每次重试在实例锁内重新读取最新基线与全部关联，按
+“版本冲突 > 基数不满足 > 重试耗尽”的固定顺序给出三类互斥结果，
+失败尝试不产生任何可观察变化，基数判定为 O(1)。
+
+- 设计说明（取舍、被放弃方案、验证方法、测试覆盖索引）：`docs/DESIGN.md`
+- 实现：`ontology/`（`store.go`、`submit.go`、`errors.go`、`types.go`）
+- 服务演示：`cmd/server`（409 版本冲突 / 422 基数拒绝 / 503 重试耗尽）
+
+若默认 Go 构建缓存目录只读，可指定 `export GOCACHE=/tmp/gocache`。
