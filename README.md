@@ -2,6 +2,12 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 组件
+
+- `retention/`：对象逻辑删除与可见性服务（四态状态机、宽限期撤销、
+  保留期冻结、按身份的可见性、出边跟随源对象、审计日志）。
+  设计与取舍见 `retention/DESIGN.md`。
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
