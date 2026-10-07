@@ -44,3 +44,21 @@ go tool cover -html=coverage.out
 gofmt -l .
 go vet ./...
 ```
+
+## 动作事务审计溯源子系统
+
+实现在 `ontology/` 包：每次动作执行（提交或整体回退）都在同对象类型内
+一条单调、连续、无空洞且不可篡改的审计序列中留痕，仅凭该序列即可独立
+重建任意历史时刻状态。
+
+- 设计与取舍（含被放弃方案、复杂度论证）：`ontology/DESIGN.md`
+- 包级用法示例：`ontology/doc.go`
+- 朴素黄金模型与随机对照：`ontology/naive.go`、`ontology/random_diff_test.go`
+
+```bash
+# 全量测试（含竞态；会打印输入/输出/判定依据）
+go test -race -v ./ontology
+
+# 仅看复杂度证明（稳态扫描量 vs 朴素全量扫描）
+go test -v ./ontology -run TestReplayComplexityBound
+```
