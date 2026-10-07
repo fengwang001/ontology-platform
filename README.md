@@ -44,3 +44,11 @@ go tool cover -html=coverage.out
 gofmt -l .
 go vet ./...
 ```
+
+## 链接类型实例层仲裁
+
+`link/` 包实现两个对象类型之间链接的创建、去重与撤销仲裁：双方向独立
+基数（0 / 正整数 / 不限）、区分属性组合去重、撤销即释放、并发下等价于
+某一全序串行执行，以及四类可精确区分的失败。设计、取舍与验证方法见
+[`docs/link-arbitration-design.md`](docs/link-arbitration-design.md)，
+可运行用法见 `link` 包的 `Example`。
