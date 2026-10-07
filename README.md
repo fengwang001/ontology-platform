@@ -2,6 +2,18 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 分片缓存 `chunkcache`
+
+`chunkcache/` 为内容分发边缘节点的大对象分片缓存：固定大小切片、部分命中、
+仅对缺失连续段回源、版本变化作废与一次重判、并发同切片单次回源、LRU 容量约束。
+设计与取舍见 [DESIGN.md](DESIGN.md)。
+
+```bash
+go test ./chunkcache/ -v
+go test -race ./chunkcache/
+CC_VERBOSE=1 go test ./chunkcache/ -run TestRandomDifferential -v
+```
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
