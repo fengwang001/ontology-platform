@@ -2,6 +2,12 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 模块
+
+- `estimation/`：团队估点投票会话服务（隐藏投票、揭示时机、收敛/分歧
+  判定、轮次上限与强制取值、成员进出与计时到期下可精确复现）。
+  设计说明见 `estimation/DESIGN.md`。
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
