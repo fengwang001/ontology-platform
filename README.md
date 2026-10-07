@@ -2,6 +2,15 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 子系统：嵌套动作事务与校验钩子
+
+- `txn` — 动作事务边界：暂存覆盖层、O(1) 快照、原子提交/回退
+- `hooks` — 前置/后置校验钩子的注册与触发调度、全局触发日志
+- `errors` — 错误归一化（参数非法 / 前置钩子失败 / 后置钩子聚合）
+- `action` — 动作引擎：模式校验、嵌套调用、FIFO 串行执行器
+
+设计取舍、被放弃的方案与验证方法见 [DESIGN.md](DESIGN.md)。
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
@@ -30,8 +39,8 @@ go test ./...
 go test -race -v ./...
 
 # 单个包 / 单个用例
-go test ./ontology
-go test -run TestObjectType ./ontology
+go test ./action
+go test -run TestConformanceWithNaiveModel -v ./action
 
 # 覆盖率
 go test -coverprofile=coverage.out ./...
