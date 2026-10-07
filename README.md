@@ -2,6 +2,20 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 双时态快照版本兼容判定
+
+本体实例属性的有效时间轴与事务时间轴在不同快照格式版本间的兼容性判定组件位于
+[`bitemporal/`](bitemporal)：
+
+- 设计说明（关键取舍、被放弃方案、判定优先级理由）：[`docs/bitemporal-design.md`](docs/bitemporal-design.md)
+- 使用指南：[`docs/bitemporal-usage.md`](docs/bitemporal-usage.md)
+- 本地验证方法与实测数据：[`docs/bitemporal-verification.md`](docs/bitemporal-verification.md)
+
+```bash
+go test ./bitemporal/...
+go test -run=^$ -bench=BenchmarkJudgeBatch -benchtime=200x ./bitemporal/judge
+```
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
