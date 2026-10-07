@@ -38,6 +38,13 @@ go test -coverprofile=coverage.out ./...
 go tool cover -html=coverage.out
 ```
 
+## 分代孤儿回收子系统
+
+跨链接类型的分代孤儿回收位于 `orphanreclaim` 包：独立保留 / 联合保留两层判定、
+两代宽限期队列、救回清零与到期原子清理。设计取舍、被放弃方案、复杂度证明与
+测试—需求覆盖矩阵见 `orphanreclaim/DESIGN.md`；快速开始示例见
+`orphanreclaim/example_test.go`。
+
 ## 代码检查
 
 ```bash
