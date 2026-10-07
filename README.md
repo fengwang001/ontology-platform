@@ -2,6 +2,22 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## microgrid 包
+
+`microgrid/` 实现微电网储能调度控制器：荷电状态管理、充放电限制、关键负荷备用、
+并网/孤岛模式、时隙计划的接受与后缀撤销、执行偏差重核验、累计吞吐维护锁定。
+设计取舍见 [DESIGN.md](DESIGN.md)。
+
+```go
+cfg := microgrid.Config{Capacity: 100, MinSoC: 10, MaxSoC: 90, /* ... */ InitialSoC: 50}
+c, _ := microgrid.NewController(cfg)
+c.UpdateForecast(1, []int{3, 1, 4})                    // 登记关键负荷预测
+c.SubmitPlan(1, []microgrid.PlanAction{                // 提交连续时隙计划
+	{Action: microgrid.ActionDischarge, Amount: 10},
+})
+c.RecordActual(0, microgrid.ActionIdle, 0)             // 登记当前时隙实际值并推进
+```
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
