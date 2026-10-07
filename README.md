@@ -2,6 +2,11 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 模块
+
+- `payledger/`：支付预授权持有、增量授权与分次捕获的额度账务系统。
+  设计说明见 `docs/DESIGN.md`，API 文档见 `payledger/doc.go`。
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
