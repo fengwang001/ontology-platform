@@ -2,6 +2,13 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 模块
+
+- `meshauthz/`：服务网格工作负载授权策略评估器。整份策略集原子发布
+  （版本单调递增）、拒绝优先、无允许策略默认放行、审计策略仅入依据，
+  评估开销与无关命名空间中的策略数量无关。设计取舍见
+  [meshauthz/DESIGN.md](meshauthz/DESIGN.md)。
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
