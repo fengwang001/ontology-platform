@@ -2,6 +2,13 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 模块
+
+- `ontology/`：链接类型绑定依据字段的兼容性校验。支持单向/双向绑定声明、
+  缺失取值参与对应关系判断、字段变更触发重核验、按链接类型隔离的兼容性
+  状态、可线性化的并发语义与核验审计。设计说明见
+  [docs/binding-compatibility-design.md](docs/binding-compatibility-design.md)。
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
