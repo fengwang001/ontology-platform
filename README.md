@@ -2,6 +2,12 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 模块
+
+- `sheet/`：多人协同表格的按用户选择性撤销与重做服务
+  （设计说明见 `docs/DESIGN.md`）。
+- `sheet/naive/`：仅供差分测试使用的独立朴素参照模型。
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
