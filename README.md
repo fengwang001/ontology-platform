@@ -2,6 +2,12 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 包
+
+- [`sender`](sender/README.md)：传输层发送端小段合并调度器（Nagle /
+  软木塞 / 零窗口探测，时钟注入，可精确复现）。设计说明见
+  [sender/DESIGN.md](sender/DESIGN.md)。
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
