@@ -2,6 +2,12 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 模块
+
+- `netcode/` — 多人在线场景的服务端权威输入处理与客户端预测对账服务
+  （服务端仲裁 / 客户端预测 / 对账三模块）。设计取舍、被放弃方案与
+  本地验证方法见 `netcode/DESIGN.md`。
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
