@@ -2,6 +2,13 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 模块
+
+- `delegation`：角色委托链模块。角色持有者可将对象类型上属性级与行级权限的子集
+  在有效期内委托给其他主体，支持再委托标记、权限收缩级联（全有或全无）、多路径
+  独立有效、成环检测、历史判定不可追溯、并发线性化与可观测的遍历开销上界。
+  设计说明见 [docs/delegation-design.md](docs/delegation-design.md)。
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
