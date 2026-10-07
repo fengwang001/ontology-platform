@@ -44,3 +44,17 @@ go tool cover -html=coverage.out
 gofmt -l .
 go vet ./...
 ```
+
+## 服务网格流量路由模块
+
+`servicemesh/` 提供配置发布与请求分流：有序规则匹配（路径精确/段边界前缀、头精确/前缀/存在、多值头）、权重分桶、子集就绪检查、策略逐字段继承、发布期校验（权重/策略/遮蔽蕴含）、版本化原子替换与无锁并发读。
+
+- 设计说明（关键取舍、被放弃方案、复杂度证明、本地验证）：`servicemesh/DESIGN.md`
+- 测试：功能覆盖、与独立朴素模型的随机差分、并发可串行化（`-race`）、可验证复杂度探针与基准；日志打印每次操作的输入/实际输出/判定依据。
+
+```bash
+export GOCACHE=/tmp/gocache GOPATH=/tmp/gopath   # 若默认缓存目录只读
+go test -v ./servicemesh
+go test -race ./servicemesh
+go test -bench=. -benchmem -run=^$ ./servicemesh
+```
