@@ -2,6 +2,11 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 模块
+
+- `policy/`：长期寿险保单状态引擎（保费宽限、自动垫交、中止与复效、出险判定）。
+  设计说明见 `policy/DESIGN.md`，包文档见 `policy/doc.go`。
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
