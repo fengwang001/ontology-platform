@@ -2,6 +2,12 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 模块
+
+- `ontology/review`：专业技术职称评审会务服务（评委抽取与回避、
+  分轮表决、中途回避替补、结果公示异议）。设计说明见
+  [docs/review-design.md](docs/review-design.md)。
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
