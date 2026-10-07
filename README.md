@@ -44,3 +44,13 @@ go tool cover -html=coverage.out
 gofmt -l .
 go vet ./...
 ```
+
+## 动作副作用补偿回滚子系统
+
+位于 `compensation/`：有序副作用子操作失败时按逆序补偿，逆操作失败/异常不中断补偿，
+失败对象冻结并进入污染态，支持并发守卫与全局唯一逆操作登记编号。
+
+- 设计说明：[compensation/DESIGN.md](compensation/DESIGN.md)
+- 包文档：[compensation/README.md](compensation/README.md)
+- 可运行演示（打印输入、每步生效/撤销结果与最终判定）：`go run ./cmd/compensation-demo`
+- 随机对拍测试（独立朴素顺序模型，400 组/轮）：`go test -race -run TestDifferential ./compensation/`
