@@ -2,6 +2,11 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 包
+
+- `room/`：多人对局房间生命周期服务（等待/倒计时/进行中/结算中/已结束/已作废），
+  惰性逻辑时钟、可精确复现。设计说明见 [docs/room-lifecycle.md](docs/room-lifecycle.md)。
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
