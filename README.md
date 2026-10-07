@@ -2,6 +2,18 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 麻醉与精神类药品专用账册
+
+本仓库当前交付物为 `ledger` 包（账册系统）与 `naive` 包（独立朴素
+对照模型）。操作覆盖入库、双人复核领用、结清闭环、差额处理与销毁
+见证；设计取舍、被放弃方案与验证方法见 [DESIGN.md](DESIGN.md)。
+
+```bash
+go test ./...          # 全量测试（含 1500 组随机序列差分对照）
+go test -race ./...    # 竞态检测
+go test ./ledger/ -run xxx -bench .   # 复杂度小/大规模对照基准
+```
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
