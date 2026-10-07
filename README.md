@@ -44,3 +44,14 @@ go tool cover -html=coverage.out
 gofmt -l .
 go vet ./...
 ```
+
+## 会话历史与前进后退缓存内核
+
+`history/` 包实现浏览器会话历史栈与 BFCache 的协调内核（历史条目、遍历调度、
+缓存资格判定、容量与存活期淘汰）。设计取舍见 [DESIGN.md](DESIGN.md)。
+
+```bash
+go test ./history/ -v          # 场景用例，日志含输入/输出/判定依据
+go test ./history/ -race       # 并发串行化校验
+go test ./history/ -bench .    # 遍历 O(1)、淘汰 O(log n) 的性能证明
+```
