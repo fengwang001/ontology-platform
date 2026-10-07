@@ -2,6 +2,16 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 模块
+
+- `ontology/`：嵌套动作调用引擎。动作可触发其它动作，支持前置条件独立评估
+  （内层可见外层未提交的写入计划）、关键/非关键调用的失败传播与整体放弃、
+  自我触发检测、输出依赖的注册期静态校验、并发链条的可序列化提交，
+  并为每次调用记录完整审计轨迹。设计取舍与验证方法见
+  [docs/design.md](docs/design.md)。
+- `cmd/server/`：最小 HTTP 演示服务（`POST /v1/actions/{name}/execute`、
+  `GET /v1/objects/{id}`、`GET /v1/commits`）。
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
