@@ -6,18 +6,15 @@
 
 - Go 1.26+（`go version` 确认）
 
-## 运行
+## 模块
+
+- `audit`：权限决策审计回放模块——版本化权限规则、追加式审计记录、
+  历史回放、纠正记录链与三态合法性查询。设计说明见 `docs/design.md`。
+
+## 运行演示
 
 ```bash
-# 拉取依赖
-go mod tidy
-
-# 直接运行
-go run ./cmd/server
-
-# 编译后运行
-go build -o bin/server ./cmd/server
-./bin/server
+go run ./cmd/auditdemo
 ```
 
 ## 测试
