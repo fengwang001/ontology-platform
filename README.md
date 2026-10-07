@@ -44,3 +44,14 @@ go tool cover -html=coverage.out
 gofmt -l .
 go vet ./...
 ```
+
+## 路径锁服务（pathlock）
+
+仓库级大文件路径锁：协作者推送二进制文件前须先对路径加锁，服务负责锁的
+创建、查询、释放、管理员强制释放，以及推送校验阶段对一批路径的全有或全无持锁核验。
+
+- 设计与取舍说明见 [pathlock/DESIGN.md](pathlock/DESIGN.md)。
+- 核心接口：`Service.Lock` / `Service.Unlock`（`force` 为管理员强制释放并记审计）/
+  `Service.ValidatePush`（`releaseOnPass` 为「校验并顺带释放」）/ `Service.ListByPrefix`（前缀分页）。
+- 路径先经 `NormalizePath` 规范化；祖先与后代路径对他人互斥。
+- 运行测试：`go test ./pathlock -race -v`。
