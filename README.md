@@ -2,6 +2,13 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 生命周期状态机与校验钩子子系统
+
+- 实现：`ontology/`（状态机执行 `lifecycle.go`、钩子范围注册/解析 `hooks.go`、错误归一化 `errors.go`）
+- 设计说明（关键取舍、被放弃方案、复杂度证明、本地验证）：`docs/design.md`
+- 使用指南：`docs/usage.md`
+- 测试：`tests/`（语义用例、并发/重放、复杂度证明）与独立朴素对照模型 `tests/naive/`
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
