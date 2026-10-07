@@ -44,3 +44,13 @@ go tool cover -html=coverage.out
 gofmt -l .
 go vet ./...
 ```
+
+## 长期寿险状态引擎（policy/）
+
+保费宽限、自动垫交、中止与复效状态引擎，设计说明见 [DESIGN.md](DESIGN.md)。
+
+```bash
+go test ./policy/          # 全部用例
+go test -race ./policy/    # 并发与竞态
+go test -run TestDifferentialRandom -v ./policy/  # 与逐日朴素模型的随机对照（打印判定依据）
+```
