@@ -44,3 +44,17 @@ go tool cover -html=coverage.out
 gofmt -l .
 go vet ./...
 ```
+
+## 校验钩子机制
+
+对象类型与链接类型的校验钩子注册、分组排序、组间/组内短路、调用快照、
+异常上抛与审计记录由 `ontology/validate` 包提供：
+
+- 设计说明（关键取舍、被放弃方案、复杂度论证、本地验证方法）：
+  `docs/design-validation-hooks.md`
+- 并发正确性由“朴素串行参考模型 + 全序线性化对照”测试覆盖，建议配合 `-race` 运行：
+
+```bash
+go test ./ontology/validate -run TestConcurrentLinearizationAgainstNaive -count=30
+go test -race ./ontology/validate
+```
