@@ -2,6 +2,14 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 子系统
+
+- `compensation/`：动作副作用补偿回滚子系统（并行副作用分支、
+  依赖感知的补偿顺序、O(1) 补偿就绪判定、跨动作可串行化、
+  与朴素串行模型的随机差分对拍）。见
+  [`compensation/README.md`](./compensation/README.md) 与
+  [`compensation/DESIGN.md`](./compensation/DESIGN.md)。
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
