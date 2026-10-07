@@ -44,3 +44,14 @@ go tool cover -html=coverage.out
 gofmt -l .
 go vet ./...
 ```
+
+## 子图快照校验器
+
+`snapshot` 包提供子图快照记录序列的完整性校验与损坏定位：
+逐条扫描对象/链接记录，在第一条损坏记录处截断，返回最大可恢复前缀、
+损坏原因分类与是否完整。设计说明见 `docs/snapshot-validator.md`。
+
+```go
+res := snapshot.Validate(records)
+// res.Complete / res.PrefixLen / res.Corruption / res.BadIndex
+```
