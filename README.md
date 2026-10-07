@@ -2,6 +2,13 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 子系统
+
+- `importer/`：批量导入子系统。支持乱序/重复到达的数据块、跨块悬挂
+  引用的自动落地与失败传播、块数上限超时、提前结束、并发处理；
+  `importer/naive/` 为独立朴素参照模型，用于随机对拍。
+  设计说明见 `docs/batch-import-design.md`。
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
