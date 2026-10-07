@@ -2,6 +2,12 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 增量导出去重与位点推进
+
+见 `export/DESIGN.md`：位点声明/确认、周期内重试去重、位点介质损坏时基于
+历史记录的安全起点推导，以及中断重放等价性。代码位于 `export/`，
+随机差分测试与朴素参照模型在 `export/*_test.go`。
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）

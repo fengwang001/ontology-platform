@@ -1,0 +1,7 @@
+sample run
+begin declared=0 end=3 checkpointCorrupt=false
+accept seq=1 id=w1 fresh=true
+accept seq=1 id=w1 fresh=false (retry, no position change)
+accept seq=2 id=w2 fresh=true
+accept seq=3 id=w3 fresh=true
+confirmed end=3 output=[w1 w2 w3]
