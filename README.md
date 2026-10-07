@@ -2,6 +2,12 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 模块
+
+- `leave/`：企业年休假额度账户服务（按年度发放、结转、占用、扣减、销假回补与
+  到期作废），设计说明见 `docs/leave-design.md`。
+- `leave/naive/`：独立朴素参考实现，用于随机操作序列的模型对照测试。
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
