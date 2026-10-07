@@ -2,6 +2,12 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 模块
+
+- `booking/`：短租房源可订日历与预订约束服务（房东封锁、最短入住与换客间隙、
+  保留/确认两阶段、取消退款阶梯、一次性改期、日历一致性）。
+  设计说明见 `booking/DESIGN.md`，包文档见 `booking/doc.go`。
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
