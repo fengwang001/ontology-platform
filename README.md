@@ -44,3 +44,19 @@ go tool cover -html=coverage.out
 gofmt -l .
 go vet ./...
 ```
+
+## 备份重建裁决组件
+
+四类备份（对象类型定义、对象实例、链接实例、动作执行记录）的重建顺序裁决与
+可重建范围判定位于 `restore/` 包：
+
+- 设计说明与关键取舍见 `docs/design.md`；
+- API 用法见 `docs/usage.md`；
+- 朴素参照模型与 400 组随机损坏对照见 `restore/naive.go`、
+  `restore/fuzz_compare_test.go`，逐案审计落盘于 `testdata/fuzz/cases.jsonl`。
+
+```bash
+go test ./...
+go test -race -v ./...
+go test -run TestFuzzAgainstNaiveReference ./...
+```
