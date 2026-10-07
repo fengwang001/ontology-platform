@@ -2,6 +2,12 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 组件
+
+- `incremental`：增量导出的位点推进与去重合并组件。负责导出周期的
+  位点声明与确认、周期内/跨周期去重、位点记录不可读时的安全推导，
+  以及多链路并发导出。设计说明见 [docs/incremental-export.md](docs/incremental-export.md)。
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
