@@ -2,6 +2,13 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 组件
+
+- `ontology/linkrepair`：损坏快照链接记录的修复裁决组件。对结构损坏、引用对象
+  不可用、基数约束冲突、内容重复四类异常给出互斥且固定优先级的判定，
+  保证恢复结果满足链接类型的基数约束；裁决确定、可并发重复执行、不改原始数据。
+  设计取舍、被放弃方案与本地验证方法见 `ontology/linkrepair/DESIGN.md`。
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
