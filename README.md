@@ -2,6 +2,12 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 子系统
+
+- 对象生命周期状态机：[`lifecycle/`](lifecycle/README.md)
+  （设计说明见 [`docs/design.md`](docs/design.md)，对拍基线 `internal/naive`，
+  可运行示例 `cmd/demo`）。
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
