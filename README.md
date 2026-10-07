@@ -44,3 +44,14 @@ go tool cover -html=coverage.out
 gofmt -l .
 go vet ./...
 ```
+
+## gc 包：分代内存回收模型
+
+`gc/` 实现语言运行时的分代回收模型：年轻区分配、写屏障 + 记忆集、
+年轻区回收与晋升、显式触发的年老区回收、统计视图与固定优先级的错误拒绝。
+设计与取舍见 [gc/DESIGN.md](gc/DESIGN.md)，API 见 `gc/runtime.go` 注释。
+
+```bash
+go test ./gc/          # 单元测试 + 朴素模型随机对照
+go test -race -v ./gc/ # 竞态检测与逐条操作日志
+```
