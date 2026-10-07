@@ -44,3 +44,26 @@ go tool cover -html=coverage.out
 gofmt -l .
 go vet ./...
 ```
+
+## 链接基数约束与批量导入子系统
+
+实现位于 `ontology/`，三个模块协作：
+
+- `ontology/ledger.go`：基数账本（逐实例增量计数、单条创建/删除、全局同锁串行化）
+- `ontology/importer.go`：批量导入（全有或全无 / 尽力而为、累积占用、回退）
+- `ontology/errors.go`：错误归一化（参数非法 / 起点超限 / 终点超限 / 链接不存在）
+
+快速上手见 `ontology/example_test.go`；设计取舍、被放弃方案与复杂度证明见
+[`docs/design.md`](docs/design.md)。
+
+```bash
+# 随机差分对照（朴素全量重数模型，逐条打印输入/输出/依据）
+go test ./ontology/ -run TestDifferential -v
+
+# 删除-创建竞争与单名额不超卖（竞态检测）
+go test -race ./ontology/ -run 'TestDeleteCreateRace|TestConcurrentBatches' -v
+
+# 校验复杂度不随链接总量增长
+go test ./ontology/ -run TestValidationCost -v
+go test -bench=BenchmarkCreateDelete -run=^$ ./ontology/
+```
