@@ -44,3 +44,29 @@ go tool cover -html=coverage.out
 gofmt -l .
 go vet ./...
 ```
+
+## 本体链接图路径查询
+
+`ontology` 包实现两层声明（对象类型层 / 链接类型层）驱动的遍历准入与最短路径查询。
+
+```go
+ps := ontology.NewPermissionState()
+ps.UpsertGroup("editors", 1)
+ps.AddMember("alice", "editors")
+ps.SetObjectDecl("editors", "Document", ontology.Allow) // 对象类型层默认
+ps.SetLinkDecl("editors", "comment", ontology.Deny)     // 链接类型层覆盖
+
+g := ontology.NewGraph()
+g.AddObject("d1", "Document")
+g.AddObject("d2", "Document")
+g.AddLink(ontology.Link{Type: "edit", From: "d1", To: "d2", Cost: 2})
+
+eng := ontology.NewQueryEngine(ps, g)
+res := eng.ShortestPath(ontology.Query{Subject: "alice", From: "d1", To: "d2"})
+// res.Status: reachable | unreachable | ambiguous | invalid-subject | missing-object
+// res.Counters: 内部开销度量；res.Steps: 每一步覆盖判定依据
+```
+
+- 覆盖判定次序、同优先级拒绝优先、跨层正交优先级冲突的歧义定义见 `DESIGN.md`。
+- 查询钉住发起时刻的权限/图快照，查询期间变更不影响本次结果。
+- 朴素对照模型 `ontology/naive.go` 与随机差分测试、留痕文件见 `DESIGN.md` 第 6 节。
