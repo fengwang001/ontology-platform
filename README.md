@@ -44,3 +44,13 @@ go tool cover -html=coverage.out
 gofmt -l .
 go vet ./...
 ```
+
+## 动作副作用补偿回滚
+
+设计说明（关键取舍、被放弃方案、本地验证方法）见
+`docs/design-compensation.md`，使用文档见 `docs/usage.md`，
+实现与对拍测试位于 `ontology/compensate`：
+
+```bash
+go test -race -v ./ontology/compensate
+```
