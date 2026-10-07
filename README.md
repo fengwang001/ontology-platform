@@ -2,6 +2,12 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 包
+
+- `cpe`：执业资格继续教育学分周期核算服务（学分登记/更正/撤销、周期达标判定、
+  宽限补修、超额结转、证书失效与换发、历史时刻查询）。设计说明见
+  `docs/cpe-design.md`，测试见 `cpe/*_test.go`。
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
