@@ -44,3 +44,18 @@ go tool cover -html=coverage.out
 gofmt -l .
 go vet ./...
 ```
+
+## 脱敏与可见性策略冲突裁决模块
+
+策略仲裁实现在 `policy` 包，设计取舍、被放弃方案与验证方法见 `docs/DESIGN.md`。
+
+```bash
+# 端到端演示（两种主体呈现、原子策略变更、JSON 审计日志）
+go run ./cmd/demo
+
+# 含 4000 组随机策略集与朴素参照实现的差分对照
+go test -run TestDifferentialAgainstNaive -v ./policy
+
+# 策略考察开销不随登记总量增长的可观测证明
+go test -run TestExaminationCostIndependentOfTotalPolicies -v ./policy
+```
