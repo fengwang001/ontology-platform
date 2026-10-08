@@ -2,6 +2,12 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 组件
+
+- `endpointshard`：服务端点分片维护器。固定容量分片间的稳定落位、增量同步最小变更、
+  至多一次合并、消费者查询的就绪/回退规则。设计说明见
+  [docs/endpointshard-design.md](docs/endpointshard-design.md)。
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
