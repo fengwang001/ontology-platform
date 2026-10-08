@@ -2,6 +2,19 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## slots：机场起降时刻协调与历史优先权
+
+`slots/` 是一个自包含的 Go 包，实现单机场单航季的时刻系列申请、截止时
+一次性三段式分配（历史优先权 → 新进入者保留额 → 其余申请）、等候名单、
+返还补位、系列交换、周执行登记与航季末历史资格结算。规则、取舍与性能
+论证见 `slots/DESIGN.md`；`reference.go` 是独立朴素模型，供随机差分对照。
+
+```bash
+go test ./slots/                     # 全场景 + 200 组随机差分对照
+go test -race ./slots/               # 并发安全
+go test -run=NONE -bench=. ./slots/  # O(1) 单元格判定 / O(周数) 使用率
+```
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
