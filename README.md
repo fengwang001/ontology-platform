@@ -2,6 +2,12 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 包
+
+- `dtc`：车载诊断故障码（DTC）生命周期管理器 —— 去抖、待定/确认/愈合/清除、
+  暖机循环判定、唯一冻结帧槽位与诊断仪清除。设计与验证方法见
+  [dtc/DESIGN.md](dtc/DESIGN.md)。
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
