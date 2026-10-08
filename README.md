@@ -44,3 +44,14 @@ go tool cover -html=coverage.out
 gofmt -l .
 go vet ./...
 ```
+
+## eventloop：浏览器事件循环任务调度内核
+
+`eventloop/` 实现由任务源队列、微任务检查点、渲染机会、空闲期与定时器
+五部分协作的调度内核；时间只由注入时钟驱动（`AdvanceTo`），执行次序
+唯一确定并输出带类型、句柄与时刻的轨迹。设计取舍见 `eventloop/DESIGN.md`。
+
+```bash
+go test ./eventloop/        # 定向测试 + 朴素模型随机对照
+go test -race -v ./eventloop/
+```
