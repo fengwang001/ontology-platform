@@ -2,6 +2,13 @@
 
 本体服务平台（对标 Palantir Foundry Ontology）。
 
+## 模块
+
+- `heating` — 城市供热管网阀门隔离与停供影响推演服务：管段泄漏时给出
+  必须关闭的阀门与失去供热的用户，支持阀门卡死、多处抢修叠加，全部
+  操作可并发调用。设计说明见 [docs/heating-design.md](docs/heating-design.md)。
+- `heating/naive` — 独立朴素参考模型，用于随机对照测试。
+
 ## 环境要求
 
 - Go 1.26+（`go version` 确认）
